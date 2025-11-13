@@ -55,7 +55,7 @@ const AdminPage = () => {
     const { count: commentsCount } = await supabase.from('comments').select('*', { count: 'exact', head: true });
     setStats({ users: usersCount, posts: postsCount, products: productsCount, comments: commentsCount });
 
-    const { data: postsData } = await supabase.from('posts').select('*, profiles(name)').order('created_at', { ascending: false });
+    const { data: postsData } = await supabase.from('posts').select('*, profiles!posts_user_id_fkey(name)').order('created_at', { ascending: false });
     setPosts(postsData || []);
     const { data: productsData } = await supabase.from('products').select('*').order('created_at', { ascending: false });
     setProducts(productsData || []);
@@ -84,6 +84,36 @@ const AdminPage = () => {
       fetchData();
     }
   }, [profile, authLoading, navigate, fetchData]);
+
+  const handleCreate = (type) => {
+    if (type === 'post') {
+      setEditingItem({
+        title: '',
+        content: '',
+        excerpt: '',
+        category: blogCategories[0] || 'General',
+        status: 'draft',
+        image_url: '',
+        seo_title: '',
+        seo_description: '',
+        user_id: profile.id
+      });
+    } else if (type === 'product') {
+      setEditingItem({
+        name: '',
+        description: '',
+        status: 'active',
+        image_url: '',
+        affiliate_url: '',
+        features: [],
+        rating: 5,
+        seo_title: '',
+        seo_description: ''
+      });
+    }
+    setFormType(type);
+    setIsFormOpen(true);
+  };
 
   const handleEdit = (item, type) => {
     setEditingItem(item);
@@ -120,11 +150,25 @@ const AdminPage = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const table = formType === 'post' ? 'posts' : 'products';
-    const { error } = await supabase.from(table).update(editingItem).eq('id', editingItem.id);
-    if (error) {
-      toast({ title: `Error updating ${formType}`, description: error.message, variant: 'destructive' });
+    
+    let postData = { ...editingItem };
+    
+    if (formType === 'post' && !editingItem.id) {
+      const slug = editingItem.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      postData = { ...postData, slug, user_id: profile.id };
+    }
+    
+    let response;
+    if (editingItem.id) {
+      response = await supabase.from(table).update(postData).eq('id', editingItem.id);
     } else {
-      toast({ title: `${formType} updated successfully!` });
+      response = await supabase.from(table).insert(postData);
+    }
+    
+    if (response.error) {
+      toast({ title: `Error ${editingItem.id ? 'updating' : 'creating'} ${formType}`, description: response.error.message, variant: 'destructive' });
+    } else {
+      toast({ title: `${formType} ${editingItem.id ? 'updated' : 'created'} successfully!` });
       setIsFormOpen(false);
       setEditingItem(null);
       fetchData();
@@ -234,7 +278,10 @@ const AdminPage = () => {
 
               <TabsContent value="posts">
                  <div className="bg-card p-6 rounded-xl shadow-lg">
-                   <h2 className="text-xl font-semibold mb-4">Manage Blog Posts</h2>
+                   <div className="flex justify-between items-center mb-4">
+                     <h2 className="text-xl font-semibold">Manage Blog Posts</h2>
+                     <Button onClick={() => handleCreate('post')}><Plus className="mr-2 h-4 w-4" />Create Post</Button>
+                   </div>
                    <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Title</th><th className="py-3 px-4">Author</th><th className="py-3 px-4">Status</th><th className="py-3 px-4">Actions</th></tr></thead>
                         <tbody>
@@ -254,7 +301,10 @@ const AdminPage = () => {
 
               <TabsContent value="products">
                  <div className="bg-card p-6 rounded-xl shadow-lg">
-                   <h2 className="text-xl font-semibold mb-4">Manage Products</h2>
+                   <div className="flex justify-between items-center mb-4">
+                     <h2 className="text-xl font-semibold">Manage Products</h2>
+                     <Button onClick={() => handleCreate('product')}><Plus className="mr-2 h-4 w-4" />Create Product</Button>
+                   </div>
                    <div className="overflow-x-auto">
                        <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Name</th><th className="py-3 px-4">Status</th><th className="py-3 px-4">Actions</th></tr></thead>
                        <tbody>
@@ -346,21 +396,29 @@ const AdminPage = () => {
       </div>
       
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader><DialogTitle>Edit {formType}</DialogTitle></DialogHeader>
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader><DialogTitle>{editingItem?.id ? 'Edit' : 'Create'} {formType}</DialogTitle></DialogHeader>
           {editingItem && (
             <form onSubmit={handleFormSubmit} className="space-y-4 pt-4">
               {formType === 'post' && (
                 <>
-                  <div><Label htmlFor="post-title">Title</Label><input id="post-title" value={editingItem.title} onChange={e => setEditingItem({ ...editingItem, title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div className="prose dark:prose-invert"><Label htmlFor="post-content">Content</Label><ReactQuill theme="snow" value={editingItem.content} onChange={c => setEditingItem({...editingItem, content: c})} className="mt-1 bg-background" /></div>
+                  <div><Label htmlFor="post-title">Title</Label><input id="post-title" value={editingItem.title || ''} onChange={e => setEditingItem({ ...editingItem, title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
+                  <div><Label htmlFor="post-excerpt">Excerpt</Label><textarea id="post-excerpt" value={editingItem.excerpt || ''} onChange={e => setEditingItem({ ...editingItem, excerpt: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
+                  <div><Label htmlFor="post-category">Category</Label><select id="post-category" value={editingItem.category || ''} onChange={e => setEditingItem({ ...editingItem, category: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background">{blogCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)}</select></div>
+                  <div className="prose dark:prose-invert"><Label htmlFor="post-content">Content</Label><ReactQuill theme="snow" value={editingItem.content || ''} onChange={c => setEditingItem({...editingItem, content: c})} className="mt-1 bg-background" /></div>
+                  <div><Label htmlFor="post-seo-title">SEO Title</Label><input id="post-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
+                  <div><Label htmlFor="post-seo-desc">SEO Description</Label><textarea id="post-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
                   <div className="flex items-center space-x-2"><Switch id="post-status" checked={editingItem.status === 'published'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'published' : 'draft' })} /><Label htmlFor="post-status">{editingItem.status === 'published' ? 'Published' : 'Draft'}</Label></div>
                 </>
               )}
               {formType === 'product' && (
                 <>
-                  <div><Label htmlFor="product-name">Name</Label><input id="product-name" value={editingItem.name} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="product-desc">Description</Label><textarea id="product-desc" value={editingItem.description} onChange={e => setEditingItem({ ...editingItem, description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={3}/></div>
+                  <div><Label htmlFor="product-name">Name</Label><input id="product-name" value={editingItem.name || ''} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
+                  <div><Label htmlFor="product-desc">Description</Label><textarea id="product-desc" value={editingItem.description || ''} onChange={e => setEditingItem({ ...editingItem, description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={3}/></div>
+                  <div><Label htmlFor="product-affiliate">Affiliate URL</Label><input id="product-affiliate" value={editingItem.affiliate_url || ''} onChange={e => setEditingItem({ ...editingItem, affiliate_url: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
+                  <div><Label htmlFor="product-rating">Rating (1-5)</Label><input id="product-rating" type="number" min="1" max="5" value={editingItem.rating || 5} onChange={e => setEditingItem({ ...editingItem, rating: Number(e.target.value) })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
+                  <div><Label htmlFor="product-seo-title">SEO Title</Label><input id="product-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
+                  <div><Label htmlFor="product-seo-desc">SEO Description</Label><textarea id="product-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
                   <div className="flex items-center space-x-2"><Switch id="product-status" checked={editingItem.status === 'active'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'active' : 'inactive' })} /><Label htmlFor="product-status">{editingItem.status === 'active' ? 'Active' : 'Inactive'}</Label></div>
                 </>
               )}

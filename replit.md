@@ -55,9 +55,35 @@ See `.env.example` for template.
 - Community comments and discussions
 - Product showcase with affiliate links
 - Theme switching (light/dark mode)
-- Admin dashboard for content management
+- Admin dashboard for content management with full CRUD operations
 - Social media integration
 - SEO-friendly pages with React Helmet
+
+## Admin Dashboard Features
+The admin dashboard (`/admin`) provides comprehensive management capabilities for administrators:
+
+### Blog Management
+- **Create**: New blog posts with title, excerpt, content (rich text), category, and SEO metadata
+- **Read**: View all blog posts with author information and status
+- **Update**: Edit existing blog posts including content, status (draft/published), and images
+- **Delete**: Remove blog posts with confirmation
+
+### Product Management
+- **Create**: New products with name, description, affiliate URL, rating, and SEO metadata
+- **Read**: View all products with their status
+- **Update**: Edit product details, status (active/inactive), and images
+- **Delete**: Remove products with confirmation
+
+### User Management
+- **Read**: View all registered users with their roles and ranks
+- **Update**: Change user roles (member, blogger, admin)
+- Note: Admins cannot change their own role for security
+
+### Settings Management
+- Configure social media links (Facebook, Instagram)
+- Manage blog categories (add, rename, delete)
+- Manage community categories (add, rename, delete)
+- Edit static page content (Help Center, Privacy Policy, Terms of Service)
 
 ## Workflow Configuration
 - **dev-server**: Runs `npm run dev` on port 5000 (webview)
@@ -73,3 +99,6 @@ See `.env.example` for template.
 - Fixed DOM property warnings (class → className in JSX)
 - Created proper .gitignore for Node.js/React projects
 - Set up workflow for development server with webview output
+- Added full CRUD functionality to Admin Dashboard for blog posts and products
+- Fixed Supabase relationship query errors in AdminPage
+- Enhanced admin forms with comprehensive field coverage (excerpt, SEO, affiliate URLs, ratings)
