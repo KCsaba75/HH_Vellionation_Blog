@@ -1,24 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { User, Award, TrendingUp, Edit2, Save } from 'lucide-react';
+import { User, Award, TrendingUp, Edit2, Save, Upload, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
+import { supabase } from '@/lib/customSupabaseClient';
 
 const ProfilePage = () => {
   const { user, profile, updateProfile, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
-  const [formData, setFormData] = useState({ name: '', bio: '' });
+  const [formData, setFormData] = useState({ name: '', bio: '', avatar_url: '' });
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
       navigate('/login');
     }
     if (profile) {
-      setFormData({ name: profile.name || '', bio: profile.bio || '' });
+      setFormData({ 
+        name: profile.name || '', 
+        bio: profile.bio || '',
+        avatar_url: profile.avatar_url || ''
+      });
     }
   }, [user, profile, authLoading, navigate]);
 
@@ -44,6 +51,36 @@ const ProfilePage = () => {
     setEditing(false);
   };
 
+  const handleAvatarUpload = async (event) => {
+    if (!event.target.files || event.target.files.length === 0) return;
+    const file = event.target.files[0];
+    
+    if (!file.type.startsWith('image/')) {
+      toast({ title: "Please select an image file", variant: "destructive" });
+      return;
+    }
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    setUploading(true);
+    const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file);
+
+    if (uploadError) {
+      toast({ title: "Avatar Upload Failed", description: uploadError.message, variant: "destructive" });
+      setUploading(false);
+      return;
+    }
+
+    const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
+
+    setFormData({ ...formData, avatar_url: data.publicUrl });
+    await updateProfile({ avatar_url: data.publicUrl });
+    setUploading(false);
+    toast({ title: "Profile picture updated successfully!" });
+  };
+
   return (
     <>
       <Helmet>
@@ -55,8 +92,38 @@ const ProfilePage = () => {
             <div className="bg-card rounded-xl shadow-lg p-8 mb-8">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center gap-4">
-                  <div className="bg-primary/10 rounded-full p-6">
-                    <User className="h-12 w-12 text-primary" />
+                  <div className="relative group">
+                    {formData.avatar_url ? (
+                      <img 
+                        src={formData.avatar_url} 
+                        alt={profile.name} 
+                        className="h-24 w-24 rounded-full object-cover ring-4 ring-primary/20"
+                      />
+                    ) : (
+                      <div className="bg-primary/10 rounded-full p-6 h-24 w-24 flex items-center justify-center">
+                        <User className="h-12 w-12 text-primary" />
+                      </div>
+                    )}
+                    {editing && (
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploading}
+                        className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                      >
+                        {uploading ? (
+                          <span className="text-white text-sm">Uploading...</span>
+                        ) : (
+                          <Camera className="h-8 w-8 text-white" />
+                        )}
+                      </button>
+                    )}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleAvatarUpload}
+                      className="hidden"
+                    />
                   </div>
                   <div>
                     {editing ? (

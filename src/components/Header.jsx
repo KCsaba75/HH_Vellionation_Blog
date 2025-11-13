@@ -98,8 +98,16 @@ const Header = () => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-2 text-lg"> {/* Increased text size */}
-                    <User className="h-6 w-6" /> {/* Increased icon size */}
+                  <Button variant="ghost" className="flex items-center gap-2 text-lg">
+                    {profile?.avatar_url ? (
+                      <img 
+                        src={profile.avatar_url} 
+                        alt={profile?.name || 'User'} 
+                        className="h-8 w-8 rounded-full object-cover ring-2 ring-primary/20"
+                      />
+                    ) : (
+                      <User className="h-6 w-6" />
+                    )}
                     <span>{profile?.name || 'User'}</span>
                   </Button>
                 </DropdownMenuTrigger>
@@ -170,9 +178,18 @@ const Header = () => {
               <>
                 <Link
                   to="/profile"
-                  className="block text-foreground/80 hover:text-primary transition-colors font-medium text-lg py-2"
+                  className="flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors font-medium text-lg py-2"
                   onClick={() => setIsOpen(false)}
                 >
+                  {profile?.avatar_url ? (
+                    <img 
+                      src={profile.avatar_url} 
+                      alt={profile?.name || 'User'} 
+                      className="h-6 w-6 rounded-full object-cover ring-2 ring-primary/20"
+                    />
+                  ) : (
+                    <User className="h-5 w-5" />
+                  )}
                   Profile
                 </Link>
                 {(profile?.role === 'admin' || profile?.role === 'blogger') && (

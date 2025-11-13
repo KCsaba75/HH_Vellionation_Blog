@@ -44,6 +44,16 @@ The application uses the following environment variables (configured via Vite):
 
 See `.env.example` for template.
 
+## Supabase Storage Configuration
+The application requires the following Supabase Storage buckets to be created:
+
+- **`avatars`**: For user profile pictures
+- **`post_images`**: For blog post featured images
+- **`product_images`**: For product images
+- **`community_post_images`**: For community post images
+
+**Important**: Make sure these buckets are set to **public** in Supabase Storage settings to allow image access.
+
 ## Development Setup
 1. Dependencies are automatically installed via npm
 2. The dev server runs on port 5000 with host 0.0.0.0
@@ -56,6 +66,7 @@ See `.env.example` for template.
 - Product showcase with affiliate links
 - Theme switching (light/dark mode)
 - Admin dashboard for content management with full CRUD operations
+- User profile management with avatar upload
 - Social media integration
 - SEO-friendly pages with React Helmet
 
@@ -112,6 +123,29 @@ The platform features a gamification system with ranks based on user activity po
 - Build command: `npm run build` (includes LLM generation step)
 - Preview command: `npm run preview`
 
+## User Profile Features
+Users can manage their profiles at `/profile`:
+
+### Profile Information
+- **View Profile**: Display name, bio, rank, points, and badges
+- **Edit Profile**: Update name and bio information
+- **Profile Picture**: Upload and update profile picture (avatar)
+  - Supports all image formats (JPG, PNG, GIF, etc.)
+  - Real-time preview after upload
+  - Avatar displayed in header navigation and profile page
+
+### Profile Picture Upload
+- Click the camera icon when in edit mode to upload a new profile picture
+- Images are stored securely in Supabase Storage (`avatars` bucket)
+- Profile picture appears in:
+  - Header navigation (desktop and mobile)
+  - User dropdown menu
+  - Profile page
+
+### Gamification
+- **Rank Progress**: Visual progress bar showing points toward next rank
+- **Badges & Achievements**: Coming soon feature
+
 ## Recent Setup (November 13, 2025)
 - Organized project files into proper directory structure
 - Fixed Supabase configuration to use environment variables with fallbacks
@@ -123,3 +157,5 @@ The platform features a gamification system with ranks based on user activity po
 - Fixed Supabase relationship query errors in AdminPage
 - Enhanced admin forms with comprehensive field coverage (excerpt, SEO, affiliate URLs, ratings)
 - Implemented automatic rank assignment: Admin → "Vellio Ambassador", Blogger → "Health Hero"
+- Added profile picture upload functionality with Supabase Storage integration
+- Updated Header component to display user avatars in navigation
