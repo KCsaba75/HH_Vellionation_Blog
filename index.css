@@ -1,0 +1,115 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Nature-inspired Light Theme - Darker Greens, Blacker Text */
+    --background: 48 33% 94%; /* Creamy White */
+    --foreground: 144 35% 8%; /* Even Darker Forest Green Text */
+    
+    --card: 50 50% 98%; /* Lighter Cream */
+    --card-foreground: 144 35% 8%; /* Even Darker Forest Green Text */
+
+    --popover: 50 50% 98%;
+    --popover-foreground: 144 35% 8%; /* Even Darker Forest Green Text */
+    
+    --primary: 154 70% 30%; /* Dark Emerald Green */
+    --primary-foreground: 154 30% 95%; /* Light Mint */
+    
+    --secondary: 30 90% 60%; /* Energetic Orange */
+    --secondary-foreground: 30 90% 10%;
+    
+    --muted: 48 20% 88%; /* Warm Light Gray */
+    --muted-foreground: 144 15% 40%; /* Muted Green-Gray */
+
+    --accent: 170 50% 45%; /* Deeper Teal/Mint */
+    --accent-foreground: 170 25% 95%;
+    
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 144 10% 65%; /* Darker Green-Gray Border */
+    --input: 144 10% 75%;
+    --ring: 154 70% 30%;
+    
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Nature-inspired Dark Theme - Darker Greens, Blacker Background */
+    --background: 150 25% 3%; /* Much Deeper Near-Black Charcoal */
+    --foreground: 150 25% 90%; /* Light Mint/Sage */
+    
+    --card: 150 20% 6%; /* Darker Green-Charcoal */
+    --card-foreground: 150 25% 90%;
+
+    --popover: 150 20% 5%;
+    --popover-foreground: 150 25% 90%;
+    
+    --primary: 154 65% 38%; /* Darker, Strong Emerald for Dark BG */
+    --primary-foreground: 154 30% 95%;
+    
+    --secondary: 30 90% 65%; /* Vibrant Orange for Dark BG */
+    --secondary-foreground: 30 90% 15%;
+    
+    --muted: 150 15% 10%; /* Darker Muted Green */
+    --muted-foreground: 150 15% 60%;
+    
+    --accent: 170 50% 55%; /* Richer Teal/Mint */
+    --accent-foreground: 170 25% 98%;
+
+    --destructive: 0 63% 45%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 150 15% 15%; /* Deeper Green-tinged border */
+    --input: 150 15% 15%;
+    --ring: 154 65% 38%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'Lato', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', 'Montserrat', sans-serif;
+  }
+  .ql-editor {
+    min-height: 200px;
+    max-width: none;
+  }
+
+  .ql-container.ql-snow {
+      border: none;
+  }
+
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    font-family: 'Poppins', 'Montserrat', sans-serif;
+  }
+
+  .prose p, .prose li, .prose blockquote {
+    font-family: 'Inter', 'Lato', sans-serif;
+  }
+
+  .dark .ql-snow .ql-stroke {
+    stroke: hsl(var(--muted-foreground));
+  }
+
+  .dark .ql-snow .ql-picker-label {
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .dark .ql-snow .ql-picker-options {
+    background-color: hsl(var(--card));
+    border-color: hsl(var(--border));
+  }
+  .dark .ql-toolbar.ql-snow {
+    border-color: hsl(var(--border));
+  }
+}
