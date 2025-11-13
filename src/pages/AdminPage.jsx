@@ -138,11 +138,21 @@ const AdminPage = () => {
       toast({ title: 'Cannot change your own role', variant: 'destructive' });
       return;
     }
-    const { error } = await supabase.from('profiles').update({ role: newRole }).eq('id', userId);
+    
+    let newRank;
+    if (newRole === 'admin') {
+      newRank = 'Vellio Ambassador';
+    } else if (newRole === 'blogger') {
+      newRank = 'Health Hero';
+    }
+    
+    const updateData = newRank ? { role: newRole, rank: newRank } : { role: newRole };
+    const { error } = await supabase.from('profiles').update(updateData).eq('id', userId);
+    
     if(error) {
        toast({ title: 'Error updating user role', description: error.message, variant: 'destructive' });
     } else {
-       toast({ title: 'User role updated!' });
+       toast({ title: `User role updated to ${newRole}${newRank ? ' with rank ' + newRank : ''}!` });
        fetchData();
     }
   };
