@@ -56,7 +56,7 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-4 group"> {/* Increased gap for larger logo/text */}
                 <div className="w-16 h-16 rounded-full border-2 border-secondary group-hover:scale-105 transition-transform"> {/* Increased logo size */}
-                     <img alt="Vellio Nation Logo" class="w-full h-full rounded-full object-cover" src="https://horizons-cdn.hostinger.com/c18b618d-7399-4232-9a94-f974a0bdecb5/061c15a45918afd6f0222252773611d0.png" />
+                     <img alt="Vellio Nation Logo" className="w-full h-full rounded-full object-cover" src="https://horizons-cdn.hostinger.com/c18b618d-7399-4232-9a94-f974a0bdecb5/061c15a45918afd6f0222252773611d0.png" />
                 </div>
               <motion.div
                 whileHover={{ scale: 1.05 }}
