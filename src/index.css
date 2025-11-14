@@ -6,10 +6,10 @@
 @layer base {
   :root {
     /* Nature-inspired Light Theme - Darker Greens, Blacker Text */
-    --background: 48 33% 94%; /* Creamy White */
+    --background: 0 0% 100%; /* Pure White for better contrast */
     --foreground: 144 35% 8%; /* Even Darker Forest Green Text */
     
-    --card: 50 50% 98%; /* Lighter Cream */
+    --card: 0 0% 100%; /* Pure White for cards */
     --card-foreground: 144 35% 8%; /* Even Darker Forest Green Text */
 
     --popover: 50 50% 98%;

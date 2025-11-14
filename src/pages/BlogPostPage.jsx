@@ -177,7 +177,7 @@ const BlogPostPage = () => {
 
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
             <div className="mb-6">
-              <span className="bg-secondary/20 text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium">{post.category}</span>
+              <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">{post.category}</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">{post.title}</h1>
             <div className="flex items-center gap-6 text-muted-foreground mb-8">

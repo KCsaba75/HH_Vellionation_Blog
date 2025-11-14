@@ -166,7 +166,7 @@ const CommunityPage = () => {
                 <motion.article key={post.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} className="bg-card p-6 rounded-xl shadow-lg">
                   <div className="flex items-start gap-4 mb-4">
                     <div className="bg-primary/10 rounded-full p-3"><User className="h-6 w-6 text-primary" /></div>
-                    <div className="flex-1"><div className="flex items-center gap-2 mb-1"><span className="font-semibold">{post.profiles?.name || 'Anonymous'}</span><span className="text-xs bg-secondary/20 text-secondary-foreground px-2 py-1 rounded-full">{post.profiles?.rank || 'New Member'}</span></div><span className="text-sm text-muted-foreground">{new Date(post.created_at).toLocaleString()}</span></div>
+                    <div className="flex-1"><div className="flex items-center gap-2 mb-1"><span className="font-semibold">{post.profiles?.name || 'Anonymous'}</span><span className="text-xs bg-accent text-accent-foreground px-2 py-1 rounded-full font-medium">{post.profiles?.rank || 'New Member'}</span></div><span className="text-sm text-muted-foreground">{new Date(post.created_at).toLocaleString()}</span></div>
                   </div>
                   <div className="text-foreground mb-4 whitespace-pre-wrap">{renderContent(post.content)}</div>
                   <div className="flex items-center gap-4 pt-4 border-t"><Button variant="ghost" size="sm" className="gap-2" onClick={() => toggleLike(post.id, post.user_has_liked)}><Heart className={cn('h-4 w-4', post.user_has_liked && 'text-red-500 fill-current')} />{post.likes} Likes</Button>
