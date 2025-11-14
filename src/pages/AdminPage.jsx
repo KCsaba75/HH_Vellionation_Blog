@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
-import { Plus, Trash2, Edit, CheckCircle, Eye, BarChart, User, Upload, Settings, Save, Package, MessageSquare, FileText } from 'lucide-react';
+import { Plus, Trash2, Edit, CheckCircle, Eye, BarChart, User, Upload, Settings, Save, Package, MessageSquare, FileText, X } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -432,10 +432,20 @@ const AdminPage = () => {
                   <div className="flex items-center space-x-2"><Switch id="product-status" checked={editingItem.status === 'active'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'active' : 'inactive' })} /><Label htmlFor="product-status">{editingItem.status === 'active' ? 'Active' : 'Inactive'}</Label></div>
                 </>
               )}
-               <div className="flex items-center gap-4">
-                    {editingItem.image_url && <img src={editingItem.image_url} alt="Current" className="w-20 h-20 rounded-lg object-cover" />}
-                    <Button type="button" onClick={() => fileInputRef.current.click()} disabled={uploading}><Upload className="mr-2 h-4 w-4" />{uploading ? "Uploading..." : "Upload Image"}</Button>
-                    <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" accept="image/*" />
+               <div>
+                    <Label>Image</Label>
+                    {editingItem.image_url && (
+                      <div className="relative inline-block mt-2 mb-2">
+                        <img src={editingItem.image_url} alt="Preview" className="w-full max-w-sm rounded-lg object-cover border-2 border-primary" />
+                        <button type="button" onClick={() => setEditingItem({ ...editingItem, image_url: '' })} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg">
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    )}
+                    <div className="flex gap-2">
+                      <Button type="button" onClick={() => fileInputRef.current.click()} disabled={uploading}><Upload className="mr-2 h-4 w-4" />{uploading ? "Uploading..." : editingItem.image_url ? "Change Image" : "Upload Image"}</Button>
+                      <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" accept="image/*" />
+                    </div>
                </div>
               <DialogFooter><DialogClose asChild><Button type="button" variant="secondary">Cancel</Button></DialogClose><Button type="submit"><Save className="mr-2 h-4 w-4"/>Save changes</Button></DialogFooter>
             </form>

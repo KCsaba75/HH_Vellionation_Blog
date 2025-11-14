@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { MessageCircle, Heart, User, Send, ChevronRight, UploadCloud } from 'lucide-react';
+import { MessageCircle, Heart, User, Send, ChevronRight, UploadCloud, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
@@ -19,6 +19,7 @@ const CommunityPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(true);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState([]);
   const newPostTextAreaRef = useRef(null);
 
   useEffect(() => {
@@ -91,7 +92,8 @@ const CommunityPage = () => {
         if (imageUrl) {
           const markdownImage = `\n![image](${imageUrl})\n`;
           insertTextAtCursor(markdownImage);
-          toast({ title: "Image uploaded and inserted!" });
+          setUploadedImages(prev => [...prev, imageUrl]);
+          toast({ title: "Image uploaded!" });
         }
         return;
       }
@@ -111,11 +113,18 @@ const CommunityPage = () => {
         if (imageUrl) {
           const markdownImage = `\n![image](${imageUrl})\n`;
           insertTextAtCursor(markdownImage);
-          toast({ title: "Image uploaded and inserted!" });
+          setUploadedImages(prev => [...prev, imageUrl]);
+          toast({ title: "Image uploaded!" });
         }
       }
     }
   }, [handleImageUpload, newPostContent]);
+
+  const removeImage = (imageUrl) => {
+    setUploadedImages(prev => prev.filter(url => url !== imageUrl));
+    const markdownImage = `![image](${imageUrl})`;
+    setNewPostContent(prev => prev.replace(markdownImage, '').replace(/\n\n+/g, '\n\n').trim());
+  };
 
   const handleCreatePost = async () => {
     if (!user) { toast({ title: "Login Required", description: "Please login to create posts" }); return; }
@@ -127,6 +136,7 @@ const CommunityPage = () => {
       toast({ title: "Error creating post", description: error.message, variant: 'destructive' });
     } else {
       setNewPostContent('');
+      setUploadedImages([]);
       toast({ title: "Post created!" });
       fetchPosts();
     }
@@ -178,9 +188,21 @@ const CommunityPage = () => {
             {user && (
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="sticky bottom-4 bg-card p-4 rounded-xl shadow-lg mt-auto" onDragEnter={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragOver(true); }} onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragOver(false); }} onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }} onDrop={handleDrop}>
                 {isDragOver && (<div className="absolute inset-0 bg-primary/20 border-2 border-dashed border-primary rounded-xl flex flex-col items-center justify-center pointer-events-none"><UploadCloud className="h-10 w-10 text-primary" /><p className="text-primary font-bold">Drop image to upload</p></div>)}
+                {uploadedImages.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {uploadedImages.map((imageUrl, index) => (
+                      <div key={index} className="relative group">
+                        <img src={imageUrl} alt={`Upload ${index + 1}`} className="h-20 w-20 object-cover rounded-lg border-2 border-primary" />
+                        <button onClick={() => removeImage(index)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <div className="relative">
                   <textarea ref={newPostTextAreaRef} value={newPostContent} onChange={(e) => setNewPostContent(e.target.value)} onPaste={handlePaste} placeholder={selectedCategory === 'All' ? "Select a category to post..." : "Share with the community... (drag-and-drop or paste an image)"} className="w-full p-3 pr-12 rounded-lg border bg-background resize-none" rows="3" disabled={selectedCategory === 'All'} />
-                  <Button onClick={handleCreatePost} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9" disabled={!newPostContent.trim() || selectedCategory === 'All'}><Send className="h-4 w-4" /></Button>
+                  <Button onClick={handleCreatePost} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9" disabled={(!newPostContent.trim() && uploadedImages.length === 0) || selectedCategory === 'All'}><Send className="h-4 w-4" /></Button>
                 </div>
               </motion.div>
             )}
