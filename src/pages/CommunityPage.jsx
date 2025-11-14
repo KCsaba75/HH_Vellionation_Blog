@@ -122,8 +122,8 @@ const CommunityPage = () => {
 
   const removeImage = (imageUrl) => {
     setUploadedImages(prev => prev.filter(url => url !== imageUrl));
-    const markdownImage = `![image](${imageUrl})`;
-    setNewPostContent(prev => prev.replace(markdownImage, '').replace(/\n\n+/g, '\n\n').trim());
+    const markdownPattern = new RegExp(`\\n?!\\[image\\]\\(${imageUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\)\\n?`, 'g');
+    setNewPostContent(prev => prev.replace(markdownPattern, '\n').replace(/\n{3,}/g, '\n\n').trim());
   };
 
   const handleCreatePost = async () => {
@@ -191,9 +191,9 @@ const CommunityPage = () => {
                 {uploadedImages.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-3">
                     {uploadedImages.map((imageUrl, index) => (
-                      <div key={index} className="relative group">
+                      <div key={index} className="relative">
                         <img src={imageUrl} alt={`Upload ${index + 1}`} className="h-20 w-20 object-cover rounded-lg border-2 border-primary" />
-                        <button onClick={() => removeImage(index)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button type="button" onClick={() => removeImage(imageUrl)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg">
                           <X className="h-4 w-4" />
                         </button>
                       </div>
