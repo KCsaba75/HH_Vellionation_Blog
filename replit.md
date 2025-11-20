@@ -149,6 +149,39 @@ Users can manage their profiles at `/profile`:
 - **Rank Progress**: Visual progress bar showing points toward next rank
 - **Badges & Achievements**: Coming soon feature
 
+## Database Migrations
+
+The application requires running SQL migrations in your Supabase dashboard. Navigate to **SQL Editor** and execute these migrations **in order**:
+
+### Migration 001: Create Categories Table (REQUIRED)
+**File**: `supabase_migrations/001_create_categories_table.sql`
+- Creates the `categories` table for hierarchical category management
+- Adds RLS policies (only admins can modify categories)
+- Sets up parent-child relationships via `parent_id`
+
+### Migration 002: Add Category ID Columns (REQUIRED)
+**File**: `supabase_migrations/002_add_category_id_columns.sql`
+- Adds `category_id` and `subcategory_id` columns to `posts` table
+- Adds `category_id` and `subcategory_id` columns to `solutions` table
+- These columns replace the old string-based category system
+
+### Migration 003: Fix Foreign Key Constraints (REQUIRED)
+**File**: `supabase_migrations/003_fix_foreign_keys.sql`
+- Creates foreign key relationships between tables
+- Fixes "Could not find the 'profiles' column" error
+- Adds performance indexes on foreign key columns
+- **Transaction-Wrapped**: Entire migration runs atomically (all or nothing)
+- **Table Locks**: Prevents concurrent writes during migration
+- **Automatic Data Cleanup**: Before creating constraints, this migration:
+  - Sets orphaned user_id references to NULL (preserves posts, no data loss)
+  - Sets invalid category references to NULL in posts/solutions
+  - Makes user_id column nullable if needed
+  - Ensures all data is consistent before applying foreign keys
+- Safe to run multiple times (checks for existing constraints)
+- **No Data Loss**: Uses SET NULL strategy instead of DELETE
+
+**Important**: Run all three migrations in order. The app will not function correctly without these database schema changes.
+
 ## Recent Setup (November 13, 2025)
 - Organized project files into proper directory structure
 - Fixed Supabase configuration to use environment variables with fallbacks
@@ -162,3 +195,11 @@ Users can manage their profiles at `/profile`:
 - Implemented automatic rank assignment: Admin → "Vellio Ambassador", Blogger → "Health Hero"
 - Added profile picture upload functionality with Supabase Storage integration
 - Updated Header component to display user avatars in navigation
+
+## Recent Updates (November 20, 2025)
+- Implemented hierarchical category system with main categories and subcategories
+- Created HierarchicalCategoryManager component for admin category management
+- Built CategorySelector component for ID-based category selection in forms
+- Fixed category filtering bug where parent categories without subcategories broke queries
+- Created database migrations for categories table and foreign key constraints
+- Added performance indexes on foreign key columns for faster queries
