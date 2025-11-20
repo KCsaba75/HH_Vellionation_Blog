@@ -50,7 +50,14 @@ const BlogPage = () => {
       // Filter by either main category or parent of subcategory
       const selectedCategory = categories.find(c => c.name === filter);
       if (selectedCategory) {
-        query = query.or(`category_id.eq.${selectedCategory.id},subcategory_id.in.(${categories.filter(c => c.parent_id === selectedCategory.id).map(c => c.id).join(',')})`);
+        const subcategoryIds = categories.filter(c => c.parent_id === selectedCategory.id).map(c => c.id);
+        if (subcategoryIds.length > 0) {
+          // Has subcategories - match main category OR any subcategory
+          query = query.or(`category_id.eq.${selectedCategory.id},subcategory_id.in.(${subcategoryIds.join(',')})`);
+        } else {
+          // No subcategories - just match main category
+          query = query.eq('category_id', selectedCategory.id);
+        }
       }
     }
     
