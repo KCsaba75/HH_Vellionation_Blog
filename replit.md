@@ -95,8 +95,11 @@ The admin dashboard (`/admin`) provides comprehensive management capabilities fo
 
 ### Settings Management
 - Configure social media links (Facebook, Instagram)
-- Manage blog categories (add, rename, delete)
-- Manage community categories (add, rename, delete)
+- **Hierarchical Category Management**: Manage blog, community, and solutions categories with support for main categories and subcategories
+  - Create main categories and subcategories
+  - Organize content with parent-child category relationships
+  - Nested category display with expand/collapse functionality
+  - Categories stored in dedicated `categories` table
 - Edit static page content (Help Center, Privacy Policy, Terms of Service)
 
 ## User Roles & Ranks

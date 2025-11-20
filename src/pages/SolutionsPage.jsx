@@ -123,6 +123,11 @@ const SolutionsPage = () => {
                     <img alt={solution.name} className="w-full h-full object-cover"  src={solution.image_url || "https://images.unsplash.com/photo-1559223669-e0065fa7f142"} />
                   </div>
                   <div className="p-6">
+                    {solution.category && (
+                      <span className="inline-block bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium mb-3">
+                        {solution.category}
+                      </span>
+                    )}
                     <h3 className="text-xl font-bold mb-2">{solution.name}</h3>
                     <p className="text-muted-foreground mb-4 line-clamp-2">{solution.description}</p>
                     <div className="flex items-center gap-1 mb-4">
