@@ -171,14 +171,12 @@ The application requires running SQL migrations in your Supabase dashboard. Navi
 - Fixes "Could not find the 'profiles' column" error
 - Adds performance indexes on foreign key columns
 - **Transaction-Wrapped**: Entire migration runs atomically (all or nothing)
-- **Table Locks**: Prevents concurrent writes during migration
+- **No Production Downtime**: Uses NOT VALID + VALIDATE pattern (no table locks)
 - **Automatic Data Cleanup**: Before creating constraints, this migration:
-  - Sets orphaned user_id references to NULL (preserves posts, no data loss)
+  - Deletes orphaned posts (posts without valid authors) to maintain data integrity
   - Sets invalid category references to NULL in posts/solutions
-  - Makes user_id column nullable if needed
   - Ensures all data is consistent before applying foreign keys
 - Safe to run multiple times (checks for existing constraints)
-- **No Data Loss**: Uses SET NULL strategy instead of DELETE
 
 **Important**: Run all three migrations in order. The app will not function correctly without these database schema changes.
 
