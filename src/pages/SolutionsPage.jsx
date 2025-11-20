@@ -36,12 +36,19 @@ const SolutionsPage = () => {
     setLoading(true);
     let query = supabase
       .from('solutions')
-      .select('*')
+      .select(`
+        *,
+        main_category:categories!solutions_category_id_fkey ( id, name ),
+        subcategory:categories!solutions_subcategory_id_fkey ( id, name )
+      `)
       .order('created_at', { ascending: false });
 
     if (filter !== 'all') {
-      // Support both exact match and partial match for hierarchical categories
-      query = query.or(`category.eq.${filter},category.like.${filter} > %`);
+      // Filter by either main category or parent of subcategory
+      const selectedCategory = categories.find(c => c.name === filter);
+      if (selectedCategory) {
+        query = query.or(`category_id.eq.${selectedCategory.id},subcategory_id.in.(${categories.filter(c => c.parent_id === selectedCategory.id).map(c => c.id).join(',')})`);
+      }
     }
 
     const { data, error } = await query;
@@ -123,9 +130,9 @@ const SolutionsPage = () => {
                     <img alt={solution.name} className="w-full h-full object-cover"  src={solution.image_url || "https://images.unsplash.com/photo-1559223669-e0065fa7f142"} />
                   </div>
                   <div className="p-6">
-                    {solution.category && (
+                    {(solution.main_category || solution.subcategory) && (
                       <span className="inline-block bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium mb-3">
-                        {solution.category}
+                        {solution.subcategory ? `${solution.main_category?.name} > ${solution.subcategory.name}` : solution.main_category?.name}
                       </span>
                     )}
                     <h3 className="text-xl font-bold mb-2">{solution.name}</h3>

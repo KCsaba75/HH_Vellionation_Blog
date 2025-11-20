@@ -39,14 +39,19 @@ const BlogPage = () => {
       .from('posts')
       .select(`
         *,
-        profiles!posts_user_id_fkey ( name )
+        profiles!posts_user_id_fkey ( name ),
+        main_category:categories!posts_category_id_fkey ( id, name ),
+        subcategory:categories!posts_subcategory_id_fkey ( id, name )
       `)
       .eq('status', 'published')
       .order('created_at', { ascending: false });
 
     if (filter !== 'all') {
-      // Support both exact match and partial match for hierarchical categories
-      query = query.or(`category.eq.${filter},category.like.${filter} > %`);
+      // Filter by either main category or parent of subcategory
+      const selectedCategory = categories.find(c => c.name === filter);
+      if (selectedCategory) {
+        query = query.or(`category_id.eq.${selectedCategory.id},subcategory_id.in.(${categories.filter(c => c.parent_id === selectedCategory.id).map(c => c.id).join(',')})`);
+      }
     }
     
     const { data, error } = await query;
@@ -129,9 +134,11 @@ const BlogPage = () => {
                   </div>
                   <div className="p-6">
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
-                      <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium">
-                        {post.category}
-                      </span>
+                      {(post.main_category || post.subcategory) && (
+                        <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium">
+                          {post.subcategory ? `${post.main_category?.name} > ${post.subcategory.name}` : post.main_category?.name}
+                        </span>
+                      )}
                       <span className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
                         {post.read_time || '5 min read'}
