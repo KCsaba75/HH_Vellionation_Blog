@@ -8,26 +8,54 @@ import { supabase } from '@/lib/customSupabaseClient';
 
 const SolutionsPage = () => {
   const [solutions, setSolutions] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSolutions = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('solutions')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('Error fetching solutions:', error);
-      } else {
-        setSolutions(data);
-      }
-      setLoading(false);
-    };
-
-    fetchSolutions();
+    fetchCategories();
   }, []);
+
+  useEffect(() => {
+    fetchSolutions();
+  }, [filter]);
+
+  const fetchCategories = async () => {
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .eq('type', 'solutions')
+      .order('position', { ascending: true });
+    
+    if (!error && data) {
+      setCategories(data);
+    }
+  };
+
+  const fetchSolutions = async () => {
+    setLoading(true);
+    let query = supabase
+      .from('solutions')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (filter !== 'all') {
+      // Support both exact match and partial match for hierarchical categories
+      query = query.or(`category.eq.${filter},category.like.${filter} > %`);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Error fetching solutions:', error);
+    } else {
+      setSolutions(data);
+    }
+    setLoading(false);
+  };
+
+  // Get main categories for filter buttons
+  const mainCategories = categories.filter(c => !c.parent_id);
 
   return (
     <>
@@ -53,6 +81,26 @@ const SolutionsPage = () => {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
+          <div className="flex flex-wrap gap-2 mb-8 justify-center">
+            <Button
+              variant={filter === 'all' ? 'default' : 'outline'}
+              onClick={() => setFilter('all')}
+              className="capitalize"
+            >
+              All
+            </Button>
+            {mainCategories.map(cat => (
+              <Button
+                key={cat.id}
+                variant={filter === cat.name ? 'default' : 'outline'}
+                onClick={() => setFilter(cat.name)}
+                className="capitalize"
+              >
+                {cat.name}
+              </Button>
+            ))}
+          </div>
+
           {loading ? (
              <div className="text-center py-12">
               <p className="text-muted-foreground">Loading solutions...</p>

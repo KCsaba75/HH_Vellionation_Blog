@@ -9,40 +9,58 @@ import { supabase } from '@/lib/customSupabaseClient';
 
 const BlogPage = () => {
   const [posts, setPosts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      let query = supabase
-        .from('posts')
-        .select(`
-          *,
-          profiles!posts_user_id_fkey ( name )
-        `)
-        .eq('status', 'published')
-        .order('created_at', { ascending: false });
+    fetchCategories();
+  }, []);
 
-      if (filter !== 'all') {
-        query = query.eq('category', filter);
-      }
-      
-      const { data, error } = await query;
-
-      if (error) {
-        console.error('Error fetching posts:', error);
-      } else {
-        // The data structure remains the same, as Supabase will nest the profile under `profiles` key
-        setPosts(data);
-      }
-      setLoading(false);
-    };
-
+  useEffect(() => {
     fetchPosts();
   }, [filter]);
 
-  const categories = ['all', 'Fitness', 'Nutrition', 'Mindset', 'Motivation'];
+  const fetchCategories = async () => {
+    const { data, error } = await supabase
+      .from('categories')
+      .select('*')
+      .eq('type', 'blog')
+      .order('position', { ascending: true });
+    
+    if (!error && data) {
+      setCategories(data);
+    }
+  };
+
+  const fetchPosts = async () => {
+    setLoading(true);
+    let query = supabase
+      .from('posts')
+      .select(`
+        *,
+        profiles!posts_user_id_fkey ( name )
+      `)
+      .eq('status', 'published')
+      .order('created_at', { ascending: false });
+
+    if (filter !== 'all') {
+      // Support both exact match and partial match for hierarchical categories
+      query = query.or(`category.eq.${filter},category.like.${filter} > %`);
+    }
+    
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Error fetching posts:', error);
+    } else {
+      setPosts(data);
+    }
+    setLoading(false);
+  };
+
+  // Get main categories for filter buttons
+  const mainCategories = categories.filter(c => !c.parent_id);
 
   return (
     <>
@@ -69,14 +87,21 @@ const BlogPage = () => {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap gap-2 mb-8 justify-center">
-            {categories.map(cat => (
+            <Button
+              variant={filter === 'all' ? 'default' : 'outline'}
+              onClick={() => setFilter('all')}
+              className="capitalize"
+            >
+              All
+            </Button>
+            {mainCategories.map(cat => (
               <Button
-                key={cat}
-                variant={filter === cat ? 'default' : 'outline'}
-                onClick={() => setFilter(cat)}
+                key={cat.id}
+                variant={filter === cat.name ? 'default' : 'outline'}
+                onClick={() => setFilter(cat.name)}
                 className="capitalize"
               >
-                {cat}
+                {cat.name}
               </Button>
             ))}
           </div>
