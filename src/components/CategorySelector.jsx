@@ -4,22 +4,21 @@ import { supabase } from '@/lib/customSupabaseClient';
 
 const CategorySelector = ({ type, value, onChange, required = false }) => {
   const [categories, setCategories] = useState([]);
-  const [mainCategory, setMainCategory] = useState('');
-  const [subcategory, setSubcategory] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [subcategoryId, setSubcategoryId] = useState('');
 
   useEffect(() => {
     fetchCategories();
   }, [type]);
 
   useEffect(() => {
-    // Parse incoming value (could be "main" or "main > subcategory")
-    if (value) {
-      const parts = value.split(' > ');
-      setMainCategory(parts[0] || '');
-      setSubcategory(parts[1] || '');
+    // Set initial values from props
+    if (value?.category_id) {
+      setCategoryId(value.category_id);
+      setSubcategoryId(value.subcategory_id || '');
     } else {
-      setMainCategory('');
-      setSubcategory('');
+      setCategoryId('');
+      setSubcategoryId('');
     }
   }, [value]);
 
@@ -36,28 +35,21 @@ const CategorySelector = ({ type, value, onChange, required = false }) => {
   };
 
   const mainCategories = categories.filter(c => !c.parent_id);
-  const subcategories = mainCategory 
-    ? categories.filter(c => {
-        const parentCat = mainCategories.find(mc => mc.name === mainCategory);
-        return parentCat && c.parent_id === parentCat.id;
-      })
+  const subcategories = categoryId 
+    ? categories.filter(c => c.parent_id === categoryId)
     : [];
 
   const handleMainChange = (e) => {
-    const newMain = e.target.value;
-    setMainCategory(newMain);
-    setSubcategory(''); // Reset subcategory when main changes
-    onChange(newMain); // Pass only main category initially
+    const newCategoryId = e.target.value;
+    setCategoryId(newCategoryId);
+    setSubcategoryId(''); // Reset subcategory when main changes
+    onChange({ category_id: newCategoryId, subcategory_id: null });
   };
 
   const handleSubChange = (e) => {
-    const newSub = e.target.value;
-    setSubcategory(newSub);
-    if (newSub) {
-      onChange(`${mainCategory} > ${newSub}`);
-    } else {
-      onChange(mainCategory);
-    }
+    const newSubcategoryId = e.target.value;
+    setSubcategoryId(newSubcategoryId);
+    onChange({ category_id: categoryId, subcategory_id: newSubcategoryId || null });
   };
 
   return (
@@ -66,30 +58,30 @@ const CategorySelector = ({ type, value, onChange, required = false }) => {
         <Label htmlFor="main-category">Main Category {required && <span className="text-destructive">*</span>}</Label>
         <select
           id="main-category"
-          value={mainCategory}
+          value={categoryId}
           onChange={handleMainChange}
           className="w-full mt-1 p-2 rounded-lg border bg-background"
           required={required}
         >
           <option value="">Select a category</option>
           {mainCategories.map(cat => (
-            <option key={cat.id} value={cat.name}>{cat.name}</option>
+            <option key={cat.id} value={cat.id}>{cat.name}</option>
           ))}
         </select>
       </div>
 
-      {mainCategory && subcategories.length > 0 && (
+      {categoryId && subcategories.length > 0 && (
         <div>
           <Label htmlFor="subcategory">Subcategory (Optional)</Label>
           <select
             id="subcategory"
-            value={subcategory}
+            value={subcategoryId}
             onChange={handleSubChange}
             className="w-full mt-1 p-2 rounded-lg border bg-background"
           >
             <option value="">None</option>
             {subcategories.map(cat => (
-              <option key={cat.id} value={cat.name}>{cat.name}</option>
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
         </div>

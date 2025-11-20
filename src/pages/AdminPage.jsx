@@ -165,6 +165,9 @@ const AdminPage = () => {
     
     let postData = { ...editingItem };
     
+    // Remove the old string category field (legacy)
+    delete postData.category;
+    
     if (formType === 'post' && !editingItem.id) {
       const slug = editingItem.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       postData = { ...postData, slug, user_id: profile.id };
@@ -407,7 +410,7 @@ const AdminPage = () => {
                 <>
                   <div><Label htmlFor="post-title">Title</Label><input id="post-title" value={editingItem.title || ''} onChange={e => setEditingItem({ ...editingItem, title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
                   <div><Label htmlFor="post-excerpt">Excerpt</Label><textarea id="post-excerpt" value={editingItem.excerpt || ''} onChange={e => setEditingItem({ ...editingItem, excerpt: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
-                  <CategorySelector type="blog" value={editingItem.category || ''} onChange={(cat) => setEditingItem({ ...editingItem, category: cat })} required />
+                  <CategorySelector type="blog" value={{ category_id: editingItem.category_id, subcategory_id: editingItem.subcategory_id }} onChange={(cat) => setEditingItem({ ...editingItem, category_id: cat.category_id, subcategory_id: cat.subcategory_id })} required />
                   <div className="prose dark:prose-invert"><Label htmlFor="post-content">Content</Label><ReactQuill theme="snow" value={editingItem.content || ''} onChange={c => setEditingItem({...editingItem, content: c})} className="mt-1 bg-background" /></div>
                   <div><Label htmlFor="post-seo-title">SEO Title</Label><input id="post-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
                   <div><Label htmlFor="post-seo-desc">SEO Description</Label><textarea id="post-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
@@ -418,7 +421,7 @@ const AdminPage = () => {
                 <>
                   <div><Label htmlFor="solution-name">Name</Label><input id="solution-name" value={editingItem.name || ''} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
                   <div><Label htmlFor="solution-desc">Description</Label><textarea id="solution-desc" value={editingItem.description || ''} onChange={e => setEditingItem({ ...editingItem, description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={3}/></div>
-                  <CategorySelector type="solutions" value={editingItem.category || ''} onChange={(cat) => setEditingItem({ ...editingItem, category: cat })} required />
+                  <CategorySelector type="solutions" value={{ category_id: editingItem.category_id, subcategory_id: editingItem.subcategory_id }} onChange={(cat) => setEditingItem({ ...editingItem, category_id: cat.category_id, subcategory_id: cat.subcategory_id })} required />
                   <div><Label htmlFor="solution-affiliate">Affiliate URL</Label><input id="solution-affiliate" value={editingItem.affiliate_url || ''} onChange={e => setEditingItem({ ...editingItem, affiliate_url: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
                   <div><Label htmlFor="solution-rating">Rating (1-5)</Label><input id="solution-rating" type="number" min="1" max="5" value={editingItem.rating || 5} onChange={e => setEditingItem({ ...editingItem, rating: Number(e.target.value) })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
                   <div><Label htmlFor="solution-seo-title">SEO Title</Label><input id="solution-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
