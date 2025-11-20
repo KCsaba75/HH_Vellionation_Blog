@@ -7,8 +7,8 @@ import HomePage from '@/pages/HomePage';
 import BlogPage from '@/pages/BlogPage';
 import BlogPostPage from '@/pages/BlogPostPage';
 import CommunityPage from '@/pages/CommunityPage';
-import ProductsPage from '@/pages/ProductsPage';
-import ProductDetailPage from '@/pages/ProductDetailPage';
+import SolutionsPage from '@/pages/SolutionsPage';
+import SolutionDetailPage from '@/pages/SolutionDetailPage';
 import ProfilePage from '@/pages/ProfilePage';
 import AdminPage from '@/pages/AdminPage';
 import LoginPage from '@/pages/LoginPage';
@@ -33,8 +33,8 @@ function App() {
             <Route path="blog" element={<BlogPage />} />
             <Route path="blog/:slug" element={<BlogPostPage />} />
             <Route path="community" element={<CommunityPage />} />
-            <Route path="products" element={<ProductsPage />} />
-            <Route path="products/:id" element={<ProductDetailPage />} />
+            <Route path="solutions" element={<SolutionsPage />} />
+            <Route path="solutions/:id" element={<SolutionDetailPage />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="admin" element={<AdminPage />} />
             <Route path="login" element={<LoginPage />} />

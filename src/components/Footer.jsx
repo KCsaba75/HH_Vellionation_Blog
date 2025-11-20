@@ -20,7 +20,7 @@ const Footer = () => {
             <nav className="flex flex-col space-y-2">
               <Link to="/blog" className="text-sm text-muted-foreground hover:text-primary transition-colors">Blog</Link>
               <Link to="/community" className="text-sm text-muted-foreground hover:text-primary transition-colors">Community</Link>
-              <Link to="/products" className="text-sm text-muted-foreground hover:text-primary transition-colors">Products</Link>
+              <Link to="/solutions" className="text-sm text-muted-foreground hover:text-primary transition-colors">Solutions</Link>
             </nav>
           </div>
 

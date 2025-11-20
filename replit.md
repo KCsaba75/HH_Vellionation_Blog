@@ -1,7 +1,7 @@
 # Vellio Nation Blog
 
 ## Overview
-Vellio Nation is a wellness-focused blog and community platform built with React, Vite, and Supabase. The application provides a comprehensive blogging system, community features, product showcase, and user authentication.
+Vellio Nation is a wellness-focused blog and community platform built with React, Vite, and Supabase. The application provides a comprehensive blogging system, community features, solutions showcase (affiliate products, apps, and educational materials), and user authentication.
 
 ## Tech Stack
 - **Frontend**: React 18.2, Vite 4.5
@@ -49,7 +49,7 @@ The application requires the following Supabase Storage buckets to be created:
 
 - **`avatars`**: For user profile pictures
 - **`post_images`**: For blog post featured images
-- **`product_images`**: For product images
+- **`solution_images`**: For solution images (products, apps, educational materials)
 - **`community_post_images`**: For community post images
 
 **Important**: Make sure these buckets are set to **public** in Supabase Storage settings to allow image access.
@@ -63,7 +63,7 @@ The application requires the following Supabase Storage buckets to be created:
 - User authentication with Supabase
 - Blog post management with rich text editor
 - Community comments and discussions
-- Product showcase with affiliate links
+- Solutions showcase with affiliate links (products, apps, educational materials)
 - Theme switching (light/dark mode)
 - Admin dashboard for content management with full CRUD operations
 - User profile management with avatar upload
@@ -79,11 +79,11 @@ The admin dashboard (`/admin`) provides comprehensive management capabilities fo
 - **Update**: Edit existing blog posts including content, status (draft/published), and images
 - **Delete**: Remove blog posts with confirmation
 
-### Product Management
-- **Create**: New products with name, description, affiliate URL, rating, and SEO metadata
-- **Read**: View all products with their status
-- **Update**: Edit product details, status (active/inactive), and images
-- **Delete**: Remove products with confirmation
+### Solutions Management
+- **Create**: New solutions (products, apps, educational materials) with name, description, affiliate URL, rating, and SEO metadata
+- **Read**: View all solutions with their status
+- **Update**: Edit solution details, status (active/inactive), and images
+- **Delete**: Remove solutions with confirmation
 
 ### User Management
 - **Read**: View all registered users with their roles and ranks
@@ -153,7 +153,7 @@ Users can manage their profiles at `/profile`:
 - Fixed DOM property warnings (class → className in JSX)
 - Created proper .gitignore for Node.js/React projects
 - Set up workflow for development server with webview output
-- Added full CRUD functionality to Admin Dashboard for blog posts and products
+- Added full CRUD functionality to Admin Dashboard for blog posts and solutions
 - Fixed Supabase relationship query errors in AdminPage
 - Enhanced admin forms with comprehensive field coverage (excerpt, SEO, affiliate URLs, ratings)
 - Implemented automatic rank assignment: Admin → "Vellio Ambassador", Blogger → "Health Hero"

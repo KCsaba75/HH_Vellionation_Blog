@@ -28,9 +28,9 @@ const AdminPage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   
-  const [stats, setStats] = useState({ users: 0, posts: 0, products: 0, comments: 0 });
+  const [stats, setStats] = useState({ users: 0, posts: 0, solutions: 0, comments: 0 });
   const [posts, setPosts] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [solutions, setSolutions] = useState([]);
   const [users, setUsers] = useState([]);
   
   const [socialLinks, setSocialLinks] = useState({ facebook: '', instagram: '' });
@@ -51,14 +51,14 @@ const AdminPage = () => {
   const fetchData = useCallback(async () => {
     const { count: usersCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
     const { count: postsCount } = await supabase.from('posts').select('*', { count: 'exact', head: true });
-    const { count: productsCount } = await supabase.from('products').select('*', { count: 'exact', head: true });
+    const { count: solutionsCount } = await supabase.from('solutions').select('*', { count: 'exact', head: true });
     const { count: commentsCount } = await supabase.from('comments').select('*', { count: 'exact', head: true });
-    setStats({ users: usersCount, posts: postsCount, products: productsCount, comments: commentsCount });
+    setStats({ users: usersCount, posts: postsCount, solutions: solutionsCount, comments: commentsCount });
 
     const { data: postsData } = await supabase.from('posts').select('*, profiles!posts_user_id_fkey(name)').order('created_at', { ascending: false });
     setPosts(postsData || []);
-    const { data: productsData } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-    setProducts(productsData || []);
+    const { data: solutionsData } = await supabase.from('solutions').select('*').order('created_at', { ascending: false });
+    setSolutions(solutionsData || []);
     const { data: usersData } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
     setUsers(usersData || []);
     
@@ -98,7 +98,7 @@ const AdminPage = () => {
         seo_description: '',
         user_id: profile.id
       });
-    } else if (type === 'product') {
+    } else if (type === 'solution') {
       setEditingItem({
         name: '',
         description: '',
@@ -159,7 +159,7 @@ const AdminPage = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const table = formType === 'post' ? 'posts' : 'products';
+    const table = formType === 'post' ? 'posts' : 'solutions';
     
     let postData = { ...editingItem };
     
@@ -191,7 +191,7 @@ const AdminPage = () => {
     const fileExt = file.name.split('.').pop();
     const fileName = `${profile.id}-${Date.now()}.${fileExt}`;
     const filePath = `${fileName}`;
-    const bucket = formType === 'post' ? 'post_images' : 'product_images';
+    const bucket = formType === 'post' ? 'post_images' : 'solution_images';
 
     setUploading(true);
     const { error: uploadError } = await supabase.storage.from(bucket).upload(filePath, file);
@@ -272,7 +272,7 @@ const AdminPage = () => {
               <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-5">
                 <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
                 <TabsTrigger value="posts">Blog</TabsTrigger>
-                <TabsTrigger value="products">Products</TabsTrigger>
+                <TabsTrigger value="solutions">Solutions</TabsTrigger>
                 <TabsTrigger value="users">Users</TabsTrigger>
                 <TabsTrigger value="settings">Settings</TabsTrigger>
               </TabsList>
@@ -281,7 +281,7 @@ const AdminPage = () => {
                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4"><User className="h-8 w-8 text-primary" /><div className="flex flex-col"><span className="text-2xl font-bold">{stats.users}</span><span className="text-muted-foreground">Users</span></div></div>
                     <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4"><Edit className="h-8 w-8 text-primary" /><div className="flex flex-col"><span className="text-2xl font-bold">{stats.posts}</span><span className="text-muted-foreground">Blog Posts</span></div></div>
-                    <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4"><Package className="h-8 w-8 text-primary" /><div className="flex flex-col"><span className="text-2xl font-bold">{stats.products}</span><span className="text-muted-foreground">Products</span></div></div>
+                    <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4"><Package className="h-8 w-8 text-primary" /><div className="flex flex-col"><span className="text-2xl font-bold">{stats.solutions}</span><span className="text-muted-foreground">Solutions</span></div></div>
                     <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4"><MessageSquare className="h-8 w-8 text-primary" /><div className="flex flex-col"><span className="text-2xl font-bold">{stats.comments}</span><span className="text-muted-foreground">Comments</span></div></div>
                  </div>
               </TabsContent>
@@ -309,21 +309,21 @@ const AdminPage = () => {
                  </div>
               </TabsContent>
 
-              <TabsContent value="products">
+              <TabsContent value="solutions">
                  <div className="bg-card p-6 rounded-xl shadow-lg">
                    <div className="flex justify-between items-center mb-4">
-                     <h2 className="text-xl font-semibold">Manage Products</h2>
-                     <Button onClick={() => handleCreate('product')}><Plus className="mr-2 h-4 w-4" />Create Product</Button>
+                     <h2 className="text-xl font-semibold">Manage Solutions</h2>
+                     <Button onClick={() => handleCreate('solution')}><Plus className="mr-2 h-4 w-4" />Create Solution</Button>
                    </div>
                    <div className="overflow-x-auto">
                        <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Name</th><th className="py-3 px-4">Status</th><th className="py-3 px-4">Actions</th></tr></thead>
                        <tbody>
-                          {products.map(product => (<tr key={product.id} className="border-b dark:border-gray-700">
-                              <td className="py-3 px-4 font-semibold">{product.name}</td>
-                              <td className="py-3 px-4"><span className={`font-medium ${product.status === 'active' ? 'text-green-500' : 'text-yellow-500'}`}>{product.status}</span></td>
+                          {solutions.map(solution => (<tr key={solution.id} className="border-b dark:border-gray-700">
+                              <td className="py-3 px-4 font-semibold">{solution.name}</td>
+                              <td className="py-3 px-4"><span className={`font-medium ${solution.status === 'active' ? 'text-green-500' : 'text-yellow-500'}`}>{solution.status}</span></td>
                               <td className="py-3 px-4 flex gap-2">
-                                <Button size="sm" variant="outline" onClick={() => handleEdit(product, 'product')}><Edit className="h-4 w-4"/></Button>
-                                <Button size="sm" variant="destructive" onClick={() => handleDelete(product.id, 'products')}><Trash2 className="h-4 w-4"/></Button>
+                                <Button size="sm" variant="outline" onClick={() => handleEdit(solution, 'solution')}><Edit className="h-4 w-4"/></Button>
+                                <Button size="sm" variant="destructive" onClick={() => handleDelete(solution.id, 'solutions')}><Trash2 className="h-4 w-4"/></Button>
                               </td>
                           </tr>))}
                        </tbody></table>
@@ -421,15 +421,15 @@ const AdminPage = () => {
                   <div className="flex items-center space-x-2"><Switch id="post-status" checked={editingItem.status === 'published'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'published' : 'draft' })} /><Label htmlFor="post-status">{editingItem.status === 'published' ? 'Published' : 'Draft'}</Label></div>
                 </>
               )}
-              {formType === 'product' && (
+              {formType === 'solution' && (
                 <>
-                  <div><Label htmlFor="product-name">Name</Label><input id="product-name" value={editingItem.name || ''} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
-                  <div><Label htmlFor="product-desc">Description</Label><textarea id="product-desc" value={editingItem.description || ''} onChange={e => setEditingItem({ ...editingItem, description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={3}/></div>
-                  <div><Label htmlFor="product-affiliate">Affiliate URL</Label><input id="product-affiliate" value={editingItem.affiliate_url || ''} onChange={e => setEditingItem({ ...editingItem, affiliate_url: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="product-rating">Rating (1-5)</Label><input id="product-rating" type="number" min="1" max="5" value={editingItem.rating || 5} onChange={e => setEditingItem({ ...editingItem, rating: Number(e.target.value) })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="product-seo-title">SEO Title</Label><input id="product-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="product-seo-desc">SEO Description</Label><textarea id="product-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
-                  <div className="flex items-center space-x-2"><Switch id="product-status" checked={editingItem.status === 'active'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'active' : 'inactive' })} /><Label htmlFor="product-status">{editingItem.status === 'active' ? 'Active' : 'Inactive'}</Label></div>
+                  <div><Label htmlFor="solution-name">Name</Label><input id="solution-name" value={editingItem.name || ''} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
+                  <div><Label htmlFor="solution-desc">Description</Label><textarea id="solution-desc" value={editingItem.description || ''} onChange={e => setEditingItem({ ...editingItem, description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={3}/></div>
+                  <div><Label htmlFor="solution-affiliate">Affiliate URL</Label><input id="solution-affiliate" value={editingItem.affiliate_url || ''} onChange={e => setEditingItem({ ...editingItem, affiliate_url: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
+                  <div><Label htmlFor="solution-rating">Rating (1-5)</Label><input id="solution-rating" type="number" min="1" max="5" value={editingItem.rating || 5} onChange={e => setEditingItem({ ...editingItem, rating: Number(e.target.value) })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
+                  <div><Label htmlFor="solution-seo-title">SEO Title</Label><input id="solution-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
+                  <div><Label htmlFor="solution-seo-desc">SEO Description</Label><textarea id="solution-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
+                  <div className="flex items-center space-x-2"><Switch id="solution-status" checked={editingItem.status === 'active'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'active' : 'inactive' })} /><Label htmlFor="solution-status">{editingItem.status === 'active' ? 'Active' : 'Inactive'}</Label></div>
                 </>
               )}
                <div>
