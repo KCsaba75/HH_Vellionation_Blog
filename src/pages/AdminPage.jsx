@@ -22,6 +22,7 @@ import { Label } from "@/components/ui/label";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import '@/index.css';
+import HierarchicalCategoryManager from '@/components/HierarchicalCategoryManager';
 
 const AdminPage = () => {
   const { profile, loading: authLoading } = useAuth();
@@ -364,19 +365,10 @@ const AdminPage = () => {
                      <Button onClick={() => handleSaveSettings('social_links', socialLinks)}><Save className="mr-2 h-4 w-4" />Save Social Links</Button>
                   </div>
 
-                  {/* Categories */}
-                  <div className="bg-card p-6 rounded-xl shadow-lg">
-                    <div className="flex items-center justify-between mb-4"><div className="flex items-center gap-2"><Package className="h-5 w-5 text-primary" /><h2 className="text-xl font-semibold">Blog Categories</h2></div><Button size="sm" onClick={() => handleCategoryAction('blog', 'add')}><Plus className="h-4 w-4" /></Button></div>
-                    <ul className="space-y-2">
-                      {blogCategories.map(cat => (<li key={cat} className="flex items-center justify-between bg-secondary p-2 rounded-md"><span>{cat}</span><div className="flex gap-2"><Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleCategoryAction('blog', 'rename', cat)}><Edit className="h-4 w-4"/></Button><Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive" onClick={() => handleCategoryAction('blog', 'delete', cat)}><Trash2 className="h-4 w-4"/></Button></div></li>))}
-                    </ul>
-                  </div>
-                  <div className="bg-card p-6 rounded-xl shadow-lg">
-                     <div className="flex items-center justify-between mb-4"><div className="flex items-center gap-2"><MessageSquare className="h-5 w-5 text-primary" /><h2 className="text-xl font-semibold">Community Categories</h2></div><Button size="sm" onClick={() => handleCategoryAction('community', 'add')}><Plus className="h-4 w-4" /></Button></div>
-                     <ul className="space-y-2">
-                      {communityCategories.map(cat => (<li key={cat} className="flex items-center justify-between bg-secondary p-2 rounded-md"><span>{cat}</span><div className="flex gap-2"><Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => handleCategoryAction('community', 'rename', cat)}><Edit className="h-4 w-4"/></Button><Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive" onClick={() => handleCategoryAction('community', 'delete', cat)}><Trash2 className="h-4 w-4"/></Button></div></li>))}
-                    </ul>
-                  </div>
+                  {/* Categories - Hierarchical Management */}
+                  <HierarchicalCategoryManager type="blog" title="Blog Categories" />
+                  <HierarchicalCategoryManager type="community" title="Community Categories" />
+                  <HierarchicalCategoryManager type="solutions" title="Solutions Categories" />
 
                   {/* Page Content */}
                   <div className="lg:col-span-2 bg-card p-6 rounded-xl shadow-lg space-y-8">
