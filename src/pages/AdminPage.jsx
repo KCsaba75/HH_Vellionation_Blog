@@ -57,7 +57,7 @@ const AdminPage = () => {
     const { count: commentsCount } = await supabase.from('comments').select('*', { count: 'exact', head: true });
     setStats({ users: usersCount, posts: postsCount, solutions: solutionsCount, comments: commentsCount });
 
-    const { data: postsData } = await supabase.from('posts').select('*, profiles!posts_user_id_fkey(name)').order('created_at', { ascending: false });
+    const { data: postsData } = await supabase.from('posts').select('*, profiles!user_id(name)').order('created_at', { ascending: false });
     setPosts(postsData || []);
     const { data: solutionsData } = await supabase.from('solutions').select('*').order('created_at', { ascending: false });
     setSolutions(solutionsData || []);

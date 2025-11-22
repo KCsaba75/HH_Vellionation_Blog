@@ -17,7 +17,7 @@ const CommunityComments = ({ postId }) => {
     setLoading(true);
     const { data, error } = await supabase
       .from('community_comments')
-      .select('*, profiles!community_comments_user_id_fkey(name, role)')
+      .select('*, profiles(name, role)')
       .eq('community_post_id', postId)
       .order('created_at', { ascending: true });
     
@@ -44,7 +44,7 @@ const CommunityComments = ({ postId }) => {
     const { data, error } = await supabase
       .from('community_comments')
       .insert({ community_post_id: postId, user_id: user.id, content: newComment })
-      .select('*, profiles!community_comments_user_id_fkey(name, role)')
+      .select('*, profiles(name, role)')
       .single();
     
     if (error) {

@@ -38,8 +38,8 @@ const SolutionsPage = () => {
       .from('solutions')
       .select(`
         *,
-        main_category:categories!solutions_category_id_fkey ( id, name ),
-        subcategory:categories!solutions_subcategory_id_fkey ( id, name )
+        main_category:categories!category_id ( id, name ),
+        subcategory:categories!subcategory_id ( id, name )
       `)
       .order('created_at', { ascending: false });
 

@@ -39,9 +39,9 @@ const BlogPage = () => {
       .from('posts')
       .select(`
         *,
-        profiles!posts_user_id_fkey ( name ),
-        main_category:categories!posts_category_id_fkey ( id, name ),
-        subcategory:categories!posts_subcategory_id_fkey ( id, name )
+        profiles ( name ),
+        main_category:categories!category_id ( id, name ),
+        subcategory:categories!subcategory_id ( id, name )
       `)
       .eq('status', 'published')
       .order('created_at', { ascending: false });
