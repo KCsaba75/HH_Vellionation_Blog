@@ -128,9 +128,9 @@ const BlogDashboardPage = () => {
     const postData = { ...editingPost, user_id: user.id, slug };
     
     if (editingPost.id) { // Update
-        response = await supabase.from('posts').update(postData).eq('id', editingPost.id).select('*').single();
+        response = await supabase.from('posts').update(postData).eq('id', editingPost.id).select('*, profiles!user_id(name)').single();
     } else { // Insert
-        response = await supabase.from('posts').insert(postData).select('*').single();
+        response = await supabase.from('posts').insert(postData).select('*, profiles!user_id(name)').single();
     }
 
     if (response.error) {

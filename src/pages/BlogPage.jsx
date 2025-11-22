@@ -39,7 +39,7 @@ const BlogPage = () => {
       .from('posts')
       .select(`
         *,
-        profiles ( name ),
+        profiles!user_id ( name ),
         main_category:categories!category_id ( id, name ),
         subcategory:categories!subcategory_id ( id, name )
       `)

@@ -41,7 +41,7 @@ const BlogPostPage = () => {
       .from('posts')
       .select(`
         *,
-        profiles ( name )
+        profiles!user_id ( name )
       `)
       .eq('slug', slug)
       .single();
