@@ -201,3 +201,73 @@ The application requires running SQL migrations in your Supabase dashboard. Navi
 - Fixed category filtering bug where parent categories without subcategories broke queries
 - Created database migrations for categories table and foreign key constraints
 - Added performance indexes on foreign key columns for faster queries
+
+## Recent Updates (November 22, 2025)
+- Fixed PostgREST schema cache issues affecting post updates and queries
+- Migrated all Supabase queries from explicit FK constraint names to implicit/column-based syntax
+- Updated 7 files to use PostgREST-compatible query patterns (AdminPage, BlogPage, SolutionsPage, CommunityPage, BlogPostPage, CommunityComments, BlogDashboardPage)
+- Documented schema cache reload procedure for future migrations
+
+## Troubleshooting
+
+### PostgREST Schema Cache Issues
+
+After running database migrations (especially those creating or modifying foreign keys), you may encounter errors like:
+
+```
+Could not find the 'profiles' column of 'posts' in the schema cache
+PGRST204 error
+```
+
+**Root Cause**: PostgREST caches the database schema for performance. After migrations, this cache may be outdated and not recognize new foreign key relationships.
+
+**Solution**: Reload the PostgREST schema cache by running this SQL command in **Supabase Dashboard → SQL Editor**:
+
+```sql
+NOTIFY pgrst, 'reload schema';
+```
+
+This command forces PostgREST to refresh its schema cache immediately, making all new foreign keys and relationships visible.
+
+**When to Use**:
+- After running any database migration that creates or modifies foreign keys
+- When you see PGRST204 errors related to missing columns in schema cache
+- After adding new tables with relationships
+
+### Supabase Query Best Practices
+
+To avoid dependency on PostgREST schema cache and ensure queries work reliably:
+
+#### ✅ RECOMMENDED: Column-Based FK Hints
+
+Use column names to specify relationships (works without schema cache):
+
+```javascript
+// Single FK relationship - implicit works
+.select('*, profiles(name)')
+
+// Multiple FK relationships - use column-based hints
+.select('*, profiles!user_id(name, role)')
+.select('*, categories!category_id(name), categories!subcategory_id(name)')
+```
+
+#### ❌ AVOID: Constraint Name References
+
+Don't rely on explicit constraint names (requires schema cache):
+
+```javascript
+// BAD - depends on schema cache
+.select('*, profiles!posts_user_id_fkey(name)')
+.select('*, categories!posts_category_id_fkey(name)')
+```
+
+#### 📋 Pattern Reference
+
+| Scenario | Query Pattern | Example |
+|----------|---------------|---------|
+| Single FK to table | `profiles(columns)` | `.select('*, profiles(name)')` |
+| Multiple FKs to same table | `table!column(columns)` | `.select('*, profiles!user_id(name)')` |
+| Ambiguous relationships | Use column hint | `.select('*, categories!category_id(name)')` |
+| No related data needed | Select specific columns | `.select('*')` or `.select('id, title')` |
+
+**Key Principle**: Always prefer column-based hints (`!column_name`) over constraint names (`!constraint_fkey`) for resilient, cache-independent queries.
