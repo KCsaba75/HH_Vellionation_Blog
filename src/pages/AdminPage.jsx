@@ -165,7 +165,6 @@ const AdminPage = () => {
     
     let postData = { ...editingItem };
     
-    // Remove the old string category field (legacy)
     delete postData.category;
     
     if (formType === 'post' && !editingItem.id) {
@@ -268,129 +267,341 @@ const AdminPage = () => {
   return (
     <>
       <Helmet><title>Admin Dashboard - Vellio Nation</title></Helmet>
-      <div className="py-12">
+      <div className="py-6 md:py-12">
         <div className="container mx-auto px-4 max-w-7xl">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
-            <h1 className="text-4xl font-bold mb-8">Admin Dashboard</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8">Admin Dashboard</h1>
 
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-              <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-5">
-                <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-                <TabsTrigger value="posts">Blog</TabsTrigger>
-                <TabsTrigger value="solutions">Solutions</TabsTrigger>
-                <TabsTrigger value="users">Users</TabsTrigger>
-                <TabsTrigger value="settings">Settings</TabsTrigger>
-              </TabsList>
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 md:space-y-8">
+              <div className="overflow-x-auto">
+                <TabsList className="inline-flex w-auto min-w-full md:grid md:w-full md:grid-cols-5 gap-1">
+                  <TabsTrigger value="dashboard" className="whitespace-nowrap">Dashboard</TabsTrigger>
+                  <TabsTrigger value="posts" className="whitespace-nowrap">Blog</TabsTrigger>
+                  <TabsTrigger value="solutions" className="whitespace-nowrap">Solutions</TabsTrigger>
+                  <TabsTrigger value="users" className="whitespace-nowrap">Users</TabsTrigger>
+                  <TabsTrigger value="settings" className="whitespace-nowrap">Settings</TabsTrigger>
+                </TabsList>
+              </div>
 
               <TabsContent value="dashboard">
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4"><User className="h-8 w-8 text-primary" /><div className="flex flex-col"><span className="text-2xl font-bold">{stats.users}</span><span className="text-muted-foreground">Users</span></div></div>
-                    <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4"><Edit className="h-8 w-8 text-primary" /><div className="flex flex-col"><span className="text-2xl font-bold">{stats.posts}</span><span className="text-muted-foreground">Blog Posts</span></div></div>
-                    <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4"><Package className="h-8 w-8 text-primary" /><div className="flex flex-col"><span className="text-2xl font-bold">{stats.solutions}</span><span className="text-muted-foreground">Solutions</span></div></div>
-                    <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4"><MessageSquare className="h-8 w-8 text-primary" /><div className="flex flex-col"><span className="text-2xl font-bold">{stats.comments}</span><span className="text-muted-foreground">Comments</span></div></div>
+                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                    <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4">
+                      <User className="h-8 w-8 text-primary flex-shrink-0" />
+                      <div className="flex flex-col">
+                        <span className="text-2xl font-bold">{stats.users}</span>
+                        <span className="text-sm text-muted-foreground">Users</span>
+                      </div>
+                    </div>
+                    <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4">
+                      <Edit className="h-8 w-8 text-primary flex-shrink-0" />
+                      <div className="flex flex-col">
+                        <span className="text-2xl font-bold">{stats.posts}</span>
+                        <span className="text-sm text-muted-foreground">Blog Posts</span>
+                      </div>
+                    </div>
+                    <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4">
+                      <Package className="h-8 w-8 text-primary flex-shrink-0" />
+                      <div className="flex flex-col">
+                        <span className="text-2xl font-bold">{stats.solutions}</span>
+                        <span className="text-sm text-muted-foreground">Solutions</span>
+                      </div>
+                    </div>
+                    <div className="bg-card p-6 rounded-xl shadow-lg flex items-center gap-4">
+                      <MessageSquare className="h-8 w-8 text-primary flex-shrink-0" />
+                      <div className="flex flex-col">
+                        <span className="text-2xl font-bold">{stats.comments}</span>
+                        <span className="text-sm text-muted-foreground">Comments</span>
+                      </div>
+                    </div>
                  </div>
               </TabsContent>
 
               <TabsContent value="posts">
-                 <div className="bg-card p-6 rounded-xl shadow-lg">
-                   <div className="flex justify-between items-center mb-4">
+                 <div className="bg-card p-4 md:p-6 rounded-xl shadow-lg">
+                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
                      <h2 className="text-xl font-semibold">Manage Blog Posts</h2>
-                     <Button onClick={() => handleCreate('post')}><Plus className="mr-2 h-4 w-4" />Create Post</Button>
+                     <Button onClick={() => handleCreate('post')} className="w-full sm:w-auto">
+                       <Plus className="mr-2 h-4 w-4" />Create Post
+                     </Button>
                    </div>
-                   <div className="overflow-x-auto">
-                        <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Title</th><th className="py-3 px-4">Author</th><th className="py-3 px-4">Status</th><th className="py-3 px-4">Actions</th></tr></thead>
-                        <tbody>
-                            {posts.map(post => (<tr key={post.id} className="border-b dark:border-gray-700">
-                                <td className="py-3 px-4 font-semibold">{post.title}</td><td className="py-3 px-4">{post.profiles?.name || 'N/A'}</td>
-                                <td className="py-3 px-4"><span className={`font-medium ${post.status === 'published' ? 'text-green-500' : 'text-yellow-500'}`}>{post.status}</span></td>
-                                <td className="py-3 px-4 flex gap-2">
-                                  <Button size="sm" variant="outline" onClick={() => navigate(`/blog/${post.slug}`)}><Eye className="h-4 w-4"/></Button>
-                                  <Button size="sm" variant="outline" onClick={() => handleEdit(post, 'post')}><Edit className="h-4 w-4"/></Button>
-                                  <Button size="sm" variant="destructive" onClick={() => handleDelete(post.id, 'posts')}><Trash2 className="h-4 w-4"/></Button>
+                   
+                   <div className="hidden md:block overflow-x-auto">
+                        <table className="w-full text-sm text-left">
+                          <thead className="text-xs text-muted-foreground uppercase">
+                            <tr>
+                              <th className="py-3 px-4">Title</th>
+                              <th className="py-3 px-4">Author</th>
+                              <th className="py-3 px-4">Status</th>
+                              <th className="py-3 px-4">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {posts.map(post => (
+                              <tr key={post.id} className="border-b dark:border-gray-700">
+                                <td className="py-3 px-4 font-semibold">{post.title}</td>
+                                <td className="py-3 px-4">{post.profiles?.name || 'N/A'}</td>
+                                <td className="py-3 px-4">
+                                  <span className={`font-medium ${post.status === 'published' ? 'text-green-500' : 'text-yellow-500'}`}>
+                                    {post.status}
+                                  </span>
                                 </td>
-                            </tr>))}
-                        </tbody></table>
+                                <td className="py-3 px-4 flex gap-2">
+                                  <Button size="sm" variant="outline" onClick={() => navigate(`/blog/${post.slug}`)}>
+                                    <Eye className="h-4 w-4"/>
+                                  </Button>
+                                  <Button size="sm" variant="outline" onClick={() => handleEdit(post, 'post')}>
+                                    <Edit className="h-4 w-4"/>
+                                  </Button>
+                                  <Button size="sm" variant="destructive" onClick={() => handleDelete(post.id, 'posts')}>
+                                    <Trash2 className="h-4 w-4"/>
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                   </div>
+
+                   <div className="md:hidden space-y-3">
+                     {posts.map(post => (
+                       <div key={post.id} className="bg-background p-4 rounded-lg border space-y-3">
+                         <div>
+                           <h3 className="font-semibold text-base mb-1">{post.title}</h3>
+                           <p className="text-sm text-muted-foreground">By {post.profiles?.name || 'N/A'}</p>
+                         </div>
+                         <div className="flex items-center gap-2">
+                           <span className="text-xs">Status:</span>
+                           <span className={`text-xs font-medium ${post.status === 'published' ? 'text-green-500' : 'text-yellow-500'}`}>
+                             {post.status}
+                           </span>
+                         </div>
+                         <div className="grid grid-cols-3 gap-2 pt-2">
+                           <Button size="sm" variant="outline" onClick={() => navigate(`/blog/${post.slug}`)}>
+                             <Eye className="h-4 w-4 mr-1"/>View
+                           </Button>
+                           <Button size="sm" variant="outline" onClick={() => handleEdit(post, 'post')}>
+                             <Edit className="h-4 w-4 mr-1"/>Edit
+                           </Button>
+                           <Button size="sm" variant="destructive" onClick={() => handleDelete(post.id, 'posts')}>
+                             <Trash2 className="h-4 w-4 mr-1"/>Del
+                           </Button>
+                         </div>
+                       </div>
+                     ))}
                    </div>
                  </div>
               </TabsContent>
 
               <TabsContent value="solutions">
-                 <div className="bg-card p-6 rounded-xl shadow-lg">
-                   <div className="flex justify-between items-center mb-4">
+                 <div className="bg-card p-4 md:p-6 rounded-xl shadow-lg">
+                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
                      <h2 className="text-xl font-semibold">Manage Solutions</h2>
-                     <Button onClick={() => handleCreate('solution')}><Plus className="mr-2 h-4 w-4" />Create Solution</Button>
+                     <Button onClick={() => handleCreate('solution')} className="w-full sm:w-auto">
+                       <Plus className="mr-2 h-4 w-4" />Create Solution
+                     </Button>
                    </div>
-                   <div className="overflow-x-auto">
-                       <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Name</th><th className="py-3 px-4">Status</th><th className="py-3 px-4">Actions</th></tr></thead>
-                       <tbody>
-                          {solutions.map(solution => (<tr key={solution.id} className="border-b dark:border-gray-700">
+                   
+                   <div className="hidden md:block overflow-x-auto">
+                       <table className="w-full text-sm text-left">
+                         <thead className="text-xs text-muted-foreground uppercase">
+                           <tr>
+                             <th className="py-3 px-4">Name</th>
+                             <th className="py-3 px-4">Status</th>
+                             <th className="py-3 px-4">Actions</th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                          {solutions.map(solution => (
+                            <tr key={solution.id} className="border-b dark:border-gray-700">
                               <td className="py-3 px-4 font-semibold">{solution.name}</td>
-                              <td className="py-3 px-4"><span className={`font-medium ${solution.status === 'active' ? 'text-green-500' : 'text-yellow-500'}`}>{solution.status}</span></td>
-                              <td className="py-3 px-4 flex gap-2">
-                                <Button size="sm" variant="outline" onClick={() => handleEdit(solution, 'solution')}><Edit className="h-4 w-4"/></Button>
-                                <Button size="sm" variant="destructive" onClick={() => handleDelete(solution.id, 'solutions')}><Trash2 className="h-4 w-4"/></Button>
+                              <td className="py-3 px-4">
+                                <span className={`font-medium ${solution.status === 'active' ? 'text-green-500' : 'text-yellow-500'}`}>
+                                  {solution.status}
+                                </span>
                               </td>
-                          </tr>))}
-                       </tbody></table>
+                              <td className="py-3 px-4 flex gap-2">
+                                <Button size="sm" variant="outline" onClick={() => handleEdit(solution, 'solution')}>
+                                  <Edit className="h-4 w-4"/>
+                                </Button>
+                                <Button size="sm" variant="destructive" onClick={() => handleDelete(solution.id, 'solutions')}>
+                                  <Trash2 className="h-4 w-4"/>
+                                </Button>
+                              </td>
+                            </tr>
+                          ))}
+                       </tbody>
+                       </table>
+                   </div>
+
+                   <div className="md:hidden space-y-3">
+                     {solutions.map(solution => (
+                       <div key={solution.id} className="bg-background p-4 rounded-lg border space-y-3">
+                         <div>
+                           <h3 className="font-semibold text-base mb-1">{solution.name}</h3>
+                         </div>
+                         <div className="flex items-center gap-2">
+                           <span className="text-xs">Status:</span>
+                           <span className={`text-xs font-medium ${solution.status === 'active' ? 'text-green-500' : 'text-yellow-500'}`}>
+                             {solution.status}
+                           </span>
+                         </div>
+                         <div className="grid grid-cols-2 gap-2 pt-2">
+                           <Button size="sm" variant="outline" onClick={() => handleEdit(solution, 'solution')}>
+                             <Edit className="h-4 w-4 mr-1"/>Edit
+                           </Button>
+                           <Button size="sm" variant="destructive" onClick={() => handleDelete(solution.id, 'solutions')}>
+                             <Trash2 className="h-4 w-4 mr-1"/>Delete
+                           </Button>
+                         </div>
+                       </div>
+                     ))}
                    </div>
                  </div>
               </TabsContent>
 
               <TabsContent value="users">
-                <div className="bg-card p-6 rounded-xl shadow-lg">
+                <div className="bg-card p-4 md:p-6 rounded-xl shadow-lg">
                    <h2 className="text-xl font-semibold mb-4">Manage Users</h2>
-                   <div className="overflow-x-auto">
-                       <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Name</th><th className="py-3 px-4">Email</th><th className="py-3 px-4">Rank</th><th className="py-3 px-4">Role</th></tr></thead>
-                       <tbody>
-                          {users.map(userItem => (<tr key={userItem.id} className="border-b dark:border-gray-700">
+                   
+                   <div className="hidden md:block overflow-x-auto">
+                       <table className="w-full text-sm text-left">
+                         <thead className="text-xs text-muted-foreground uppercase">
+                           <tr>
+                             <th className="py-3 px-4">Name</th>
+                             <th className="py-3 px-4">Email</th>
+                             <th className="py-3 px-4">Rank</th>
+                             <th className="py-3 px-4">Role</th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                          {users.map(userItem => (
+                            <tr key={userItem.id} className="border-b dark:border-gray-700">
                               <td className="py-3 px-4 font-semibold">{userItem.name}</td>
                               <td className="py-3 px-4">{userItem.email}</td>
                               <td className="py-3 px-4">{userItem.rank}</td>
                               <td className="py-3 px-4">
-                                <select value={userItem.role} onChange={(e) => handleUserRoleChange(userItem.id, e.target.value)} disabled={userItem.id === profile.id} className="p-2 rounded-lg border bg-background disabled:opacity-50">
+                                <select 
+                                  value={userItem.role} 
+                                  onChange={(e) => handleUserRoleChange(userItem.id, e.target.value)} 
+                                  disabled={userItem.id === profile.id} 
+                                  className="p-2 rounded-lg border bg-background disabled:opacity-50"
+                                >
                                   <option value="member">Member</option>
                                   <option value="blogger">Blogger</option>
                                   <option value="admin">Admin</option>
                                 </select>
                               </td>
-                          </tr>))}
-                       </tbody></table>
+                            </tr>
+                          ))}
+                       </tbody>
+                       </table>
+                   </div>
+
+                   <div className="md:hidden space-y-3">
+                     {users.map(userItem => (
+                       <div key={userItem.id} className="bg-background p-4 rounded-lg border space-y-3">
+                         <div>
+                           <h3 className="font-semibold text-base mb-1">{userItem.name}</h3>
+                           <p className="text-sm text-muted-foreground">{userItem.email}</p>
+                         </div>
+                         <div className="flex items-center gap-2">
+                           <span className="text-xs">Rank:</span>
+                           <span className="text-xs font-medium">{userItem.rank}</span>
+                         </div>
+                         <div className="space-y-2">
+                           <Label htmlFor={`role-${userItem.id}`} className="text-xs">Role</Label>
+                           <select 
+                             id={`role-${userItem.id}`}
+                             value={userItem.role} 
+                             onChange={(e) => handleUserRoleChange(userItem.id, e.target.value)} 
+                             disabled={userItem.id === profile.id} 
+                             className="w-full p-2 rounded-lg border bg-background disabled:opacity-50 text-sm"
+                           >
+                             <option value="member">Member</option>
+                             <option value="blogger">Blogger</option>
+                             <option value="admin">Admin</option>
+                           </select>
+                         </div>
+                       </div>
+                     ))}
                    </div>
                  </div>
               </TabsContent>
 
               <TabsContent value="settings">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  {/* General Settings */}
-                  <div className="bg-card p-6 rounded-xl shadow-lg space-y-6 lg:col-span-2">
-                     <div className="flex items-center gap-2"><Settings className="h-5 w-5 text-primary" /><h2 className="text-xl font-semibold">General Settings</h2></div>
-                     <div><Label htmlFor="facebook-url">Facebook URL</Label><input id="facebook-url" value={socialLinks.facebook} onChange={e => setSocialLinks({...socialLinks, facebook: e.target.value})} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                     <div><Label htmlFor="instagram-url">Instagram URL</Label><input id="instagram-url" value={socialLinks.instagram} onChange={e => setSocialLinks({...socialLinks, instagram: e.target.value})} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                     <Button onClick={() => handleSaveSettings('social_links', socialLinks)}><Save className="mr-2 h-4 w-4" />Save Social Links</Button>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+                  <div className="bg-card p-4 md:p-6 rounded-xl shadow-lg space-y-4 md:space-y-6 lg:col-span-2">
+                     <div className="flex items-center gap-2">
+                       <Settings className="h-5 w-5 text-primary" />
+                       <h2 className="text-xl font-semibold">General Settings</h2>
+                     </div>
+                     <div>
+                       <Label htmlFor="facebook-url">Facebook URL</Label>
+                       <input 
+                         id="facebook-url" 
+                         value={socialLinks.facebook} 
+                         onChange={e => setSocialLinks({...socialLinks, facebook: e.target.value})} 
+                         className="w-full mt-1 p-2 rounded-lg border bg-background" 
+                       />
+                     </div>
+                     <div>
+                       <Label htmlFor="instagram-url">Instagram URL</Label>
+                       <input 
+                         id="instagram-url" 
+                         value={socialLinks.instagram} 
+                         onChange={e => setSocialLinks({...socialLinks, instagram: e.target.value})} 
+                         className="w-full mt-1 p-2 rounded-lg border bg-background" 
+                       />
+                     </div>
+                     <Button onClick={() => handleSaveSettings('social_links', socialLinks)} className="w-full sm:w-auto">
+                       <Save className="mr-2 h-4 w-4" />Save Social Links
+                     </Button>
                   </div>
 
-                  {/* Categories - Hierarchical Management */}
                   <HierarchicalCategoryManager type="blog" title="Blog Categories" />
                   <HierarchicalCategoryManager type="community" title="Community Categories" />
                   <HierarchicalCategoryManager type="solutions" title="Solutions Categories" />
 
-                  {/* Page Content */}
-                  <div className="lg:col-span-2 bg-card p-6 rounded-xl shadow-lg space-y-8">
-                    <div className="flex items-center gap-2"><FileText className="h-5 w-5 text-primary" /><h2 className="text-xl font-semibold">Page Content</h2></div>
-                    <div className="prose dark:prose-invert">
-                      <Label className="text-lg font-medium">Help Center</Label>
-                      <ReactQuill theme="snow" value={pageContents.help.content} onChange={(c) => handlePageContentChange('help', c)} className="mt-2 bg-background"/>
-                      <Button className="mt-2" onClick={() => handleSaveSettings('page_content_help', pageContents.help)}><Save className="mr-2 h-4 w-4"/>Save Help Page</Button>
+                  <div className="lg:col-span-2 bg-card p-4 md:p-6 rounded-xl shadow-lg space-y-6 md:space-y-8">
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-primary" />
+                      <h2 className="text-xl font-semibold">Page Content</h2>
                     </div>
-                    <div className="prose dark:prose-invert">
-                      <Label className="text-lg font-medium">Privacy Policy</Label>
-                      <ReactQuill theme="snow" value={pageContents.privacy.content} onChange={(c) => handlePageContentChange('privacy', c)} className="mt-2 bg-background"/>
-                      <Button className="mt-2" onClick={() => handleSaveSettings('page_content_privacy', pageContents.privacy)}><Save className="mr-2 h-4 w-4"/>Save Privacy Page</Button>
+                    <div className="prose dark:prose-invert max-w-none">
+                      <Label className="text-base md:text-lg font-medium">Help Center</Label>
+                      <ReactQuill 
+                        theme="snow" 
+                        value={pageContents.help.content} 
+                        onChange={(c) => handlePageContentChange('help', c)} 
+                        className="mt-2 bg-background"
+                      />
+                      <Button className="mt-2 w-full sm:w-auto" onClick={() => handleSaveSettings('page_content_help', pageContents.help)}>
+                        <Save className="mr-2 h-4 w-4"/>Save Help Page
+                      </Button>
                     </div>
-                    <div className="prose dark:prose-invert">
-                      <Label className="text-lg font-medium">Terms of Service</Label>
-                      <ReactQuill theme="snow" value={pageContents.terms.content} onChange={(c) => handlePageContentChange('terms', c)} className="mt-2 bg-background"/>
-                      <Button className="mt-2" onClick={() => handleSaveSettings('page_content_terms', pageContents.terms)}><Save className="mr-2 h-4 w-4"/>Save Terms Page</Button>
+                    <div className="prose dark:prose-invert max-w-none">
+                      <Label className="text-base md:text-lg font-medium">Privacy Policy</Label>
+                      <ReactQuill 
+                        theme="snow" 
+                        value={pageContents.privacy.content} 
+                        onChange={(c) => handlePageContentChange('privacy', c)} 
+                        className="mt-2 bg-background"
+                      />
+                      <Button className="mt-2 w-full sm:w-auto" onClick={() => handleSaveSettings('page_content_privacy', pageContents.privacy)}>
+                        <Save className="mr-2 h-4 w-4"/>Save Privacy Page
+                      </Button>
+                    </div>
+                    <div className="prose dark:prose-invert max-w-none">
+                      <Label className="text-base md:text-lg font-medium">Terms of Service</Label>
+                      <ReactQuill 
+                        theme="snow" 
+                        value={pageContents.terms.content} 
+                        onChange={(c) => handlePageContentChange('terms', c)} 
+                        className="mt-2 bg-background"
+                      />
+                      <Button className="mt-2 w-full sm:w-auto" onClick={() => handleSaveSettings('page_content_terms', pageContents.terms)}>
+                        <Save className="mr-2 h-4 w-4"/>Save Terms Page
+                      </Button>
                     </div>
                   </div>
 
@@ -402,49 +613,215 @@ const AdminPage = () => {
       </div>
       
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>{editingItem?.id ? 'Edit' : 'Create'} {formType}</DialogTitle></DialogHeader>
+        <DialogContent className="sm:max-w-[600px] max-w-[95vw] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+          <DialogHeader>
+            <DialogTitle className="text-lg sm:text-xl">
+              {editingItem?.id ? 'Edit' : 'Create'} {formType}
+            </DialogTitle>
+          </DialogHeader>
           {editingItem && (
             <form onSubmit={handleFormSubmit} className="space-y-4 pt-4">
               {formType === 'post' && (
                 <>
-                  <div><Label htmlFor="post-title">Title</Label><input id="post-title" value={editingItem.title || ''} onChange={e => setEditingItem({ ...editingItem, title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
-                  <div><Label htmlFor="post-excerpt">Excerpt</Label><textarea id="post-excerpt" value={editingItem.excerpt || ''} onChange={e => setEditingItem({ ...editingItem, excerpt: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
-                  <CategorySelector type="blog" value={{ category_id: editingItem.category_id, subcategory_id: editingItem.subcategory_id }} onChange={(cat) => setEditingItem({ ...editingItem, category_id: cat.category_id, subcategory_id: cat.subcategory_id })} required />
-                  <div className="prose dark:prose-invert"><Label htmlFor="post-content">Content</Label><ReactQuill theme="snow" value={editingItem.content || ''} onChange={c => setEditingItem({...editingItem, content: c})} className="mt-1 bg-background" /></div>
-                  <div><Label htmlFor="post-seo-title">SEO Title</Label><input id="post-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="post-seo-desc">SEO Description</Label><textarea id="post-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
-                  <div className="flex items-center space-x-2"><Switch id="post-status" checked={editingItem.status === 'published'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'published' : 'draft' })} /><Label htmlFor="post-status">{editingItem.status === 'published' ? 'Published' : 'Draft'}</Label></div>
+                  <div>
+                    <Label htmlFor="post-title">Title</Label>
+                    <input 
+                      id="post-title" 
+                      value={editingItem.title || ''} 
+                      onChange={e => setEditingItem({ ...editingItem, title: e.target.value })} 
+                      className="w-full mt-1 p-2 rounded-lg border bg-background text-sm sm:text-base" 
+                      required 
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="post-excerpt">Excerpt</Label>
+                    <textarea 
+                      id="post-excerpt" 
+                      value={editingItem.excerpt || ''} 
+                      onChange={e => setEditingItem({ ...editingItem, excerpt: e.target.value })} 
+                      className="w-full mt-1 p-2 rounded-lg border bg-background text-sm sm:text-base" 
+                      rows={2} 
+                    />
+                  </div>
+                  <CategorySelector 
+                    type="blog" 
+                    value={{ category_id: editingItem.category_id, subcategory_id: editingItem.subcategory_id }} 
+                    onChange={(cat) => setEditingItem({ ...editingItem, category_id: cat.category_id, subcategory_id: cat.subcategory_id })} 
+                    required 
+                  />
+                  <div className="prose dark:prose-invert max-w-none">
+                    <Label htmlFor="post-content">Content</Label>
+                    <ReactQuill 
+                      theme="snow" 
+                      value={editingItem.content || ''} 
+                      onChange={c => setEditingItem({...editingItem, content: c})} 
+                      className="mt-1 bg-background" 
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="post-seo-title">SEO Title</Label>
+                    <input 
+                      id="post-seo-title" 
+                      value={editingItem.seo_title || ''} 
+                      onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} 
+                      className="w-full mt-1 p-2 rounded-lg border bg-background text-sm sm:text-base" 
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="post-seo-desc">SEO Description</Label>
+                    <textarea 
+                      id="post-seo-desc" 
+                      value={editingItem.seo_description || ''} 
+                      onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} 
+                      className="w-full mt-1 p-2 rounded-lg border bg-background text-sm sm:text-base" 
+                      rows={2} 
+                    />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch 
+                      id="post-status" 
+                      checked={editingItem.status === 'published'} 
+                      onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'published' : 'draft' })} 
+                    />
+                    <Label htmlFor="post-status">
+                      {editingItem.status === 'published' ? 'Published' : 'Draft'}
+                    </Label>
+                  </div>
                 </>
               )}
               {formType === 'solution' && (
                 <>
-                  <div><Label htmlFor="solution-name">Name</Label><input id="solution-name" value={editingItem.name || ''} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
-                  <div><Label htmlFor="solution-desc">Description</Label><textarea id="solution-desc" value={editingItem.description || ''} onChange={e => setEditingItem({ ...editingItem, description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={3}/></div>
-                  <CategorySelector type="solutions" value={{ category_id: editingItem.category_id, subcategory_id: editingItem.subcategory_id }} onChange={(cat) => setEditingItem({ ...editingItem, category_id: cat.category_id, subcategory_id: cat.subcategory_id })} required />
-                  <div><Label htmlFor="solution-affiliate">Affiliate URL</Label><input id="solution-affiliate" value={editingItem.affiliate_url || ''} onChange={e => setEditingItem({ ...editingItem, affiliate_url: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="solution-rating">Rating (1-5)</Label><input id="solution-rating" type="number" min="1" max="5" value={editingItem.rating || 5} onChange={e => setEditingItem({ ...editingItem, rating: Number(e.target.value) })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="solution-seo-title">SEO Title</Label><input id="solution-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="solution-seo-desc">SEO Description</Label><textarea id="solution-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
-                  <div className="flex items-center space-x-2"><Switch id="solution-status" checked={editingItem.status === 'active'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'active' : 'inactive' })} /><Label htmlFor="solution-status">{editingItem.status === 'active' ? 'Active' : 'Inactive'}</Label></div>
+                  <div>
+                    <Label htmlFor="solution-name">Name</Label>
+                    <input 
+                      id="solution-name" 
+                      value={editingItem.name || ''} 
+                      onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} 
+                      className="w-full mt-1 p-2 rounded-lg border bg-background text-sm sm:text-base" 
+                      required 
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="solution-desc">Description</Label>
+                    <textarea 
+                      id="solution-desc" 
+                      value={editingItem.description || ''} 
+                      onChange={e => setEditingItem({ ...editingItem, description: e.target.value })} 
+                      className="w-full mt-1 p-2 rounded-lg border bg-background text-sm sm:text-base" 
+                      rows={3}
+                    />
+                  </div>
+                  <CategorySelector 
+                    type="solutions" 
+                    value={{ category_id: editingItem.category_id, subcategory_id: editingItem.subcategory_id }} 
+                    onChange={(cat) => setEditingItem({ ...editingItem, category_id: cat.category_id, subcategory_id: cat.subcategory_id })} 
+                    required 
+                  />
+                  <div>
+                    <Label htmlFor="solution-affiliate">Affiliate URL</Label>
+                    <input 
+                      id="solution-affiliate" 
+                      value={editingItem.affiliate_url || ''} 
+                      onChange={e => setEditingItem({ ...editingItem, affiliate_url: e.target.value })} 
+                      className="w-full mt-1 p-2 rounded-lg border bg-background text-sm sm:text-base" 
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="solution-rating">Rating (1-5)</Label>
+                    <input 
+                      id="solution-rating" 
+                      type="number" 
+                      min="1" 
+                      max="5" 
+                      value={editingItem.rating || 5} 
+                      onChange={e => setEditingItem({ ...editingItem, rating: Number(e.target.value) })} 
+                      className="w-full mt-1 p-2 rounded-lg border bg-background text-sm sm:text-base" 
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="solution-seo-title">SEO Title</Label>
+                    <input 
+                      id="solution-seo-title" 
+                      value={editingItem.seo_title || ''} 
+                      onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} 
+                      className="w-full mt-1 p-2 rounded-lg border bg-background text-sm sm:text-base" 
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="solution-seo-desc">SEO Description</Label>
+                    <textarea 
+                      id="solution-seo-desc" 
+                      value={editingItem.seo_description || ''} 
+                      onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} 
+                      className="w-full mt-1 p-2 rounded-lg border bg-background text-sm sm:text-base" 
+                      rows={2} 
+                    />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Switch 
+                      id="solution-status" 
+                      checked={editingItem.status === 'active'} 
+                      onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'active' : 'inactive' })} 
+                    />
+                    <Label htmlFor="solution-status">
+                      {editingItem.status === 'active' ? 'Active' : 'Inactive'}
+                    </Label>
+                  </div>
                 </>
               )}
-               <div>
-                    <Label>Image</Label>
-                    {editingItem.image_url && (
-                      <div className="relative inline-block mt-2 mb-2">
-                        <img src={editingItem.image_url} alt="Preview" className="w-full max-w-sm rounded-lg object-cover border-2 border-primary" />
-                        <button type="button" onClick={() => setEditingItem({ ...editingItem, image_url: '' })} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg">
-                          <X className="h-4 w-4" />
-                        </button>
-                      </div>
-                    )}
-                    <div className="flex gap-2">
-                      <Button type="button" onClick={() => fileInputRef.current.click()} disabled={uploading}><Upload className="mr-2 h-4 w-4" />{uploading ? "Uploading..." : editingItem.image_url ? "Change Image" : "Upload Image"}</Button>
-                      <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" accept="image/*" />
+              
+              <div>
+                <Label>Image</Label>
+                <div className="mt-2 space-y-3">
+                  {editingItem.image_url && (
+                    <div className="relative inline-block">
+                      <img 
+                        src={editingItem.image_url} 
+                        alt="Preview" 
+                        className="w-full max-w-xs rounded-lg object-cover border-2 border-primary" 
+                      />
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="destructive"
+                        className="absolute top-2 right-2"
+                        onClick={() => setEditingItem({ ...editingItem, image_url: '' })}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
                     </div>
-               </div>
-              <DialogFooter><DialogClose asChild><Button type="button" variant="secondary">Cancel</Button></DialogClose><Button type="submit"><Save className="mr-2 h-4 w-4"/>Save changes</Button></DialogFooter>
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="w-full sm:w-auto"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    {uploading ? 'Uploading...' : 'Upload Image'}
+                  </Button>
+                </div>
+              </div>
+
+              <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
+                <Button type="submit" className="w-full sm:w-auto">
+                  <Save className="mr-2 h-4 w-4" />
+                  {editingItem.id ? 'Update' : 'Create'}
+                </Button>
+                <DialogClose asChild>
+                  <Button type="button" variant="outline" className="w-full sm:w-auto">
+                    Cancel
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
             </form>
           )}
         </DialogContent>
