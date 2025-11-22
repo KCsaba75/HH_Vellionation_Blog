@@ -41,7 +41,7 @@ const BlogDashboardPage = () => {
     if (!user) return;
     const { data, error } = await supabase
       .from('posts')
-      .select('*')
+      .select('*, profiles!user_id(name)')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
     if (error) {
