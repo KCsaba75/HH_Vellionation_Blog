@@ -55,9 +55,9 @@ const AdminPage = () => {
     const { count: commentsCount } = await supabase.from('comments').select('*', { count: 'exact', head: true });
     setStats({ users: usersCount, posts: postsCount, solutions: solutionsCount, comments: commentsCount });
 
-    const { data: postsData } = await supabase.from('posts').select('*, profiles!posts_user_id_fkey(name), categories!posts_category_id_fkey(name)').order('created_at', { ascending: false });
+    const { data: postsData } = await supabase.from('posts').select('*, profiles!posts_user_id_fkey(name), categories!posts_category_id_fkey(name), subcategories:categories!posts_subcategory_id_fkey(name)').order('created_at', { ascending: false });
     setPosts(postsData || []);
-    const { data: solutionsData } = await supabase.from('solutions').select('*, categories!solutions_category_id_fkey(name)').order('created_at', { ascending: false });
+    const { data: solutionsData } = await supabase.from('solutions').select('*, categories!solutions_category_id_fkey(name), subcategories:categories!solutions_subcategory_id_fkey(name)').order('created_at', { ascending: false });
     setSolutions(solutionsData || []);
     const { data: usersData } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
     setUsers(usersData || []);
@@ -262,10 +262,11 @@ const AdminPage = () => {
                      <Button onClick={() => handleCreate('post')}><Plus className="mr-2 h-4 w-4" />Create Post</Button>
                    </div>
                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Title</th><th className="py-3 px-4">Author</th><th className="py-3 px-4">Status</th><th className="py-3 px-4">Actions</th></tr></thead>
+                        <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Title</th><th className="py-3 px-4">Author</th><th className="py-3 px-4">Category</th><th className="py-3 px-4">Status</th><th className="py-3 px-4">Actions</th></tr></thead>
                         <tbody>
                             {posts.map(post => (<tr key={post.id} className="border-b dark:border-gray-700">
                                 <td className="py-3 px-4 font-semibold">{post.title}</td><td className="py-3 px-4">{post.profiles?.name || 'N/A'}</td>
+                                <td className="py-3 px-4"><span className="bg-secondary/20 text-secondary-foreground px-2 py-1 rounded-full text-xs">{post.categories?.name || 'Uncategorized'}{post.subcategories?.name && ` → ${post.subcategories.name}`}</span></td>
                                 <td className="py-3 px-4"><span className={`font-medium ${post.status === 'published' ? 'text-green-500' : 'text-yellow-500'}`}>{post.status}</span></td>
                                 <td className="py-3 px-4 flex gap-2">
                                   <Button size="sm" variant="outline" onClick={() => navigate(`/blog/${post.slug}`)}><Eye className="h-4 w-4"/></Button>
@@ -285,10 +286,11 @@ const AdminPage = () => {
                      <Button onClick={() => handleCreate('solution')}><Plus className="mr-2 h-4 w-4" />Create Solution</Button>
                    </div>
                    <div className="overflow-x-auto">
-                       <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Name</th><th className="py-3 px-4">Status</th><th className="py-3 px-4">Actions</th></tr></thead>
+                       <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Name</th><th className="py-3 px-4">Category</th><th className="py-3 px-4">Status</th><th className="py-3 px-4">Actions</th></tr></thead>
                        <tbody>
                           {solutions.map(solution => (<tr key={solution.id} className="border-b dark:border-gray-700">
                               <td className="py-3 px-4 font-semibold">{solution.name}</td>
+                              <td className="py-3 px-4"><span className="bg-secondary/20 text-secondary-foreground px-2 py-1 rounded-full text-xs">{solution.categories?.name || 'Uncategorized'}{solution.subcategories?.name && ` → ${solution.subcategories.name}`}</span></td>
                               <td className="py-3 px-4"><span className={`font-medium ${solution.status === 'active' ? 'text-green-500' : 'text-yellow-500'}`}>{solution.status}</span></td>
                               <td className="py-3 px-4 flex gap-2">
                                 <Button size="sm" variant="outline" onClick={() => handleEdit(solution, 'solution')}><Edit className="h-4 w-4"/></Button>

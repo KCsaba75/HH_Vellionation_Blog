@@ -34,7 +34,8 @@ const BlogPage = () => {
         .select(`
           *,
           profiles!posts_user_id_fkey ( name ),
-          categories!posts_category_id_fkey ( name )
+          categories!posts_category_id_fkey ( name ),
+          subcategories:categories!posts_subcategory_id_fkey ( name )
         `)
         .eq('status', 'published')
         .order('created_at', { ascending: false });
@@ -125,6 +126,7 @@ const BlogPage = () => {
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
                       <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium">
                         {post.categories?.name || 'Uncategorized'}
+                        {post.subcategories?.name && ` → ${post.subcategories.name}`}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
