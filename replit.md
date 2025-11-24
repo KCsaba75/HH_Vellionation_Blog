@@ -175,7 +175,13 @@ This prevents "unknown column" errors when form state contains joined relational
 
 ## Recent Updates
 
-### November 24, 2025 - Mobile Responsiveness & Category System
+### November 24, 2025 - Mobile Responsiveness, Category System & Bug Fixes
+**Bug Fixes:**
+- Fixed blog/solution update error: Added `subcategories` to destructuring in handleFormSubmit
+  - Error: "Could not find the 'subcategories' column of 'posts' in the schema cache"
+  - Root cause: Joined `subcategories` object wasn't stripped before Supabase update
+  - Solution: `const { categories, subcategories, profiles, ...cleanedData } = editingItem;`
+
 **Mobile Responsiveness Improvements:**
 - **Admin Dashboard Mobile Optimization:**
   - Converted all tables (Blog Posts, Solutions, Users) to responsive card layouts on mobile devices

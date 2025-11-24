@@ -162,7 +162,7 @@ const AdminPage = () => {
     e.preventDefault();
     const table = formType === 'post' ? 'posts' : 'solutions';
     
-    const { categories, profiles, ...cleanedData } = editingItem;
+    const { categories, subcategories, profiles, ...cleanedData } = editingItem;
     let postData = { ...cleanedData };
     
     if (formType === 'post' && !editingItem.id) {
