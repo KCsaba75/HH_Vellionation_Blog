@@ -175,6 +175,26 @@ This prevents "unknown column" errors when form state contains joined relational
 
 ## Recent Updates
 
+### November 24, 2025 - Mobile Responsiveness & Category System
+**Mobile Responsiveness Improvements:**
+- **Admin Dashboard Mobile Optimization:**
+  - Converted all tables (Blog Posts, Solutions, Users) to responsive card layouts on mobile devices
+  - Desktop: Traditional table view (md and above)
+  - Mobile: Card-based layout with all information and actions
+  - Improved touch targets with larger padding (p-2.5 vs p-2)
+  - Responsive typography (text-sm, text-xs)
+- **Dialog Forms Mobile Optimization:**
+  - Forms now use 95% viewport width on mobile (max-w-[95vw])
+  - Responsive padding and spacing (p-4 sm:p-6)
+  - All form fields optimized for mobile with text-sm labels and inputs
+  - Buttons stack vertically on mobile (flex-col sm:flex-row)
+  - Upload buttons condensed ("Upload"/"Change" instead of full text)
+- **Header & Button Improvements:**
+  - Headers flex-wrap on small screens
+  - Create buttons show condensed text on mobile ("New" vs "Create Post")
+  - All action buttons sized appropriately for mobile touch
+- Architect reviewed: PASS - meets mobile usability goals
+
 ### November 24, 2025 - Category System Migration & Subcategory Display
 - Migrated from settings table JSON arrays to hierarchical categories table with foreign keys
 - Created CategorySelector component for hierarchical category/subcategory selection
