@@ -79,8 +79,8 @@ CREATE TABLE IF NOT EXISTS profiles (
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, name, email, role)
-  VALUES (NEW.id, NEW.raw_user_meta_data->>'name', NEW.email, 'member');
+  INSERT INTO public.profiles (id, name, role)
+  VALUES (NEW.id, NEW.raw_user_meta_data->>'name', 'member');
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
@@ -97,13 +97,15 @@ CREATE TABLE IF NOT EXISTS categories (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   slug TEXT NOT NULL UNIQUE,
+  type TEXT NOT NULL CHECK (type IN ('blog', 'community', 'solutions')),
   parent_id INT REFERENCES categories(id) ON DELETE CASCADE,
-  display_order INT DEFAULT 0,
+  position INT DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE INDEX idx_categories_parent_id ON categories(parent_id);
 CREATE INDEX idx_categories_slug ON categories(slug);
+CREATE INDEX idx_categories_type ON categories(type);
 ```
 
 #### 3. Create posts table
@@ -160,7 +162,7 @@ CREATE INDEX idx_solutions_status ON solutions(status);
 ```sql
 CREATE TABLE IF NOT EXISTS community_posts (
   id SERIAL PRIMARY KEY,
-  title TEXT NOT NULL,
+  title TEXT,
   content TEXT,
   category_id INT REFERENCES categories(id) ON DELETE SET NULL,
   subcategory_id INT REFERENCES categories(id) ON DELETE SET NULL,
@@ -201,7 +203,35 @@ CREATE INDEX idx_post_likes_post_id ON post_likes(post_id);
 CREATE INDEX idx_post_likes_user_id ON post_likes(user_id);
 ```
 
-#### 8. Create settings table
+#### 8. Create community_post_likes table
+```sql
+CREATE TABLE IF NOT EXISTS community_post_likes (
+  id SERIAL PRIMARY KEY,
+  post_id INT REFERENCES community_posts(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(post_id, user_id)
+);
+
+CREATE INDEX idx_community_post_likes_post_id ON community_post_likes(post_id);
+CREATE INDEX idx_community_post_likes_user_id ON community_post_likes(user_id);
+```
+
+#### 9. Create community_comments table
+```sql
+CREATE TABLE IF NOT EXISTS community_comments (
+  id SERIAL PRIMARY KEY,
+  content TEXT NOT NULL,
+  post_id INT REFERENCES community_posts(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_community_comments_post_id ON community_comments(post_id);
+CREATE INDEX idx_community_comments_user_id ON community_comments(user_id);
+```
+
+#### 10. Create settings table
 ```sql
 CREATE TABLE IF NOT EXISTS settings (
   id SERIAL PRIMARY KEY,
@@ -212,17 +242,22 @@ CREATE TABLE IF NOT EXISTS settings (
 );
 ```
 
-#### 9. Insert default categories
+#### 11. Insert default categories
 ```sql
-INSERT INTO categories (name, slug, parent_id, display_order) VALUES
-  ('Weightloss', 'weightloss', NULL, 1),
-  ('Mental Health', 'mental-health', NULL, 2),
-  ('Fitness', 'fitness', NULL, 3),
-  ('Nutrition', 'nutrition', NULL, 4)
+INSERT INTO categories (name, slug, type, parent_id, position) VALUES
+  ('Weightloss', 'weightloss', 'blog', NULL, 1),
+  ('Mental Health', 'mental-health', 'blog', NULL, 2),
+  ('Fitness', 'fitness', 'blog', NULL, 3),
+  ('Nutrition', 'nutrition', 'blog', NULL, 4),
+  ('General Discussion', 'general-discussion', 'community', NULL, 1),
+  ('Success Stories', 'success-stories', 'community', NULL, 2),
+  ('Products', 'products', 'solutions', NULL, 1),
+  ('Apps & Tools', 'apps-tools', 'solutions', NULL, 2),
+  ('Educational Materials', 'educational-materials', 'solutions', NULL, 3)
 ON CONFLICT (slug) DO NOTHING;
 ```
 
-#### 10. Insert default settings
+#### 12. Insert default settings
 ```sql
 INSERT INTO settings (key, value) VALUES
   ('facebook_url', 'https://facebook.com/vellionation'),
@@ -233,7 +268,7 @@ INSERT INTO settings (key, value) VALUES
 ON CONFLICT (key) DO NOTHING;
 ```
 
-#### 11. Reload the schema
+#### 13. Reload the schema
 ```sql
 NOTIFY pgrst, 'reload schema';
 ```

@@ -181,6 +181,13 @@ This prevents "unknown column" errors when form state contains joined relational
   - Error: "Could not find the 'subcategories' column of 'posts' in the schema cache"
   - Root cause: Joined `subcategories` object wasn't stripped before Supabase update
   - Solution: `const { categories, subcategories, profiles, ...cleanedData } = editingItem;`
+- **SETUP_GUIDE.md Updated**: Fixed incomplete and incorrect database schema
+  - **Added `type` field** to categories table with CHECK constraint ('blog', 'community', 'solutions')
+  - **Added `position` field** to categories table (renamed from display_order for consistency)
+  - **Fixed `community_posts.title`** to be nullable (UI doesn't provide this field)
+  - **Added missing tables**: `community_post_likes`, `community_comments`
+  - **Fixed profiles trigger**: Removed reference to non-existent `email` column
+  - **Updated default categories** with proper type values for blog/community/solutions
 
 **Mobile Responsiveness Improvements:**
 - **Admin Dashboard Mobile Optimization:**
