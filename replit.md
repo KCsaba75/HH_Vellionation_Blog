@@ -146,7 +146,48 @@ Users can manage their profiles at `/profile`:
 - **Rank Progress**: Visual progress bar showing points toward next rank
 - **Badges & Achievements**: Coming soon feature
 
-## Recent Setup (November 13, 2025)
+## Category System Architecture (November 24, 2025)
+The application uses a **hierarchical category system** with the `categories` table:
+
+### Database Structure
+- **categories table**: Stores all categories with optional `parent_id` for hierarchical relationships
+  - Main categories: `parent_id = NULL`
+  - Subcategories: `parent_id` references main category ID
+  - Foreign key relationships:
+    - `posts.category_id` → `categories.id` (main category)
+    - `posts.subcategory_id` → `categories.id` (optional subcategory)
+    - `solutions.category_id` → `categories.id` (main category)
+    - `solutions.subcategory_id` → `categories.id` (optional subcategory)
+    - `community_posts.category_id` → `categories.id`
+    - `community_posts.subcategory_id` → `categories.id`
+
+### Components
+- **CategorySelector**: Dropdown component for selecting main category + optional subcategory in forms
+- **HierarchicalCategoryManager**: Admin UI component for managing categories (create, edit, delete, reorder)
+
+### Critical Implementation Detail
+⚠️ **Always destructure joined objects before Supabase insert/update**:
+```javascript
+const { categories, profiles, ...cleanData } = editingItem;
+await supabase.from('table').insert(cleanData); // Only send column data
+```
+This prevents "unknown column" errors when form state contains joined relational data.
+
+## Recent Updates
+
+### November 24, 2025 - Category System Migration
+- Migrated from settings table JSON arrays to hierarchical categories table with foreign keys
+- Created CategorySelector component for hierarchical category/subcategory selection
+- Updated all pages to use category_id/subcategory_id instead of text-based category field:
+  - AdminPage: Blog and Solutions forms use CategorySelector
+  - BlogDashboardPage: Post creation form uses CategorySelector
+  - CommunityPage: Category filtering uses categories table
+  - BlogPage, BlogPostPage: Display category names from joined categories table
+- Updated Settings tab to use HierarchicalCategoryManager for category management
+- Fixed critical CRUD bug: Strip joined objects (categories, profiles) before Supabase persistence
+- All changes reviewed and approved by architect
+
+### November 13, 2025 - Initial Setup
 - Organized project files into proper directory structure
 - Fixed Supabase configuration to use environment variables with fallbacks
 - Updated Vite configuration for Replit environment (port 5000, 0.0.0.0 host)
