@@ -238,12 +238,12 @@ const AdminPage = () => {
             <h1 className="text-4xl font-bold mb-8">Admin Dashboard</h1>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-              <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-5">
-                <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-                <TabsTrigger value="posts">Blog</TabsTrigger>
-                <TabsTrigger value="solutions">Solutions</TabsTrigger>
-                <TabsTrigger value="users">Users</TabsTrigger>
-                <TabsTrigger value="settings">Settings</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1 h-auto p-1">
+                <TabsTrigger value="dashboard" className="text-xs sm:text-sm w-full justify-center truncate">Dashboard</TabsTrigger>
+                <TabsTrigger value="posts" className="text-xs sm:text-sm w-full justify-center truncate">Blog</TabsTrigger>
+                <TabsTrigger value="solutions" className="text-xs sm:text-sm w-full justify-center truncate">Solutions</TabsTrigger>
+                <TabsTrigger value="users" className="text-xs sm:text-sm w-full justify-center truncate">Users</TabsTrigger>
+                <TabsTrigger value="settings" className="text-xs sm:text-sm w-full justify-center truncate col-span-2 sm:col-span-1">Settings</TabsTrigger>
               </TabsList>
 
               <TabsContent value="dashboard">
@@ -401,13 +401,13 @@ const AdminPage = () => {
               </TabsContent>
 
               <TabsContent value="settings">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
                   {/* General Settings */}
-                  <div className="bg-card p-6 rounded-xl shadow-lg space-y-6 lg:col-span-2">
-                     <div className="flex items-center gap-2"><Settings className="h-5 w-5 text-primary" /><h2 className="text-xl font-semibold">General Settings</h2></div>
-                     <div><Label htmlFor="facebook-url">Facebook URL</Label><input id="facebook-url" value={socialLinks.facebook} onChange={e => setSocialLinks({...socialLinks, facebook: e.target.value})} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                     <div><Label htmlFor="instagram-url">Instagram URL</Label><input id="instagram-url" value={socialLinks.instagram} onChange={e => setSocialLinks({...socialLinks, instagram: e.target.value})} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                     <Button onClick={() => handleSaveSettings('social_links', socialLinks)}><Save className="mr-2 h-4 w-4" />Save Social Links</Button>
+                  <div className="bg-card p-4 sm:p-6 rounded-xl shadow-lg space-y-4 sm:space-y-6 lg:col-span-2">
+                     <div className="flex items-center gap-2"><Settings className="h-5 w-5 text-primary" /><h2 className="text-lg sm:text-xl font-semibold">General Settings</h2></div>
+                     <div><Label htmlFor="facebook-url" className="text-sm">Facebook URL</Label><input id="facebook-url" value={socialLinks.facebook} onChange={e => setSocialLinks({...socialLinks, facebook: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
+                     <div><Label htmlFor="instagram-url" className="text-sm">Instagram URL</Label><input id="instagram-url" value={socialLinks.instagram} onChange={e => setSocialLinks({...socialLinks, instagram: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
+                     <Button onClick={() => handleSaveSettings('social_links', socialLinks)} size="sm" className="text-xs sm:text-sm"><Save className="mr-2 h-4 w-4" />Save Social Links</Button>
                   </div>
 
                   {/* Categories - Hierarchical Management */}
@@ -416,22 +416,22 @@ const AdminPage = () => {
                   <HierarchicalCategoryManager type="solutions" title="Solutions Categories" />
 
                   {/* Page Content */}
-                  <div className="lg:col-span-2 bg-card p-6 rounded-xl shadow-lg space-y-8">
-                    <div className="flex items-center gap-2"><FileText className="h-5 w-5 text-primary" /><h2 className="text-xl font-semibold">Page Content</h2></div>
-                    <div className="prose dark:prose-invert">
-                      <Label className="text-lg font-medium">Help Center</Label>
-                      <ReactQuill theme="snow" value={pageContents.help.content} onChange={(c) => handlePageContentChange('help', c)} className="mt-2 bg-background"/>
-                      <Button className="mt-2" onClick={() => handleSaveSettings('page_content_help', pageContents.help)}><Save className="mr-2 h-4 w-4"/>Save Help Page</Button>
+                  <div className="lg:col-span-2 bg-card p-4 sm:p-6 rounded-xl shadow-lg space-y-6 sm:space-y-8">
+                    <div className="flex items-center gap-2"><FileText className="h-5 w-5 text-primary" /><h2 className="text-lg sm:text-xl font-semibold">Page Content</h2></div>
+                    <div className="prose dark:prose-invert max-w-none">
+                      <Label className="text-sm sm:text-lg font-medium">Help Center</Label>
+                      <ReactQuill theme="snow" value={pageContents.help.content} onChange={(c) => handlePageContentChange('help', c)} className="mt-2 bg-background [&_.ql-toolbar]:text-xs [&_.ql-editor]:min-h-[120px]"/>
+                      <Button className="mt-2" size="sm" onClick={() => handleSaveSettings('page_content_help', pageContents.help)}><Save className="mr-2 h-4 w-4"/>Save Help Page</Button>
                     </div>
-                    <div className="prose dark:prose-invert">
-                      <Label className="text-lg font-medium">Privacy Policy</Label>
-                      <ReactQuill theme="snow" value={pageContents.privacy.content} onChange={(c) => handlePageContentChange('privacy', c)} className="mt-2 bg-background"/>
-                      <Button className="mt-2" onClick={() => handleSaveSettings('page_content_privacy', pageContents.privacy)}><Save className="mr-2 h-4 w-4"/>Save Privacy Page</Button>
+                    <div className="prose dark:prose-invert max-w-none">
+                      <Label className="text-sm sm:text-lg font-medium">Privacy Policy</Label>
+                      <ReactQuill theme="snow" value={pageContents.privacy.content} onChange={(c) => handlePageContentChange('privacy', c)} className="mt-2 bg-background [&_.ql-toolbar]:text-xs [&_.ql-editor]:min-h-[120px]"/>
+                      <Button className="mt-2" size="sm" onClick={() => handleSaveSettings('page_content_privacy', pageContents.privacy)}><Save className="mr-2 h-4 w-4"/>Save Privacy Page</Button>
                     </div>
-                    <div className="prose dark:prose-invert">
-                      <Label className="text-lg font-medium">Terms of Service</Label>
-                      <ReactQuill theme="snow" value={pageContents.terms.content} onChange={(c) => handlePageContentChange('terms', c)} className="mt-2 bg-background"/>
-                      <Button className="mt-2" onClick={() => handleSaveSettings('page_content_terms', pageContents.terms)}><Save className="mr-2 h-4 w-4"/>Save Terms Page</Button>
+                    <div className="prose dark:prose-invert max-w-none">
+                      <Label className="text-sm sm:text-lg font-medium">Terms of Service</Label>
+                      <ReactQuill theme="snow" value={pageContents.terms.content} onChange={(c) => handlePageContentChange('terms', c)} className="mt-2 bg-background [&_.ql-toolbar]:text-xs [&_.ql-editor]:min-h-[120px]"/>
+                      <Button className="mt-2" size="sm" onClick={() => handleSaveSettings('page_content_terms', pageContents.terms)}><Save className="mr-2 h-4 w-4"/>Save Terms Page</Button>
                     </div>
                   </div>
 
