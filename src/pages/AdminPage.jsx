@@ -256,12 +256,14 @@ const AdminPage = () => {
               </TabsContent>
 
               <TabsContent value="posts">
-                 <div className="bg-card p-6 rounded-xl shadow-lg">
-                   <div className="flex justify-between items-center mb-4">
+                 <div className="bg-card p-4 md:p-6 rounded-xl shadow-lg">
+                   <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
                      <h2 className="text-xl font-semibold">Manage Blog Posts</h2>
-                     <Button onClick={() => handleCreate('post')}><Plus className="mr-2 h-4 w-4" />Create Post</Button>
+                     <Button onClick={() => handleCreate('post')} size="sm" className="md:size-default"><Plus className="mr-2 h-4 w-4" /><span className="hidden sm:inline">Create Post</span><span className="sm:hidden">New</span></Button>
                    </div>
-                   <div className="overflow-x-auto">
+                   
+                   {/* Desktop Table View */}
+                   <div className="hidden md:block overflow-x-auto">
                         <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Title</th><th className="py-3 px-4">Author</th><th className="py-3 px-4">Category</th><th className="py-3 px-4">Status</th><th className="py-3 px-4">Actions</th></tr></thead>
                         <tbody>
                             {posts.map(post => (<tr key={post.id} className="border-b dark:border-gray-700">
@@ -276,16 +278,40 @@ const AdminPage = () => {
                             </tr>))}
                         </tbody></table>
                    </div>
+
+                   {/* Mobile Card View */}
+                   <div className="md:hidden space-y-3">
+                     {posts.map(post => (
+                       <div key={post.id} className="bg-background/50 border rounded-lg p-4 space-y-2">
+                         <div className="flex justify-between items-start gap-2">
+                           <h3 className="font-semibold text-sm leading-tight flex-1">{post.title}</h3>
+                           <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${post.status === 'published' ? 'bg-green-500/20 text-green-600 dark:text-green-400' : 'bg-yellow-500/20 text-yellow-600 dark:text-yellow-400'}`}>{post.status}</span>
+                         </div>
+                         <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                           <span>👤 {post.profiles?.name || 'N/A'}</span>
+                           <span>•</span>
+                           <span className="bg-secondary/20 text-secondary-foreground px-2 py-0.5 rounded-full">{post.categories?.name || 'Uncategorized'}{post.subcategories?.name && ` → ${post.subcategories.name}`}</span>
+                         </div>
+                         <div className="flex gap-2 pt-2">
+                           <Button size="sm" variant="outline" onClick={() => navigate(`/blog/${post.slug}`)} className="flex-1"><Eye className="h-3 w-3 mr-1"/>View</Button>
+                           <Button size="sm" variant="outline" onClick={() => handleEdit(post, 'post')} className="flex-1"><Edit className="h-3 w-3 mr-1"/>Edit</Button>
+                           <Button size="sm" variant="destructive" onClick={() => handleDelete(post.id, 'posts')}><Trash2 className="h-3 w-3"/></Button>
+                         </div>
+                       </div>
+                     ))}
+                   </div>
                  </div>
               </TabsContent>
 
               <TabsContent value="solutions">
-                 <div className="bg-card p-6 rounded-xl shadow-lg">
-                   <div className="flex justify-between items-center mb-4">
+                 <div className="bg-card p-4 md:p-6 rounded-xl shadow-lg">
+                   <div className="flex flex-wrap justify-between items-center gap-2 mb-4">
                      <h2 className="text-xl font-semibold">Manage Solutions</h2>
-                     <Button onClick={() => handleCreate('solution')}><Plus className="mr-2 h-4 w-4" />Create Solution</Button>
+                     <Button onClick={() => handleCreate('solution')} size="sm" className="md:size-default"><Plus className="mr-2 h-4 w-4" /><span className="hidden sm:inline">Create Solution</span><span className="sm:hidden">New</span></Button>
                    </div>
-                   <div className="overflow-x-auto">
+                   
+                   {/* Desktop Table View */}
+                   <div className="hidden md:block overflow-x-auto">
                        <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Name</th><th className="py-3 px-4">Category</th><th className="py-3 px-4">Status</th><th className="py-3 px-4">Actions</th></tr></thead>
                        <tbody>
                           {solutions.map(solution => (<tr key={solution.id} className="border-b dark:border-gray-700">
@@ -299,13 +325,34 @@ const AdminPage = () => {
                           </tr>))}
                        </tbody></table>
                    </div>
+
+                   {/* Mobile Card View */}
+                   <div className="md:hidden space-y-3">
+                     {solutions.map(solution => (
+                       <div key={solution.id} className="bg-background/50 border rounded-lg p-4 space-y-2">
+                         <div className="flex justify-between items-start gap-2">
+                           <h3 className="font-semibold text-sm leading-tight flex-1">{solution.name}</h3>
+                           <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${solution.status === 'active' ? 'bg-green-500/20 text-green-600 dark:text-green-400' : 'bg-yellow-500/20 text-yellow-600 dark:text-yellow-400'}`}>{solution.status}</span>
+                         </div>
+                         <div className="text-xs text-muted-foreground">
+                           <span className="bg-secondary/20 text-secondary-foreground px-2 py-0.5 rounded-full">{solution.categories?.name || 'Uncategorized'}{solution.subcategories?.name && ` → ${solution.subcategories.name}`}</span>
+                         </div>
+                         <div className="flex gap-2 pt-2">
+                           <Button size="sm" variant="outline" onClick={() => handleEdit(solution, 'solution')} className="flex-1"><Edit className="h-3 w-3 mr-1"/>Edit</Button>
+                           <Button size="sm" variant="destructive" onClick={() => handleDelete(solution.id, 'solutions')}><Trash2 className="h-3 w-3"/></Button>
+                         </div>
+                       </div>
+                     ))}
+                   </div>
                  </div>
               </TabsContent>
 
               <TabsContent value="users">
-                <div className="bg-card p-6 rounded-xl shadow-lg">
+                <div className="bg-card p-4 md:p-6 rounded-xl shadow-lg">
                    <h2 className="text-xl font-semibold mb-4">Manage Users</h2>
-                   <div className="overflow-x-auto">
+                   
+                   {/* Desktop Table View */}
+                   <div className="hidden md:block overflow-x-auto">
                        <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Name</th><th className="py-3 px-4">Email</th><th className="py-3 px-4">Rank</th><th className="py-3 px-4">Role</th></tr></thead>
                        <tbody>
                           {users.map(userItem => (<tr key={userItem.id} className="border-b dark:border-gray-700">
@@ -321,6 +368,34 @@ const AdminPage = () => {
                               </td>
                           </tr>))}
                        </tbody></table>
+                   </div>
+
+                   {/* Mobile Card View */}
+                   <div className="md:hidden space-y-3">
+                     {users.map(userItem => (
+                       <div key={userItem.id} className="bg-background/50 border rounded-lg p-4 space-y-3">
+                         <div>
+                           <h3 className="font-semibold text-sm">{userItem.name}</h3>
+                           <p className="text-xs text-muted-foreground mt-0.5">{userItem.email}</p>
+                         </div>
+                         <div className="flex flex-wrap gap-2 text-xs">
+                           <span className="bg-primary/10 text-primary px-2 py-1 rounded-full">Rank: {userItem.rank}</span>
+                         </div>
+                         <div>
+                           <Label className="text-xs mb-1 block">Role</Label>
+                           <select 
+                             value={userItem.role} 
+                             onChange={(e) => handleUserRoleChange(userItem.id, e.target.value)} 
+                             disabled={userItem.id === profile.id} 
+                             className="w-full p-2 rounded-lg border bg-background disabled:opacity-50 text-sm"
+                           >
+                             <option value="member">Member</option>
+                             <option value="blogger">Blogger</option>
+                             <option value="admin">Admin</option>
+                           </select>
+                         </div>
+                       </div>
+                     ))}
                    </div>
                  </div>
               </TabsContent>
