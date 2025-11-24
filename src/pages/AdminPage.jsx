@@ -23,6 +23,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import '@/index.css';
 import HierarchicalCategoryManager from '@/components/HierarchicalCategoryManager';
+import CategorySelector from '@/components/CategorySelector';
 
 const AdminPage = () => {
   const { profile, loading: authLoading } = useAuth();
@@ -35,8 +36,6 @@ const AdminPage = () => {
   const [users, setUsers] = useState([]);
   
   const [socialLinks, setSocialLinks] = useState({ facebook: '', instagram: '' });
-  const [blogCategories, setBlogCategories] = useState([]);
-  const [communityCategories, setCommunityCategories] = useState([]);
   const [pageContents, setPageContents] = useState({
     help: { content: '' },
     privacy: { content: '' },
@@ -56,9 +55,9 @@ const AdminPage = () => {
     const { count: commentsCount } = await supabase.from('comments').select('*', { count: 'exact', head: true });
     setStats({ users: usersCount, posts: postsCount, solutions: solutionsCount, comments: commentsCount });
 
-    const { data: postsData } = await supabase.from('posts').select('*, profiles!posts_user_id_fkey(name)').order('created_at', { ascending: false });
+    const { data: postsData } = await supabase.from('posts').select('*, profiles!posts_user_id_fkey(name), categories!posts_category_id_fkey(name)').order('created_at', { ascending: false });
     setPosts(postsData || []);
-    const { data: solutionsData } = await supabase.from('solutions').select('*').order('created_at', { ascending: false });
+    const { data: solutionsData } = await supabase.from('solutions').select('*, categories!solutions_category_id_fkey(name)').order('created_at', { ascending: false });
     setSolutions(solutionsData || []);
     const { data: usersData } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
     setUsers(usersData || []);
@@ -66,8 +65,6 @@ const AdminPage = () => {
     const { data: settingsData } = await supabase.from('settings').select('key, value');
     if (settingsData) {
       setSocialLinks(settingsData.find(s => s.key === 'social_links')?.value || { facebook: '', instagram: '' });
-      setBlogCategories(settingsData.find(s => s.key === 'blog_categories')?.value || []);
-      setCommunityCategories(settingsData.find(s => s.key === 'community_categories')?.value || []);
       setPageContents({
         help: settingsData.find(s => s.key === 'page_content_help')?.value || { content: '' },
         privacy: settingsData.find(s => s.key === 'page_content_privacy')?.value || { content: '' },
@@ -92,7 +89,8 @@ const AdminPage = () => {
         title: '',
         content: '',
         excerpt: '',
-        category: blogCategories[0] || 'General',
+        category_id: null,
+        subcategory_id: null,
         status: 'draft',
         image_url: '',
         seo_title: '',
@@ -103,6 +101,8 @@ const AdminPage = () => {
       setEditingItem({
         name: '',
         description: '',
+        category_id: null,
+        subcategory_id: null,
         status: 'active',
         image_url: '',
         affiliate_url: '',
@@ -162,7 +162,8 @@ const AdminPage = () => {
     e.preventDefault();
     const table = formType === 'post' ? 'posts' : 'solutions';
     
-    let postData = { ...editingItem };
+    const { categories, profiles, ...cleanedData } = editingItem;
+    let postData = { ...cleanedData };
     
     if (formType === 'post' && !editingItem.id) {
       const slug = editingItem.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -219,39 +220,6 @@ const AdminPage = () => {
     }
   };
 
-  const handleCategoryAction = async (type, action, category) => {
-    let currentCategories = type === 'blog' ? [...blogCategories] : [...communityCategories];
-    
-    if (action === 'add') {
-      const newCategory = window.prompt(`Enter new ${type} category name:`);
-      if (newCategory && !currentCategories.includes(newCategory)) {
-        currentCategories.push(newCategory);
-      } else if (newCategory) {
-        toast({ title: 'Category already exists', variant: 'destructive' });
-        return;
-      } else {
-        return;
-      }
-    } else if (action === 'rename') {
-      const updatedName = window.prompt(`Rename category "${category}" to:`, category);
-      if (updatedName && !currentCategories.includes(updatedName)) {
-        const index = currentCategories.indexOf(category);
-        if (index > -1) currentCategories[index] = updatedName;
-      } else if (updatedName) {
-         toast({ title: 'Category name already exists', variant: 'destructive' });
-         return;
-      } else {
-        return;
-      }
-    } else if (action === 'delete') {
-      if (!window.confirm(`Are you sure you want to delete the category "${category}"?`)) return;
-      currentCategories = currentCategories.filter(c => c !== category);
-    }
-    
-    const key = type === 'blog' ? 'blog_categories' : 'community_categories';
-    await handleSaveSettings(key, currentCategories);
-    fetchData();
-  };
   
   const handlePageContentChange = (page, content) => {
     setPageContents(prev => ({...prev, [page]: {content}}));
@@ -406,7 +374,14 @@ const AdminPage = () => {
                 <>
                   <div><Label htmlFor="post-title">Title</Label><input id="post-title" value={editingItem.title || ''} onChange={e => setEditingItem({ ...editingItem, title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
                   <div><Label htmlFor="post-excerpt">Excerpt</Label><textarea id="post-excerpt" value={editingItem.excerpt || ''} onChange={e => setEditingItem({ ...editingItem, excerpt: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
-                  <div><Label htmlFor="post-category">Category</Label><select id="post-category" value={editingItem.category || ''} onChange={e => setEditingItem({ ...editingItem, category: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background">{blogCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)}</select></div>
+                  <CategorySelector
+                    type="blog"
+                    categoryId={editingItem.category_id}
+                    subcategoryId={editingItem.subcategory_id}
+                    onCategoryChange={(id) => setEditingItem({ ...editingItem, category_id: id })}
+                    onSubcategoryChange={(id) => setEditingItem({ ...editingItem, subcategory_id: id })}
+                    required
+                  />
                   <div className="prose dark:prose-invert"><Label htmlFor="post-content">Content</Label><ReactQuill theme="snow" value={editingItem.content || ''} onChange={c => setEditingItem({...editingItem, content: c})} className="mt-1 bg-background" /></div>
                   <div><Label htmlFor="post-seo-title">SEO Title</Label><input id="post-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
                   <div><Label htmlFor="post-seo-desc">SEO Description</Label><textarea id="post-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
@@ -417,6 +392,14 @@ const AdminPage = () => {
                 <>
                   <div><Label htmlFor="solution-name">Name</Label><input id="solution-name" value={editingItem.name || ''} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
                   <div><Label htmlFor="solution-desc">Description</Label><textarea id="solution-desc" value={editingItem.description || ''} onChange={e => setEditingItem({ ...editingItem, description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={3}/></div>
+                  <CategorySelector
+                    type="solutions"
+                    categoryId={editingItem.category_id}
+                    subcategoryId={editingItem.subcategory_id}
+                    onCategoryChange={(id) => setEditingItem({ ...editingItem, category_id: id })}
+                    onSubcategoryChange={(id) => setEditingItem({ ...editingItem, subcategory_id: id })}
+                    required
+                  />
                   <div><Label htmlFor="solution-affiliate">Affiliate URL</Label><input id="solution-affiliate" value={editingItem.affiliate_url || ''} onChange={e => setEditingItem({ ...editingItem, affiliate_url: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
                   <div><Label htmlFor="solution-rating">Rating (1-5)</Label><input id="solution-rating" type="number" min="1" max="5" value={editingItem.rating || 5} onChange={e => setEditingItem({ ...editingItem, rating: Number(e.target.value) })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
                   <div><Label htmlFor="solution-seo-title">SEO Title</Label><input id="solution-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>

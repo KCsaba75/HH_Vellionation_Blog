@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/label';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import '@/index.css';
+import CategorySelector from '@/components/CategorySelector';
 
 const BlogDashboardPage = () => {
   const { user, profile, loading: authLoading } = useAuth();
@@ -20,7 +21,6 @@ const BlogDashboardPage = () => {
 
   const [posts, setPosts] = useState([]);
   const [editingPost, setEditingPost] = useState(null);
-  const [blogCategories, setBlogCategories] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
@@ -33,7 +33,6 @@ const BlogDashboardPage = () => {
         return;
       }
       fetchUserPosts();
-      fetchCategories();
     }
   }, [user, profile, authLoading, navigate]);
 
@@ -41,7 +40,7 @@ const BlogDashboardPage = () => {
     if (!user) return;
     const { data, error } = await supabase
       .from('posts')
-      .select('*')
+      .select('*, categories!posts_category_id_fkey(name)')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
     if (error) {
@@ -51,23 +50,13 @@ const BlogDashboardPage = () => {
     }
   };
 
-  const fetchCategories = async () => {
-    const { data, error } = await supabase
-      .from('settings')
-      .select('value')
-      .eq('key', 'blog_categories')
-      .single();
-    if (data?.value) {
-      setBlogCategories(data.value);
-    }
-  };
-
   const createNewPost = () => {
     setEditingPost({
       title: '',
       content: '',
       excerpt: '',
-      category: blogCategories[0] || 'General',
+      category_id: null,
+      subcategory_id: null,
       status: 'draft',
       image_url: '',
       seo_title: '',
@@ -124,13 +113,14 @@ const BlogDashboardPage = () => {
     }
     const slug = editingPost.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     
-    let response;
-    const postData = { ...editingPost, user_id: user.id, slug };
+    const { categories, profiles, ...postData } = editingPost;
+    const finalPostData = { ...postData, user_id: user.id, slug };
     
+    let response;
     if (editingPost.id) { // Update
-        response = await supabase.from('posts').update(postData).eq('id', editingPost.id).select().single();
+        response = await supabase.from('posts').update(finalPostData).eq('id', editingPost.id).select().single();
     } else { // Insert
-        response = await supabase.from('posts').insert(postData).select().single();
+        response = await supabase.from('posts').insert(finalPostData).select().single();
     }
 
     if (response.error) {
@@ -187,9 +177,14 @@ const BlogDashboardPage = () => {
                           <Switch id="post-status" checked={editingPost.status === 'published'} onCheckedChange={(checked) => setEditingPost({ ...editingPost, status: checked ? 'published' : 'draft' })} />
                           <Label htmlFor="post-status">{editingPost.status === 'published' ? 'Published' : 'Draft'}</Label>
                         </div>
-                        <select value={editingPost.category} onChange={e => setEditingPost({ ...editingPost, category: e.target.value })} className="w-full p-3 rounded-lg border bg-background">
-                            {blogCategories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                        </select>
+                        <CategorySelector
+                          type="blog"
+                          categoryId={editingPost.category_id}
+                          subcategoryId={editingPost.subcategory_id}
+                          onCategoryChange={(id) => setEditingPost({ ...editingPost, category_id: id })}
+                          onSubcategoryChange={(id) => setEditingPost({ ...editingPost, subcategory_id: id })}
+                          required
+                        />
                       </div>
                       <div className="bg-muted p-4 rounded-lg space-y-4">
                         <h3 className="font-semibold">Featured Image</h3>
@@ -225,7 +220,7 @@ const BlogDashboardPage = () => {
                             {posts.map(post => (
                             <tr key={post.id} className="border-b dark:border-gray-700">
                                 <td className="py-3 px-4 font-semibold">{post.title}</td>
-                                <td className="py-3 px-4"><span className="bg-secondary/20 text-secondary-foreground px-2 py-1 rounded-full text-xs">{post.category}</span></td>
+                                <td className="py-3 px-4"><span className="bg-secondary/20 text-secondary-foreground px-2 py-1 rounded-full text-xs">{post.categories?.name || 'Uncategorized'}</span></td>
                                 <td className="py-3 px-4"><span className={`font-medium ${post.status === 'published' ? 'text-green-500' : 'text-yellow-500'}`}>{post.status}</span></td>
                                 <td className="py-3 px-4 flex gap-2">
                                     <Button size="sm" variant="outline" onClick={() => navigate(`/blog/${post.slug}`)} disabled={post.status !== 'published'}><Eye className="h-4 w-4"/></Button>

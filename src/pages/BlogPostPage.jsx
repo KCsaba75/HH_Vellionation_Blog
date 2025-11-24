@@ -41,7 +41,8 @@ const BlogPostPage = () => {
       .from('posts')
       .select(`
         *,
-        profiles!posts_user_id_fkey ( name )
+        profiles!posts_user_id_fkey ( name ),
+        categories!posts_category_id_fkey ( name )
       `)
       .eq('slug', slug)
       .single();
@@ -177,7 +178,7 @@ const BlogPostPage = () => {
 
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
             <div className="mb-6">
-              <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">{post.category}</span>
+              <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">{post.categories?.name || 'Uncategorized'}</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">{post.title}</h1>
             <div className="flex items-center gap-6 text-muted-foreground mb-8">

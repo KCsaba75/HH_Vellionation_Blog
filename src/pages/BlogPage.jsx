@@ -9,8 +9,22 @@ import { supabase } from '@/lib/customSupabaseClient';
 
 const BlogPage = () => {
   const [posts, setPosts] = useState([]);
-  const [filter, setFilter] = useState('all');
+  const [categories, setCategories] = useState([]);
+  const [filter, setFilter] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const { data } = await supabase
+        .from('categories')
+        .select('id, name')
+        .eq('type', 'blog')
+        .is('parent_id', null)
+        .order('position', { ascending: true });
+      setCategories(data || []);
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -19,13 +33,14 @@ const BlogPage = () => {
         .from('posts')
         .select(`
           *,
-          profiles!posts_user_id_fkey ( name )
+          profiles!posts_user_id_fkey ( name ),
+          categories!posts_category_id_fkey ( name )
         `)
         .eq('status', 'published')
         .order('created_at', { ascending: false });
 
-      if (filter !== 'all') {
-        query = query.eq('category', filter);
+      if (filter !== null) {
+        query = query.eq('category_id', filter);
       }
       
       const { data, error } = await query;
@@ -33,7 +48,6 @@ const BlogPage = () => {
       if (error) {
         console.error('Error fetching posts:', error);
       } else {
-        // The data structure remains the same, as Supabase will nest the profile under `profiles` key
         setPosts(data);
       }
       setLoading(false);
@@ -41,8 +55,6 @@ const BlogPage = () => {
 
     fetchPosts();
   }, [filter]);
-
-  const categories = ['all', 'Fitness', 'Nutrition', 'Mindset', 'Motivation'];
 
   return (
     <>
@@ -69,14 +81,21 @@ const BlogPage = () => {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap gap-2 mb-8 justify-center">
+            <Button
+              variant={filter === null ? 'default' : 'outline'}
+              onClick={() => setFilter(null)}
+              className="capitalize"
+            >
+              All
+            </Button>
             {categories.map(cat => (
               <Button
-                key={cat}
-                variant={filter === cat ? 'default' : 'outline'}
-                onClick={() => setFilter(cat)}
+                key={cat.id}
+                variant={filter === cat.id ? 'default' : 'outline'}
+                onClick={() => setFilter(cat.id)}
                 className="capitalize"
               >
-                {cat}
+                {cat.name}
               </Button>
             ))}
           </div>
@@ -105,7 +124,7 @@ const BlogPage = () => {
                   <div className="p-6">
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
                       <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium">
-                        {post.category}
+                        {post.categories?.name || 'Uncategorized'}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />

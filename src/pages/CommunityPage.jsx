@@ -16,7 +16,7 @@ const CommunityPage = () => {
   const [posts, setPosts] = useState([]);
   const [newPostContent, setNewPostContent] = useState('');
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDragOver, setIsDragOver] = useState(false);
   const [uploadedImages, setUploadedImages] = useState([]);
@@ -24,8 +24,13 @@ const CommunityPage = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const { data } = await supabase.from('settings').select('value').eq('key', 'community_categories').single();
-      setCategories(['All', ...(data?.value || ['Experiences', 'Recipes', 'Tips', 'Questions'])]);
+      const { data } = await supabase
+        .from('categories')
+        .select('id, name')
+        .eq('type', 'community')
+        .is('parent_id', null)
+        .order('position', { ascending: true });
+      setCategories(data || []);
     };
     fetchCategories();
   }, []);
@@ -34,7 +39,7 @@ const CommunityPage = () => {
     if (categories.length === 0) return;
     setLoading(true);
     let query = supabase.from('community_posts').select(`*, profiles!community_posts_user_id_fkey(name, rank), community_post_likes(user_id), community_comments(id)`).order('created_at', { ascending: false });
-    if (selectedCategory !== 'All') query = query.eq('category', selectedCategory);
+    if (selectedCategoryId !== null) query = query.eq('category_id', selectedCategoryId);
     const { data, error } = await query;
     if (error) {
       toast({ title: "Error fetching posts", message: error.message, variant: "destructive" });
@@ -47,7 +52,7 @@ const CommunityPage = () => {
       })));
     }
     setLoading(false);
-  }, [selectedCategory, categories, user]);
+  }, [selectedCategoryId, categories, user]);
 
   useEffect(() => {
     fetchPosts();
@@ -128,10 +133,10 @@ const CommunityPage = () => {
 
   const handleCreatePost = async () => {
     if (!user) { toast({ title: "Login Required", description: "Please login to create posts" }); return; }
-    if (selectedCategory === 'All') { toast({ title: "Cannot post in 'All'", description: "Please select a specific category.", variant: "destructive" }); return; }
+    if (selectedCategoryId === null) { toast({ title: "Select a category", description: "Please select a specific category to post.", variant: "destructive" }); return; }
     if (!newPostContent.trim()) return;
 
-    const { error } = await supabase.from('community_posts').insert({ user_id: user.id, content: newPostContent, category: selectedCategory });
+    const { error } = await supabase.from('community_posts').insert({ user_id: user.id, content: newPostContent, category_id: selectedCategoryId });
     if (error) {
       toast({ title: "Error creating post", description: error.message, variant: 'destructive' });
     } else {
@@ -168,9 +173,14 @@ const CommunityPage = () => {
       <Helmet><title>Community - Vellio Nation</title><meta name="description" content="Connect with the Vellio Nation community." /></Helmet>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
-          <aside className="w-full md:w-1/4 lg:w-1/5"><h2 className="text-lg font-semibold mb-4 px-3">Categories</h2><nav className="flex flex-col space-y-1">{categories.map(cat => (<Button key={cat} variant="ghost" onClick={() => setSelectedCategory(cat)} className={cn('w-full justify-start', selectedCategory === cat && 'bg-primary/10 text-primary')}>{cat}{selectedCategory === cat && <ChevronRight className="ml-auto h-4 w-4" />}</Button>))}</nav></aside>
+          <aside className="w-full md:w-1/4 lg:w-1/5"><h2 className="text-lg font-semibold mb-4 px-3">Categories</h2><nav className="flex flex-col space-y-1">
+            <Button variant="ghost" onClick={() => setSelectedCategoryId(null)} className={cn('w-full justify-start', selectedCategoryId === null && 'bg-primary/10 text-primary')}>
+              All{selectedCategoryId === null && <ChevronRight className="ml-auto h-4 w-4" />}
+            </Button>
+            {categories.map(cat => (<Button key={cat.id} variant="ghost" onClick={() => setSelectedCategoryId(cat.id)} className={cn('w-full justify-start', selectedCategoryId === cat.id && 'bg-primary/10 text-primary')}>{cat.name}{selectedCategoryId === cat.id && <ChevronRight className="ml-auto h-4 w-4" />}</Button>))}
+          </nav></aside>
           <main className="flex-1 flex flex-col">
-            <h1 className="text-3xl font-bold mb-4">{selectedCategory}</h1>
+            <h1 className="text-3xl font-bold mb-4">{selectedCategoryId === null ? 'All' : categories.find(c => c.id === selectedCategoryId)?.name || 'Community'}</h1>
             <div className="flex-grow space-y-6 overflow-y-auto pr-2 mb-8">
               {loading ? (<div className="text-center py-12"><p>Loading posts...</p></div>) : posts.length === 0 ? (<div className="text-center py-12 bg-card rounded-xl"><p className="text-muted-foreground">No posts yet in this category. Be the first to share!</p></div>) : (posts.map((post, index) => (
                 <motion.article key={post.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} className="bg-card p-6 rounded-xl shadow-lg">
@@ -201,8 +211,8 @@ const CommunityPage = () => {
                   </div>
                 )}
                 <div className="relative">
-                  <textarea ref={newPostTextAreaRef} value={newPostContent} onChange={(e) => setNewPostContent(e.target.value)} onPaste={handlePaste} placeholder={selectedCategory === 'All' ? "Select a category to post..." : "Share with the community... (drag-and-drop or paste an image)"} className="w-full p-3 pr-12 rounded-lg border bg-background resize-none" rows="3" disabled={selectedCategory === 'All'} />
-                  <Button onClick={handleCreatePost} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9" disabled={(!newPostContent.trim() && uploadedImages.length === 0) || selectedCategory === 'All'}><Send className="h-4 w-4" /></Button>
+                  <textarea ref={newPostTextAreaRef} value={newPostContent} onChange={(e) => setNewPostContent(e.target.value)} onPaste={handlePaste} placeholder={selectedCategoryId === null ? "Select a category to post..." : "Share with the community... (drag-and-drop or paste an image)"} className="w-full p-3 pr-12 rounded-lg border bg-background resize-none" rows="3" disabled={selectedCategoryId === null} />
+                  <Button onClick={handleCreatePost} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9" disabled={(!newPostContent.trim() && uploadedImages.length === 0) || selectedCategoryId === null}><Send className="h-4 w-4" /></Button>
                 </div>
               </motion.div>
             )}
