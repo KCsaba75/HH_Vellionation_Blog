@@ -9,70 +9,40 @@ import { supabase } from '@/lib/customSupabaseClient';
 
 const BlogPage = () => {
   const [posts, setPosts] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    const fetchPosts = async () => {
+      setLoading(true);
+      let query = supabase
+        .from('posts')
+        .select(`
+          *,
+          profiles!posts_user_id_fkey ( name )
+        `)
+        .eq('status', 'published')
+        .order('created_at', { ascending: false });
 
-  useEffect(() => {
+      if (filter !== 'all') {
+        query = query.eq('category', filter);
+      }
+      
+      const { data, error } = await query;
+
+      if (error) {
+        console.error('Error fetching posts:', error);
+      } else {
+        // The data structure remains the same, as Supabase will nest the profile under `profiles` key
+        setPosts(data);
+      }
+      setLoading(false);
+    };
+
     fetchPosts();
   }, [filter]);
 
-  const fetchCategories = async () => {
-    const { data, error } = await supabase
-      .from('categories')
-      .select('*')
-      .eq('type', 'blog')
-      .order('position', { ascending: true });
-    
-    if (!error && data) {
-      setCategories(data);
-    }
-  };
-
-  const fetchPosts = async () => {
-    setLoading(true);
-    let query = supabase
-      .from('posts')
-      .select(`
-        *,
-        profiles!user_id ( name ),
-        main_category:categories!category_id ( id, name ),
-        subcategory:categories!subcategory_id ( id, name )
-      `)
-      .eq('status', 'published')
-      .order('created_at', { ascending: false });
-
-    if (filter !== 'all') {
-      // Filter by either main category or parent of subcategory
-      const selectedCategory = categories.find(c => c.name === filter);
-      if (selectedCategory) {
-        const subcategoryIds = categories.filter(c => c.parent_id === selectedCategory.id).map(c => c.id);
-        if (subcategoryIds.length > 0) {
-          // Has subcategories - match main category OR any subcategory
-          query = query.or(`category_id.eq.${selectedCategory.id},subcategory_id.in.(${subcategoryIds.join(',')})`);
-        } else {
-          // No subcategories - just match main category
-          query = query.eq('category_id', selectedCategory.id);
-        }
-      }
-    }
-    
-    const { data, error } = await query;
-
-    if (error) {
-      console.error('Error fetching posts:', error);
-    } else {
-      setPosts(data);
-    }
-    setLoading(false);
-  };
-
-  // Get main categories for filter buttons
-  const mainCategories = categories.filter(c => !c.parent_id);
+  const categories = ['all', 'Fitness', 'Nutrition', 'Mindset', 'Motivation'];
 
   return (
     <>
@@ -99,21 +69,14 @@ const BlogPage = () => {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap gap-2 mb-8 justify-center">
-            <Button
-              variant={filter === 'all' ? 'default' : 'outline'}
-              onClick={() => setFilter('all')}
-              className="capitalize"
-            >
-              All
-            </Button>
-            {mainCategories.map(cat => (
+            {categories.map(cat => (
               <Button
-                key={cat.id}
-                variant={filter === cat.name ? 'default' : 'outline'}
-                onClick={() => setFilter(cat.name)}
+                key={cat}
+                variant={filter === cat ? 'default' : 'outline'}
+                onClick={() => setFilter(cat)}
                 className="capitalize"
               >
-                {cat.name}
+                {cat}
               </Button>
             ))}
           </div>
@@ -141,11 +104,9 @@ const BlogPage = () => {
                   </div>
                   <div className="p-6">
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
-                      {(post.main_category || post.subcategory) && (
-                        <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium">
-                          {post.subcategory ? `${post.main_category?.name} > ${post.subcategory.name}` : post.main_category?.name}
-                        </span>
-                      )}
+                      <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium">
+                        {post.category}
+                      </span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
                         {post.read_time || '5 min read'}

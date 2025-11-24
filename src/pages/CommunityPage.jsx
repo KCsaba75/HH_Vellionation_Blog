@@ -33,7 +33,7 @@ const CommunityPage = () => {
   const fetchPosts = useCallback(async () => {
     if (categories.length === 0) return;
     setLoading(true);
-    let query = supabase.from('community_posts').select(`*, profiles(name, rank), community_post_likes(user_id), community_comments(id)`).order('created_at', { ascending: false });
+    let query = supabase.from('community_posts').select(`*, profiles!community_posts_user_id_fkey(name, rank), community_post_likes(user_id), community_comments(id)`).order('created_at', { ascending: false });
     if (selectedCategory !== 'All') query = query.eq('category', selectedCategory);
     const { data, error } = await query;
     if (error) {

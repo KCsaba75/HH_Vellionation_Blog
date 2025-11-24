@@ -23,17 +23,10 @@ ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 -- Allow public read access
 CREATE POLICY "Allow public read access" ON categories FOR SELECT USING (true);
 
--- Allow only admins to insert/update/delete categories
--- Check if user has admin role in profiles table
-CREATE POLICY "Allow admin insert" ON categories FOR INSERT WITH CHECK (
-  EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND profiles.role = 'admin')
-);
-CREATE POLICY "Allow admin update" ON categories FOR UPDATE USING (
-  EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND profiles.role = 'admin')
-);
-CREATE POLICY "Allow admin delete" ON categories FOR DELETE USING (
-  EXISTS (SELECT 1 FROM profiles WHERE profiles.id = auth.uid() AND profiles.role = 'admin')
-);
+-- Allow authenticated users to insert/update/delete
+CREATE POLICY "Allow admin insert" ON categories FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Allow admin update" ON categories FOR UPDATE USING (auth.role() = 'authenticated');
+CREATE POLICY "Allow admin delete" ON categories FOR DELETE USING (auth.role() = 'authenticated');
 
 -- Add category columns to existing tables
 ALTER TABLE posts ADD COLUMN IF NOT EXISTS category_id uuid REFERENCES categories(id) ON DELETE SET NULL;
