@@ -38,7 +38,10 @@ const CategorySelector = ({
       .is('parent_id', null)
       .order('position', { ascending: true });
     
-    if (!error && data) {
+    if (error) {
+      console.error('Error fetching categories:', error);
+      setMainCategories([]);
+    } else if (data) {
       setMainCategories(data);
     }
     setLoading(false);
@@ -60,7 +63,7 @@ const CategorySelector = ({
   };
 
   const handleCategoryChange = (e) => {
-    const newCategoryId = e.target.value ? parseInt(e.target.value) : null;
+    const newCategoryId = e.target.value || null;
     onCategoryChange(newCategoryId);
     if (newCategoryId === null) {
       onSubcategoryChange(null);
@@ -68,12 +71,23 @@ const CategorySelector = ({
   };
 
   const handleSubcategoryChange = (e) => {
-    const newSubcategoryId = e.target.value ? parseInt(e.target.value) : null;
+    const newSubcategoryId = e.target.value || null;
     onSubcategoryChange(newSubcategoryId);
   };
 
   if (loading) {
     return <div className="text-sm text-muted-foreground">Loading categories...</div>;
+  }
+
+  if (mainCategories.length === 0) {
+    return (
+      <div className="p-4 border border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+        <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200">⚠️ No categories available</p>
+        <p className="text-xs text-yellow-700 dark:text-yellow-300 mt-1">
+          Please configure Supabase and create categories in Settings first, or follow the SETUP_GUIDE.md.
+        </p>
+      </div>
+    );
   }
 
   return (

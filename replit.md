@@ -189,7 +189,11 @@ This prevents "unknown column" errors when form state contains joined relational
   - `categories!...category_id_fkey(name), subcategories:categories!...subcategory_id_fkey(name)`
   - Display pattern: "Category → Subcategory" (subcategory only shown if exists)
   - Applied to: BlogPage, BlogPostPage, BlogDashboardPage, AdminPage (posts & solutions), CommunityPage
-- All changes reviewed and approved by architect (2 review cycles, both PASS)
+- **CategorySelector UUID Bug Fix**: Removed parseInt() conversion that was blocking category selection
+  - Category IDs are UUIDs (not integers), parseInt was converting them to NaN/null
+  - Now properly preserves UUID strings for Supabase foreign key relationships
+  - Added user-friendly warning message when categories cannot be loaded
+- All changes reviewed and approved by architect (3 review cycles, all PASS)
 
 ### November 13, 2025 - Initial Setup
 - Organized project files into proper directory structure
