@@ -175,17 +175,21 @@ This prevents "unknown column" errors when form state contains joined relational
 
 ## Recent Updates
 
-### November 24, 2025 - Category System Migration
+### November 24, 2025 - Category System Migration & Subcategory Display
 - Migrated from settings table JSON arrays to hierarchical categories table with foreign keys
 - Created CategorySelector component for hierarchical category/subcategory selection
 - Updated all pages to use category_id/subcategory_id instead of text-based category field:
-  - AdminPage: Blog and Solutions forms use CategorySelector
-  - BlogDashboardPage: Post creation form uses CategorySelector
-  - CommunityPage: Category filtering uses categories table
-  - BlogPage, BlogPostPage: Display category names from joined categories table
+  - AdminPage: Blog and Solutions forms use CategorySelector, tables display category + subcategory
+  - BlogDashboardPage: Post creation form uses CategorySelector, table displays category + subcategory
+  - CommunityPage: Category filtering uses categories table, posts display category + subcategory
+  - BlogPage, BlogPostPage: Display category names from joined categories table with subcategory support
 - Updated Settings tab to use HierarchicalCategoryManager for category management
 - Fixed critical CRUD bug: Strip joined objects (categories, profiles) before Supabase persistence
-- All changes reviewed and approved by architect
+- **Subcategory Visibility Fix**: Updated all queries to join subcategory_id with alias pattern:
+  - `categories!...category_id_fkey(name), subcategories:categories!...subcategory_id_fkey(name)`
+  - Display pattern: "Category → Subcategory" (subcategory only shown if exists)
+  - Applied to: BlogPage, BlogPostPage, BlogDashboardPage, AdminPage (posts & solutions), CommunityPage
+- All changes reviewed and approved by architect (2 review cycles, both PASS)
 
 ### November 13, 2025 - Initial Setup
 - Organized project files into proper directory structure
