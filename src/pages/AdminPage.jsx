@@ -443,14 +443,14 @@ const AdminPage = () => {
       </div>
       
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>{editingItem?.id ? 'Edit' : 'Create'} {formType}</DialogTitle></DialogHeader>
+        <DialogContent className="max-w-[95vw] sm:max-w-[600px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+          <DialogHeader><DialogTitle className="text-lg sm:text-xl">{editingItem?.id ? 'Edit' : 'Create'} {formType}</DialogTitle></DialogHeader>
           {editingItem && (
-            <form onSubmit={handleFormSubmit} className="space-y-4 pt-4">
+            <form onSubmit={handleFormSubmit} className="space-y-3 sm:space-y-4 pt-4">
               {formType === 'post' && (
                 <>
-                  <div><Label htmlFor="post-title">Title</Label><input id="post-title" value={editingItem.title || ''} onChange={e => setEditingItem({ ...editingItem, title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
-                  <div><Label htmlFor="post-excerpt">Excerpt</Label><textarea id="post-excerpt" value={editingItem.excerpt || ''} onChange={e => setEditingItem({ ...editingItem, excerpt: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
+                  <div><Label htmlFor="post-title" className="text-sm">Title</Label><input id="post-title" value={editingItem.title || ''} onChange={e => setEditingItem({ ...editingItem, title: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" required /></div>
+                  <div><Label htmlFor="post-excerpt" className="text-sm">Excerpt</Label><textarea id="post-excerpt" value={editingItem.excerpt || ''} onChange={e => setEditingItem({ ...editingItem, excerpt: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" rows={2} /></div>
                   <CategorySelector
                     type="blog"
                     categoryId={editingItem.category_id}
@@ -459,16 +459,16 @@ const AdminPage = () => {
                     onSubcategoryChange={(id) => setEditingItem({ ...editingItem, subcategory_id: id })}
                     required
                   />
-                  <div className="prose dark:prose-invert"><Label htmlFor="post-content">Content</Label><ReactQuill theme="snow" value={editingItem.content || ''} onChange={c => setEditingItem({...editingItem, content: c})} className="mt-1 bg-background" /></div>
-                  <div><Label htmlFor="post-seo-title">SEO Title</Label><input id="post-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="post-seo-desc">SEO Description</Label><textarea id="post-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
+                  <div className="prose dark:prose-invert max-w-none"><Label htmlFor="post-content" className="text-sm">Content</Label><ReactQuill theme="snow" value={editingItem.content || ''} onChange={c => setEditingItem({...editingItem, content: c})} className="mt-1 bg-background [&_.ql-editor]:min-h-[150px] [&_.ql-toolbar]:text-xs" /></div>
+                  <div><Label htmlFor="post-seo-title" className="text-sm">SEO Title</Label><input id="post-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
+                  <div><Label htmlFor="post-seo-desc" className="text-sm">SEO Description</Label><textarea id="post-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" rows={2} /></div>
                   <div className="flex items-center space-x-2"><Switch id="post-status" checked={editingItem.status === 'published'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'published' : 'draft' })} /><Label htmlFor="post-status">{editingItem.status === 'published' ? 'Published' : 'Draft'}</Label></div>
                 </>
               )}
               {formType === 'solution' && (
                 <>
-                  <div><Label htmlFor="solution-name">Name</Label><input id="solution-name" value={editingItem.name || ''} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" required /></div>
-                  <div><Label htmlFor="solution-desc">Description</Label><textarea id="solution-desc" value={editingItem.description || ''} onChange={e => setEditingItem({ ...editingItem, description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={3}/></div>
+                  <div><Label htmlFor="solution-name" className="text-sm">Name</Label><input id="solution-name" value={editingItem.name || ''} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" required /></div>
+                  <div><Label htmlFor="solution-desc" className="text-sm">Description</Label><textarea id="solution-desc" value={editingItem.description || ''} onChange={e => setEditingItem({ ...editingItem, description: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" rows={3}/></div>
                   <CategorySelector
                     type="solutions"
                     categoryId={editingItem.category_id}
@@ -477,29 +477,29 @@ const AdminPage = () => {
                     onSubcategoryChange={(id) => setEditingItem({ ...editingItem, subcategory_id: id })}
                     required
                   />
-                  <div><Label htmlFor="solution-affiliate">Affiliate URL</Label><input id="solution-affiliate" value={editingItem.affiliate_url || ''} onChange={e => setEditingItem({ ...editingItem, affiliate_url: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="solution-rating">Rating (1-5)</Label><input id="solution-rating" type="number" min="1" max="5" value={editingItem.rating || 5} onChange={e => setEditingItem({ ...editingItem, rating: Number(e.target.value) })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="solution-seo-title">SEO Title</Label><input id="solution-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" /></div>
-                  <div><Label htmlFor="solution-seo-desc">SEO Description</Label><textarea id="solution-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2 rounded-lg border bg-background" rows={2} /></div>
+                  <div><Label htmlFor="solution-affiliate" className="text-sm">Affiliate URL</Label><input id="solution-affiliate" value={editingItem.affiliate_url || ''} onChange={e => setEditingItem({ ...editingItem, affiliate_url: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
+                  <div><Label htmlFor="solution-rating" className="text-sm">Rating (1-5)</Label><input id="solution-rating" type="number" min="1" max="5" value={editingItem.rating || 5} onChange={e => setEditingItem({ ...editingItem, rating: Number(e.target.value) })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
+                  <div><Label htmlFor="solution-seo-title" className="text-sm">SEO Title</Label><input id="solution-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
+                  <div><Label htmlFor="solution-seo-desc" className="text-sm">SEO Description</Label><textarea id="solution-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" rows={2} /></div>
                   <div className="flex items-center space-x-2"><Switch id="solution-status" checked={editingItem.status === 'active'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'active' : 'inactive' })} /><Label htmlFor="solution-status">{editingItem.status === 'active' ? 'Active' : 'Inactive'}</Label></div>
                 </>
               )}
                <div>
-                    <Label>Image</Label>
+                    <Label className="text-sm">Image</Label>
                     {editingItem.image_url && (
-                      <div className="relative inline-block mt-2 mb-2">
-                        <img src={editingItem.image_url} alt="Preview" className="w-full max-w-sm rounded-lg object-cover border-2 border-primary" />
+                      <div className="relative inline-block mt-2 mb-2 w-full">
+                        <img src={editingItem.image_url} alt="Preview" className="w-full max-w-xs sm:max-w-sm rounded-lg object-cover border-2 border-primary" />
                         <button type="button" onClick={() => setEditingItem({ ...editingItem, image_url: '' })} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg">
                           <X className="h-4 w-4" />
                         </button>
                       </div>
                     )}
                     <div className="flex gap-2">
-                      <Button type="button" onClick={() => fileInputRef.current.click()} disabled={uploading}><Upload className="mr-2 h-4 w-4" />{uploading ? "Uploading..." : editingItem.image_url ? "Change Image" : "Upload Image"}</Button>
+                      <Button type="button" size="sm" onClick={() => fileInputRef.current.click()} disabled={uploading} className="text-xs sm:text-sm"><Upload className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />{uploading ? "Uploading..." : editingItem.image_url ? "Change" : "Upload"}</Button>
                       <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" accept="image/*" />
                     </div>
                </div>
-              <DialogFooter><DialogClose asChild><Button type="button" variant="secondary">Cancel</Button></DialogClose><Button type="submit"><Save className="mr-2 h-4 w-4"/>Save changes</Button></DialogFooter>
+              <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0"><DialogClose asChild><Button type="button" variant="secondary" size="sm" className="w-full sm:w-auto text-xs sm:text-sm">Cancel</Button></DialogClose><Button type="submit" size="sm" className="w-full sm:w-auto text-xs sm:text-sm"><Save className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4"/>Save</Button></DialogFooter>
             </form>
           )}
         </DialogContent>
