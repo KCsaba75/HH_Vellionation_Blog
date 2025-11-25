@@ -41,3 +41,12 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
 - **Framer Motion**: For animations.
 - **Radix UI**: For unstyled, accessible UI components.
 - **React Quill**: For rich text editing capabilities.
+
+## Recent Updates
+
+### November 25, 2025
+- **Blog Post PDF Export**: Added PDF button on blog posts for logged-in users only (opens print-friendly view)
+- **Share Button Restriction**: Share dropdown now only visible to logged-in users
+- **Blog Search**: Added search input field to BlogPage with real-time filtering by title and excerpt
+- **Solutions Sidebar Navigation**: Redesigned SolutionsPage with left sidebar category navigation and expandable subcategories
+- **SPA Routing Fix**: Changed preview script to use `serve dist -s -l 5000` for proper SPA fallback

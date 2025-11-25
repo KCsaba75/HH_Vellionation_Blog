@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { Clock, User, ArrowLeft, Heart, MessageCircle, Share2, Copy } from 'lucide-react';
+import { Clock, User, ArrowLeft, Heart, MessageCircle, Share2, Copy, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { toast } from '@/components/ui/use-toast';
@@ -104,6 +104,42 @@ const BlogPostPage = () => {
         return;
     }
     window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  const handlePrintPdf = () => {
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>${post.title} - Vellio Nation</title>
+          <style>
+            body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+            h1 { font-size: 2em; margin-bottom: 0.5em; }
+            .meta { color: #666; margin-bottom: 2em; font-size: 0.9em; }
+            .excerpt { font-size: 1.1em; color: #444; margin-bottom: 2em; font-style: italic; }
+            .content { font-size: 1em; }
+            .content img { max-width: 100%; height: auto; }
+            @media print { body { margin: 20px; } }
+          </style>
+        </head>
+        <body>
+          <h1>${post.title}</h1>
+          <div class="meta">
+            By ${post.profiles?.name || 'Vellio Team'} | ${post.read_time || '5 min read'} | ${post.categories?.name || 'Uncategorized'}
+          </div>
+          <div class="excerpt">${post.excerpt || ''}</div>
+          <div class="content">${post.content}</div>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+      }, 250);
+    }
   };
 
   const handleComment = async () => {
@@ -208,15 +244,22 @@ const BlogPostPage = () => {
               </Button>
               <span className="text-muted-foreground">{comments.length} comments</span>
               <div className="flex-grow" />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild><Button variant="outline" className="gap-2"><Share2 className="h-5 w-5" /> Share</Button></DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => handleShare('facebook')}><Facebook className="mr-2 h-4 w-4 text-[#1877F2]" />Facebook</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleShare('messenger')}><MessageSquare className="mr-2 h-4 w-4 text-[#00B2FF]" />Messenger</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => toast({title: "Instagram sharing from web is not directly supported."})}><Instagram className="mr-2 h-4 w-4 text-[#E4405F]" />Instagram</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleShare('copy')}><Copy className="mr-2 h-4 w-4" />Copy Link</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {user && (
+                <>
+                  <Button variant="outline" className="gap-2" onClick={handlePrintPdf}>
+                    <FileText className="h-5 w-5" /> PDF
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild><Button variant="outline" className="gap-2"><Share2 className="h-5 w-5" /> Share</Button></DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => handleShare('facebook')}><Facebook className="mr-2 h-4 w-4 text-[#1877F2]" />Facebook</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleShare('messenger')}><MessageSquare className="mr-2 h-4 w-4 text-[#00B2FF]" />Messenger</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => toast({title: "Instagram sharing from web is not directly supported."})}><Instagram className="mr-2 h-4 w-4 text-[#E4405F]" />Instagram</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleShare('copy')}><Copy className="mr-2 h-4 w-4" />Copy Link</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              )}
             </div>
 
             <section className="mt-12">
