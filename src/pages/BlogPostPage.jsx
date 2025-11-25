@@ -308,7 +308,7 @@ const BlogPostPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.08 }}
-                  className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
+                  className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow border border-black dark:border-white"
                 >
                   <Link to={`/blog/${latestPost.slug}`}>
                     <div className="aspect-video bg-secondary/50">
