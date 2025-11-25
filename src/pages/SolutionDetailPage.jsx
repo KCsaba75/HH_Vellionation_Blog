@@ -138,13 +138,13 @@ const SolutionDetailPage = () => {
         </section>
 
         {/* Description Section - Full Width */}
-        <section className="py-16 lg:py-24">
+        <section className="py-6 lg:py-8">
           <div className="container mx-auto px-4 max-w-4xl">
             <motion.div 
               initial={{ opacity: 0, y: 20 }} 
               animate={{ opacity: 1, y: 0 }} 
               transition={{ delay: 0.2 }}
-              className="prose prose-lg lg:prose-xl dark:prose-invert max-w-none"
+              className="prose prose-lg lg:prose-xl dark:prose-invert max-w-none prose-p:leading-snug prose-p:my-2 prose-headings:mb-2 prose-headings:mt-4 prose-li:my-0.5"
             >
               <div dangerouslySetInnerHTML={{ __html: solution.description }} />
             </motion.div>
