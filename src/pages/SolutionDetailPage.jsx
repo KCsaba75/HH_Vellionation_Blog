@@ -85,10 +85,10 @@ const SolutionDetailPage = () => {
               Back to Solutions
             </Button>
 
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
               {/* Image */}
-              <div className="order-2 lg:order-1">
-                <div className="aspect-[4/3] bg-secondary/30 rounded-2xl overflow-hidden shadow-2xl">
+              <div className="order-2 lg:order-1 min-h-[300px] lg:min-h-[450px]">
+                <div className="h-full w-full bg-secondary/30 rounded-2xl overflow-hidden shadow-2xl">
                   <img 
                     alt={solution.name} 
                     className="w-full h-full object-cover" 
