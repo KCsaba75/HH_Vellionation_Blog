@@ -22,7 +22,7 @@
     --secondary-foreground: 30 90% 10%;
     
     --muted: 48 20% 88%; /* Warm Light Gray */
-    --muted-foreground: 144 15% 40%; /* Muted Green-Gray */
+    --muted-foreground: 144 20% 25%; /* Darker Muted Green-Gray for better contrast */
 
     --accent: 170 50% 45%; /* Deeper Teal/Mint */
     --accent-foreground: 170 25% 95%;
