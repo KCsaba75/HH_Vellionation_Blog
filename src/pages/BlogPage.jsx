@@ -126,15 +126,15 @@ const BlogPage = () => {
         <meta name="description" content="Read inspiring articles about fitness, nutrition, mindset, and motivation from the Vellio Nation community." />
       </Helmet>
 
-      <section className="py-12 bg-secondary/30">
+      <section className="py-6 bg-secondary/30">
         <div className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Wellness Blog</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <h1 className="text-2xl md:text-3xl font-bold mb-2">Vellio Nation Blog</h1>
+            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
               Discover inspiring stories, expert tips, and practical advice for your wellness journey.
             </p>
           </motion.div>
