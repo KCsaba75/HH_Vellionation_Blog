@@ -100,6 +100,7 @@ const AdminPage = () => {
     } else if (type === 'solution') {
       setEditingItem({
         name: '',
+        excerpt: '',
         description: '',
         category_id: null,
         subcategory_id: null,
@@ -468,6 +469,7 @@ const AdminPage = () => {
               {formType === 'solution' && (
                 <>
                   <div><Label htmlFor="solution-name" className="text-sm">Name</Label><input id="solution-name" value={editingItem.name || ''} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" required /></div>
+                  <div><Label htmlFor="solution-excerpt" className="text-sm">Excerpt</Label><textarea id="solution-excerpt" value={editingItem.excerpt || ''} onChange={e => setEditingItem({ ...editingItem, excerpt: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" rows={2} placeholder="Short summary for cards and previews" /></div>
                   <div className="prose dark:prose-invert max-w-none"><Label htmlFor="solution-desc" className="text-sm">Description</Label><ReactQuill theme="snow" value={editingItem.description || ''} onChange={d => setEditingItem({...editingItem, description: d})} className="mt-1 bg-background [&_.ql-editor]:min-h-[120px] [&_.ql-toolbar]:text-xs" /></div>
                   <CategorySelector
                     type="solutions"
