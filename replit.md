@@ -45,6 +45,11 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
 ## Recent Updates
 
 ### November 25, 2025
+- **Blog Sidebar Navigation**: Redesigned BlogPage with left sidebar category navigation
+  - Expandable categories with nested subcategories
+  - Visual indication of selected filter
+  - "Filtering by" chip with clear button
+  - Consistent UX with Solutions and Community pages
 - **Latest Articles Recommendation**: Added 4-card "Latest Articles" section below comments on blog posts
   - Responsive grid (2 cols tablet, 4 cols desktop)
   - Shows image, category, title, excerpt, read time
