@@ -78,7 +78,7 @@ const SolutionDetailPage = () => {
 
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/10 py-16 lg:py-24">
+        <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/10 py-8 lg:py-12">
           <div className="container mx-auto px-4 max-w-6xl">
             <Button variant="ghost" onClick={() => navigate('/solutions')} className="mb-8">
               <ArrowLeft className="mr-2 h-4 w-4" />
