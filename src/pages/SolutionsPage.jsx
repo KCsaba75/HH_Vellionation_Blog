@@ -2,26 +2,42 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ExternalLink, Star, Search } from 'lucide-react';
+import { ExternalLink, Star, Search, ChevronRight, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/customSupabaseClient';
+import { cn } from '@/lib/utils';
 
 const SolutionsPage = () => {
   const [solutions, setSolutions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState(null);
+  const [expandedCategories, setExpandedCategories] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const { data } = await supabase
+      const { data: mainCategories } = await supabase
         .from('categories')
         .select('id, name')
         .eq('type', 'solutions')
         .is('parent_id', null)
         .order('position', { ascending: true });
-      setCategories(data || []);
+
+      const { data: subCategories } = await supabase
+        .from('categories')
+        .select('id, name, parent_id')
+        .eq('type', 'solutions')
+        .not('parent_id', 'is', null)
+        .order('position', { ascending: true });
+
+      const categoriesWithSubs = (mainCategories || []).map(cat => ({
+        ...cat,
+        subcategories: (subCategories || []).filter(sub => sub.parent_id === cat.id)
+      }));
+
+      setCategories(categoriesWithSubs);
     };
     fetchCategories();
   }, []);
@@ -39,7 +55,9 @@ const SolutionsPage = () => {
         .eq('status', 'active')
         .order('created_at', { ascending: false });
 
-      if (selectedCategoryId !== null) {
+      if (selectedSubcategoryId !== null) {
+        query = query.eq('subcategory_id', selectedSubcategoryId);
+      } else if (selectedCategoryId !== null) {
         query = query.eq('category_id', selectedCategoryId);
       }
 
@@ -54,7 +72,7 @@ const SolutionsPage = () => {
     };
 
     fetchSolutions();
-  }, [selectedCategoryId]);
+  }, [selectedCategoryId, selectedSubcategoryId]);
 
   const filteredSolutions = useMemo(() => {
     if (!searchQuery.trim()) return solutions;
@@ -65,6 +83,41 @@ const SolutionsPage = () => {
     );
   }, [solutions, searchQuery]);
 
+  const toggleCategory = (categoryId) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [categoryId]: !prev[categoryId]
+    }));
+  };
+
+  const handleCategoryClick = (categoryId) => {
+    setSelectedCategoryId(categoryId);
+    setSelectedSubcategoryId(null);
+    if (categoryId !== null) {
+      setExpandedCategories(prev => ({
+        ...prev,
+        [categoryId]: true
+      }));
+    }
+  };
+
+  const handleSubcategoryClick = (categoryId, subcategoryId) => {
+    setSelectedCategoryId(categoryId);
+    setSelectedSubcategoryId(subcategoryId);
+  };
+
+  const getSelectedName = () => {
+    if (selectedSubcategoryId) {
+      const cat = categories.find(c => c.id === selectedCategoryId);
+      const sub = cat?.subcategories?.find(s => s.id === selectedSubcategoryId);
+      return sub?.name || 'Solutions';
+    }
+    if (selectedCategoryId) {
+      return categories.find(c => c.id === selectedCategoryId)?.name || 'Solutions';
+    }
+    return 'All Solutions';
+  };
+
   return (
     <>
       <Helmet>
@@ -72,110 +125,155 @@ const SolutionsPage = () => {
         <meta name="description" content="Discover hand-picked wellness solutions including products, apps, and educational materials recommended by the Vellio Nation community." />
       </Helmet>
 
-      <section className="py-12 bg-secondary/30">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center"
-          >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Wellness Solutions</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Hand-picked wellness solutions to support your journey.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-md mx-auto mb-8">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search solutions..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-2 mb-8 justify-center">
-            <Button
-              variant={selectedCategoryId === null ? 'default' : 'outline'}
-              onClick={() => setSelectedCategoryId(null)}
-              className="capitalize"
-            >
-              All
-            </Button>
-            {categories.map(cat => (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row gap-8">
+          <aside className="w-full md:w-1/4 lg:w-1/5">
+            <h2 className="text-lg font-semibold mb-4 px-3">Categories</h2>
+            <nav className="flex flex-col space-y-1">
               <Button
-                key={cat.id}
-                variant={selectedCategoryId === cat.id ? 'default' : 'outline'}
-                onClick={() => setSelectedCategoryId(cat.id)}
-                className="capitalize"
+                variant="ghost"
+                onClick={() => handleCategoryClick(null)}
+                className={cn('w-full justify-start', selectedCategoryId === null && 'bg-primary/10 text-primary')}
               >
-                {cat.name}
+                All
+                {selectedCategoryId === null && <ChevronRight className="ml-auto h-4 w-4" />}
               </Button>
-            ))}
-          </div>
 
-          {loading ? (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">Loading solutions...</p>
-            </div>
-          ) : filteredSolutions.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">
-                {searchQuery ? `No solutions found for "${searchQuery}"` : 'No solutions available yet. Check back soon!'}
-              </p>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredSolutions.map((solution, index) => (
-                <motion.div
-                  key={solution.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
-                >
-                  <div className="aspect-square bg-secondary/50 flex items-center justify-center">
-                    <img alt={solution.name} className="w-full h-full object-cover" src={solution.image_url || "https://images.unsplash.com/photo-1559223669-e0065fa7f142"} />
-                  </div>
-                  <div className="p-6">
-                    {solution.categories?.name && (
-                      <div className="mb-2">
-                        <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
-                          {solution.categories.name}
-                          {solution.subcategories?.name && ` → ${solution.subcategories.name}`}
-                        </span>
-                      </div>
+              {categories.map(cat => (
+                <div key={cat.id}>
+                  <div className="flex items-center">
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleCategoryClick(cat.id)}
+                      className={cn(
+                        'flex-1 justify-start',
+                        selectedCategoryId === cat.id && selectedSubcategoryId === null && 'bg-primary/10 text-primary'
+                      )}
+                    >
+                      {cat.name}
+                      {selectedCategoryId === cat.id && selectedSubcategoryId === null && (
+                        <ChevronRight className="ml-auto h-4 w-4" />
+                      )}
+                    </Button>
+                    {cat.subcategories?.length > 0 && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 shrink-0"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleCategory(cat.id);
+                        }}
+                      >
+                        {expandedCategories[cat.id] ? (
+                          <ChevronDown className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
+                      </Button>
                     )}
-                    <h3 className="text-xl font-bold mb-2">{solution.name}</h3>
-                    <p className="text-muted-foreground mb-4 line-clamp-2">{solution.description}</p>
-                    <div className="flex items-center gap-1 mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 ${i < (solution.rating || 5) ? 'fill-primary text-primary' : 'text-muted'}`}
-                        />
+                  </div>
+
+                  {expandedCategories[cat.id] && cat.subcategories?.length > 0 && (
+                    <div className="ml-4 mt-1 space-y-1 border-l-2 border-muted pl-2">
+                      {cat.subcategories.map(sub => (
+                        <Button
+                          key={sub.id}
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleSubcategoryClick(cat.id, sub.id)}
+                          className={cn(
+                            'w-full justify-start text-sm',
+                            selectedSubcategoryId === sub.id && 'bg-primary/10 text-primary'
+                          )}
+                        >
+                          {sub.name}
+                          {selectedSubcategoryId === sub.id && (
+                            <ChevronRight className="ml-auto h-4 w-4" />
+                          )}
+                        </Button>
                       ))}
                     </div>
-                    <Button asChild className="w-full">
-                      <Link to={`/solutions/${solution.id}`}>
-                        View Details <ExternalLink className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </div>
-                </motion.div>
+                  )}
+                </div>
               ))}
+            </nav>
+          </aside>
+
+          <main className="flex-1">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <h1 className="text-3xl font-bold">{getSelectedName()}</h1>
+              <div className="relative w-full sm:w-64">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search solutions..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 rounded-lg border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
             </div>
-          )}
+
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading solutions...</p>
+              </div>
+            ) : filteredSolutions.length === 0 ? (
+              <div className="text-center py-12 bg-card rounded-xl">
+                <p className="text-muted-foreground">
+                  {searchQuery ? `No solutions found for "${searchQuery}"` : 'No solutions available in this category yet.'}
+                </p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {filteredSolutions.map((solution, index) => (
+                  <motion.div
+                    key={solution.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+                  >
+                    <div className="aspect-video bg-secondary/50 flex items-center justify-center">
+                      <img
+                        alt={solution.name}
+                        className="w-full h-full object-cover"
+                        src={solution.image_url || "https://images.unsplash.com/photo-1559223669-e0065fa7f142"}
+                      />
+                    </div>
+                    <div className="p-5">
+                      {solution.categories?.name && (
+                        <div className="mb-2">
+                          <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
+                            {solution.categories.name}
+                            {solution.subcategories?.name && ` → ${solution.subcategories.name}`}
+                          </span>
+                        </div>
+                      )}
+                      <h3 className="text-lg font-bold mb-2">{solution.name}</h3>
+                      <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{solution.description}</p>
+                      <div className="flex items-center gap-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-4 w-4 ${i < (solution.rating || 5) ? 'fill-primary text-primary' : 'text-muted'}`}
+                          />
+                        ))}
+                      </div>
+                      <Button asChild className="w-full">
+                        <Link to={`/solutions/${solution.id}`}>
+                          View Details <ExternalLink className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </main>
         </div>
-      </section>
+      </div>
     </>
   );
 };
