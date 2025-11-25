@@ -68,7 +68,7 @@ const HomePage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <img alt="Friends resting and drinking water after workout in park" className="rounded-2xl shadow-2xl w-full" src="/images/hero-outdoor-fitness.jpg?v=5" />
+              <img alt="Wellness fitness group exercising together in nature" className="rounded-2xl shadow-2xl w-full" src="/images/hero-outdoor-fitness.jpg?v=6" />
             </motion.div>
           </div>
         </div>
