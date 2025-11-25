@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Clock, User } from 'lucide-react';
+import { Clock, User, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/customSupabaseClient';
 
@@ -12,6 +12,7 @@ const BlogPage = () => {
   const [categories, setCategories] = useState([]);
   const [filter, setFilter] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -57,6 +58,15 @@ const BlogPage = () => {
     fetchPosts();
   }, [filter]);
 
+  const filteredPosts = useMemo(() => {
+    if (!searchQuery.trim()) return posts;
+    const query = searchQuery.toLowerCase();
+    return posts.filter(post => 
+      post.title?.toLowerCase().includes(query) ||
+      post.excerpt?.toLowerCase().includes(query)
+    );
+  }, [posts, searchQuery]);
+
   return (
     <>
       <Helmet>
@@ -81,6 +91,19 @@ const BlogPage = () => {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
+          <div className="max-w-md mx-auto mb-8">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search articles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+          </div>
+
           <div className="flex flex-wrap gap-2 mb-8 justify-center">
             <Button
               variant={filter === null ? 'default' : 'outline'}
@@ -105,13 +128,15 @@ const BlogPage = () => {
             <div className="text-center py-12">
               <p className="text-muted-foreground">Loading posts...</p>
             </div>
-          ) : posts.length === 0 ? (
+          ) : filteredPosts.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground">No blog posts yet. Check back soon!</p>
+              <p className="text-muted-foreground">
+                {searchQuery ? `No articles found for "${searchQuery}"` : 'No blog posts yet. Check back soon!'}
+              </p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map((post, index) => (
+              {filteredPosts.map((post, index) => (
                 <motion.article
                   key={post.id}
                   initial={{ opacity: 0, y: 30 }}

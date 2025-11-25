@@ -177,6 +177,10 @@ This prevents "unknown column" errors when form state contains joined relational
 
 ## Recent Updates
 
+### November 25, 2025 - Blog Search & SPA Routing Fix
+- **Blog Search**: Added search input field to BlogPage with real-time filtering by title and excerpt
+- **SPA Routing Fix**: Changed preview script to use `serve dist -s -l 5000` for proper SPA fallback (no 404 on page refresh)
+
 ### November 24, 2025 - Mobile Responsiveness, Category System & Bug Fixes
 **Bug Fixes:**
 - Fixed blog/solution update error: Added `subcategories` to destructuring in handleFormSubmit
