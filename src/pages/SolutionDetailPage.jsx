@@ -84,9 +84,11 @@ const SolutionDetailPage = () => {
           </Button>
 
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="grid md:grid-cols-2 gap-12">
-            <div className="aspect-square bg-secondary/50 rounded-xl overflow-hidden">
-               <img alt={solution.name} className="w-full h-full object-cover" src="https://images.unsplash.com/photo-1559223669-e0065fa7f142" />
-            </div>
+            {solution.image_url && (
+              <div className="aspect-square bg-secondary/50 rounded-xl overflow-hidden">
+                <img alt={solution.name} className="w-full h-full object-cover" src={solution.image_url} />
+              </div>
+            )}
 
             <div>
               <h1 className="text-4xl font-bold mb-4">{solution.name}</h1>
