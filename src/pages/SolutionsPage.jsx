@@ -127,7 +127,7 @@ const SolutionsPage = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
-          <aside className="w-full md:w-1/4 lg:w-1/5">
+          <aside className="w-full md:w-48 lg:w-52 flex-shrink-0">
             <h2 className="text-lg font-semibold mb-4 px-3">Categories</h2>
             <nav className="flex flex-col space-y-1">
               <Button

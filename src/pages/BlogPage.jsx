@@ -144,7 +144,7 @@ const BlogPage = () => {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-8">
-            <aside className="lg:w-64 flex-shrink-0">
+            <aside className="lg:w-52 flex-shrink-0">
               <div className="bg-card rounded-xl p-4 shadow-lg sticky top-4">
                 <h3 className="font-bold text-lg mb-4">Categories</h3>
                 <nav className="space-y-1">
