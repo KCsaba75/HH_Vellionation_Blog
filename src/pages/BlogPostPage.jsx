@@ -291,24 +291,24 @@ const BlogPostPage = () => {
       </article>
 
       {latestPosts.length > 0 && (
-        <section className="py-12 bg-secondary/30">
+        <section className="py-8 bg-secondary/30">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold">Latest Articles</h2>
-              <Button variant="ghost" asChild>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold">Latest Articles</h2>
+              <Button variant="ghost" size="sm" asChild>
                 <Link to="/blog">
-                  View All <ArrowRight className="ml-2 h-4 w-4" />
+                  View All <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {latestPosts.map((latestPost, index) => (
                 <motion.article
                   key={latestPost.id}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+                  transition={{ delay: index * 0.08 }}
+                  className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
                 >
                   <Link to={`/blog/${latestPost.slug}`}>
                     <div className="aspect-video bg-secondary/50">
@@ -318,19 +318,19 @@ const BlogPostPage = () => {
                         src={latestPost.image_url || "https://images.unsplash.com/photo-1601941707251-5a887e9db2e1"}
                       />
                     </div>
-                    <div className="p-4">
+                    <div className="p-3">
                       {latestPost.categories?.name && (
-                        <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
+                        <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
                           {latestPost.categories.name}
                         </span>
                       )}
-                      <h3 className="font-bold mt-2 line-clamp-2 hover:text-primary transition-colors">
+                      <h3 className="font-semibold text-sm mt-2 line-clamp-2 hover:text-primary transition-colors">
                         {latestPost.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                         {latestPost.excerpt}
                       </p>
-                      <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" />
                         <span>{latestPost.read_time || '5 min read'}</span>
                       </div>
