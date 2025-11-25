@@ -255,7 +255,7 @@ const BlogPage = () => {
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+                      className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-black dark:border-white"
                     >
                       <div className="aspect-video bg-secondary/50 flex items-center justify-center">
                         <img alt={post.title} className="w-full h-full object-cover" src={post.image_url || "https://images.unsplash.com/photo-1601941707251-5a887e9db2e1"} />

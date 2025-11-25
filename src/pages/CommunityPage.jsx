@@ -183,7 +183,7 @@ const CommunityPage = () => {
             <h1 className="text-3xl font-bold mb-4">{selectedCategoryId === null ? 'All' : categories.find(c => c.id === selectedCategoryId)?.name || 'Community'}</h1>
             <div className="flex-grow space-y-6 overflow-y-auto pr-2 mb-8">
               {loading ? (<div className="text-center py-12"><p>Loading posts...</p></div>) : posts.length === 0 ? (<div className="text-center py-12 bg-card rounded-xl"><p className="text-muted-foreground">No posts yet in this category. Be the first to share!</p></div>) : (posts.map((post, index) => (
-                <motion.article key={post.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} className="bg-card p-6 rounded-xl shadow-lg">
+                <motion.article key={post.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} className="bg-card p-6 rounded-xl shadow-lg border border-black dark:border-white">
                   <div className="flex items-start gap-4 mb-4">
                     <div className="bg-primary/10 rounded-full p-3"><User className="h-6 w-6 text-primary" /></div>
                     <div className="flex-1">
