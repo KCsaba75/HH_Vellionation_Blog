@@ -45,6 +45,10 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
 ## Recent Updates
 
 ### November 25, 2025
+- **Latest Articles Recommendation**: Added 4-card "Latest Articles" section below comments on blog posts
+  - Responsive grid (2 cols tablet, 4 cols desktop)
+  - Shows image, category, title, excerpt, read time
+  - Excludes current post, only shows published posts
 - **Blog Post PDF Export**: Added PDF button on blog posts for logged-in users only (opens print-friendly view)
 - **Share Button Restriction**: Share dropdown now only visible to logged-in users
 - **Blog Search**: Added search input field to BlogPage with real-time filtering by title and excerpt

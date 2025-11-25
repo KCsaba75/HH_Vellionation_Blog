@@ -3,7 +3,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { Clock, User, ArrowLeft, Heart, MessageCircle, Share2, Copy, FileText } from 'lucide-react';
+import { Clock, User, ArrowLeft, Heart, MessageCircle, Share2, Copy, FileText, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { toast } from '@/components/ui/use-toast';
@@ -27,6 +28,7 @@ const BlogPostPage = () => {
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(true);
   const [likes, setLikes] = useState([]);
+  const [latestPosts, setLatestPosts] = useState([]);
   
   const postUrl = window.location.href;
 
@@ -75,6 +77,20 @@ const BlogPostPage = () => {
 
     if (likesError) console.error('Error fetching likes:', likesError);
     else setLikes(likesData || []);
+
+    // Fetch latest 4 posts (excluding current post)
+    const { data: latestData } = await supabase
+      .from('posts')
+      .select(`
+        id, title, slug, excerpt, image_url, read_time, created_at,
+        categories!posts_category_id_fkey ( name )
+      `)
+      .neq('id', postData.id)
+      .eq('status', 'published')
+      .order('created_at', { ascending: false })
+      .limit(4);
+
+    setLatestPosts(latestData || []);
     
     setLoading(false);
   }, [slug]);
@@ -273,6 +289,59 @@ const BlogPostPage = () => {
           </motion.div>
         </div>
       </article>
+
+      {latestPosts.length > 0 && (
+        <section className="py-12 bg-secondary/30">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-bold">Latest Articles</h2>
+              <Button variant="ghost" asChild>
+                <Link to="/blog">
+                  View All <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {latestPosts.map((latestPost, index) => (
+                <motion.article
+                  key={latestPost.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <Link to={`/blog/${latestPost.slug}`}>
+                    <div className="aspect-video bg-secondary/50">
+                      <img
+                        alt={latestPost.title}
+                        className="w-full h-full object-cover"
+                        src={latestPost.image_url || "https://images.unsplash.com/photo-1601941707251-5a887e9db2e1"}
+                      />
+                    </div>
+                    <div className="p-4">
+                      {latestPost.categories?.name && (
+                        <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
+                          {latestPost.categories.name}
+                        </span>
+                      )}
+                      <h3 className="font-bold mt-2 line-clamp-2 hover:text-primary transition-colors">
+                        {latestPost.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                        {latestPost.excerpt}
+                      </p>
+                      <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        <span>{latestPost.read_time || '5 min read'}</span>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 };
