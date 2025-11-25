@@ -291,7 +291,7 @@ const BlogPostPage = () => {
       </article>
 
       {latestPosts.length > 0 && (
-        <section className="py-8 bg-secondary/30">
+        <section className="pt-4 pb-8 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold">Latest Articles</h2>
