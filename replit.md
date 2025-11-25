@@ -121,7 +121,9 @@ The platform features a gamification system with ranks based on user activity po
 
 ## Build Configuration
 - Build command: `npm run build` (includes LLM generation step)
-- Preview command: `npm run preview`
+- Preview command: `npm run preview` (uses `serve dist -s -l 5000`)
+- **Deployment**: Autoscale with `serve` package in SPA mode
+- **SPA Routing**: The `-s` flag enables single page application fallback - all routes return `index.html` and React Router handles client-side routing (no 404 on page refresh)
 
 ## User Profile Features
 Users can manage their profiles at `/profile`:
