@@ -5,34 +5,34 @@
 
 @layer base {
   :root {
-    /* Nature-inspired Light Theme - Darker Greens, Blacker Text */
-    --background: 0 0% 100%; /* Pure White for better contrast */
-    --foreground: 144 35% 8%; /* Even Darker Forest Green Text */
+    /* Nature-inspired Light Theme - Maximum Contrast */
+    --background: 0 0% 100%; /* Pure White */
+    --foreground: 144 40% 5%; /* Near-Black Forest Green */
     
-    --card: 0 0% 100%; /* Pure White for cards */
-    --card-foreground: 144 35% 8%; /* Even Darker Forest Green Text */
+    --card: 0 0% 100%; /* Pure White */
+    --card-foreground: 144 40% 5%; /* Near-Black Forest Green */
 
     --popover: 50 50% 98%;
-    --popover-foreground: 144 35% 8%; /* Even Darker Forest Green Text */
+    --popover-foreground: 144 40% 5%; /* Near-Black Forest Green */
     
-    --primary: 154 70% 30%; /* Dark Emerald Green */
+    --primary: 154 70% 28%; /* Darker Emerald Green */
     --primary-foreground: 154 30% 95%; /* Light Mint */
     
-    --secondary: 30 90% 60%; /* Energetic Orange */
-    --secondary-foreground: 30 90% 10%;
+    --secondary: 30 90% 55%; /* Deeper Orange */
+    --secondary-foreground: 30 90% 8%;
     
     --muted: 48 20% 88%; /* Warm Light Gray */
-    --muted-foreground: 144 20% 25%; /* Darker Muted Green-Gray for better contrast */
+    --muted-foreground: 144 25% 18%; /* Much Darker for high contrast */
 
-    --accent: 170 50% 45%; /* Deeper Teal/Mint */
+    --accent: 170 50% 40%; /* Darker Teal */
     --accent-foreground: 170 25% 95%;
     
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 144 10% 65%; /* Darker Green-Gray Border */
-    --input: 144 10% 75%;
-    --ring: 154 70% 30%;
+    --border: 144 10% 60%; /* Darker Border */
+    --input: 144 10% 70%;
+    --ring: 154 70% 28%;
     
     --radius: 0.5rem;
   }
