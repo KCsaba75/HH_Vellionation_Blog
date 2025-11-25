@@ -468,7 +468,7 @@ const AdminPage = () => {
               {formType === 'solution' && (
                 <>
                   <div><Label htmlFor="solution-name" className="text-sm">Name</Label><input id="solution-name" value={editingItem.name || ''} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" required /></div>
-                  <div><Label htmlFor="solution-desc" className="text-sm">Description</Label><textarea id="solution-desc" value={editingItem.description || ''} onChange={e => setEditingItem({ ...editingItem, description: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" rows={3}/></div>
+                  <div className="prose dark:prose-invert max-w-none"><Label htmlFor="solution-desc" className="text-sm">Description</Label><ReactQuill theme="snow" value={editingItem.description || ''} onChange={d => setEditingItem({...editingItem, description: d})} className="mt-1 bg-background [&_.ql-editor]:min-h-[120px] [&_.ql-toolbar]:text-xs" /></div>
                   <CategorySelector
                     type="solutions"
                     categoryId={editingItem.category_id}

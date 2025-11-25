@@ -96,7 +96,7 @@ const SolutionDetailPage = () => {
                 {[...Array(5)].map((_, i) => (<Star key={i} className={`h-5 w-5 ${i < (solution.rating || 5) ? 'fill-primary text-primary' : 'text-muted'}`} />))}
                 <span className="text-muted-foreground ml-2">({solution.rating || '5'}.0)</span>
               </div>
-              <p className="text-lg text-muted-foreground mb-8">{solution.description}</p>
+              <div className="prose dark:prose-invert max-w-none text-lg text-muted-foreground mb-8" dangerouslySetInnerHTML={{ __html: solution.description }} />
 
               {solution.features && solution.features.length > 0 && (
                 <div className="mb-8">
