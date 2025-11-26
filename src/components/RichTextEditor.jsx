@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import ImageUploader from 'quill-image-uploader';
-import BlotFormatter from 'quill-blot-formatter';
+import ImageResize from 'quill-image-resize-module-react';
 import 'react-quill/dist/quill.snow.css';
 import 'quill-image-uploader/dist/quill.imageUploader.min.css';
 import { supabase } from '@/lib/customSupabaseClient';
@@ -32,15 +32,9 @@ class ImageFormat extends BaseImageFormat {
   }
 }
 
-if (!Quill.imports['formats/image']) {
-  Quill.register(ImageFormat, true);
-}
-if (!Quill.imports['modules/imageUploader']) {
-  Quill.register('modules/imageUploader', ImageUploader);
-}
-if (!Quill.imports['modules/blotFormatter']) {
-  Quill.register('modules/blotFormatter', BlotFormatter);
-}
+Quill.register(ImageFormat, true);
+Quill.register('modules/imageUploader', ImageUploader);
+Quill.register('modules/imageResize', ImageResize);
 
 const uploadImage = async (file) => {
   const fileExt = file.name.split('.').pop();
@@ -71,7 +65,10 @@ const modules = {
   imageUploader: {
     upload: uploadImage
   },
-  blotFormatter: {}
+  imageResize: {
+    parchment: Quill.import('parchment'),
+    modules: ['Resize', 'DisplaySize']
+  }
 };
 
 const formats = [
