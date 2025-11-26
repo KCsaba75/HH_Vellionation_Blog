@@ -141,7 +141,7 @@ const BlogDashboardPage = () => {
         <meta name="description" content="Write and manage your blog posts for Vellio Nation." />
       </Helmet>
       <div className="py-12">
-        <div className="container mx-auto px-4 max-w-7xl">
+        <div className="container mx-auto px-4 max-w-[1920px]">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex justify-between items-center mb-8">
               <h1 className="text-4xl font-bold">Blog Dashboard</h1>
