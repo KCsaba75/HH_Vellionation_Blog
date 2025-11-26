@@ -1,12 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { User, Award, TrendingUp, Edit2, Save, Upload, Camera } from 'lucide-react';
+import { User, Award, TrendingUp, Edit2, Save, Upload, Camera, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/customSupabaseClient';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const ProfilePage = () => {
   const { user, profile, updateProfile, loading: authLoading } = useAuth();
@@ -49,6 +60,31 @@ const ProfilePage = () => {
   const handleSave = async () => {
     await updateProfile(formData);
     setEditing(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('id', user.id);
+      
+      if (profileError) {
+        toast({ title: "Error deleting account", description: profileError.message, variant: "destructive" });
+        return;
+      }
+
+      const { error: signOutError } = await supabase.auth.signOut();
+      
+      if (signOutError) {
+        toast({ title: "Account deleted but sign out failed", description: signOutError.message, variant: "destructive" });
+      } else {
+        toast({ title: "Account deleted successfully" });
+        navigate('/');
+      }
+    } catch (err) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    }
   };
 
   const handleAvatarUpload = async (event) => {
@@ -187,6 +223,33 @@ const ProfilePage = () => {
                 <h2 className="text-xl font-semibold">Badges & Achievements</h2>
               </div>
               <p className="text-muted-foreground text-center py-8">No badges yet. Coming soon!</p>
+            </div>
+
+            <div className="bg-card rounded-xl shadow-lg p-8 mt-8 border border-destructive/20">
+              <h2 className="text-xl font-semibold text-destructive mb-4">Danger Zone</h2>
+              <p className="text-muted-foreground mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive">
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete Account
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete your account and remove all your data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDeleteAccount} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                      Yes, delete my account
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </motion.div>
         </div>
