@@ -73,6 +73,11 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
   - getProfile detects deleted profiles (PGRST116 error) and auto-signs out user
   - Fixes "User from sub claim in JWT does not exist" error after profile deletion
   - Requires Supabase Database Trigger for full auth.users cleanup (see docs below)
+- **Forgot Password Feature**: Added password reset functionality
+  - ForgotPasswordPage: Email input form that sends Supabase password reset link
+  - ResetPasswordPage: New password form after clicking email link
+  - LoginPage: Added "Forgot password?" link below password field
+  - Uses Supabase's built-in resetPasswordForEmail and updateUser methods
 
 ## Supabase Database Setup
 
