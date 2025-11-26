@@ -1,38 +1,51 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useEffect, useState } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
-import ImageUploader from 'quill-image-uploader';
 import 'react-quill/dist/quill.snow.css';
-import 'quill-image-uploader/dist/quill.imageUploader.min.css';
 import { supabase } from '@/lib/customSupabaseClient';
 
-const BaseImageFormat = Quill.import('formats/image');
-const ImageFormatAttributesList = ['alt', 'height', 'width', 'style'];
+let modulesRegistered = false;
 
-class ImageFormat extends BaseImageFormat {
-  static formats(domNode) {
-    return ImageFormatAttributesList.reduce((formats, attribute) => {
-      if (domNode.hasAttribute(attribute)) {
-        formats[attribute] = domNode.getAttribute(attribute);
-      }
-      return formats;
-    }, {});
-  }
+const registerQuillModules = async () => {
+  if (modulesRegistered) return;
+  
+  try {
+    const BaseImageFormat = Quill.import('formats/image');
+    const ImageFormatAttributesList = ['alt', 'height', 'width', 'style'];
 
-  format(name, value) {
-    if (ImageFormatAttributesList.indexOf(name) > -1) {
-      if (value) {
-        this.domNode.setAttribute(name, value);
-      } else {
-        this.domNode.removeAttribute(name);
+    class ImageFormat extends BaseImageFormat {
+      static formats(domNode) {
+        return ImageFormatAttributesList.reduce((formats, attribute) => {
+          if (domNode.hasAttribute(attribute)) {
+            formats[attribute] = domNode.getAttribute(attribute);
+          }
+          return formats;
+        }, {});
       }
-    } else {
-      super.format(name, value);
+
+      format(name, value) {
+        if (ImageFormatAttributesList.indexOf(name) > -1) {
+          if (value) {
+            this.domNode.setAttribute(name, value);
+          } else {
+            this.domNode.removeAttribute(name);
+          }
+        } else {
+          super.format(name, value);
+        }
+      }
     }
-  }
-}
 
-Quill.register(ImageFormat, true);
-Quill.register('modules/imageUploader', ImageUploader);
+    Quill.register(ImageFormat, true);
+
+    const ImageUploader = (await import('quill-image-uploader')).default;
+    await import('quill-image-uploader/dist/quill.imageUploader.min.css');
+    Quill.register('modules/imageUploader', ImageUploader);
+    
+    modulesRegistered = true;
+  } catch (err) {
+    console.error('Failed to register Quill modules:', err);
+  }
+};
 
 const uploadImage = async (file) => {
   const fileExt = file.name.split('.').pop();
@@ -51,20 +64,6 @@ const uploadImage = async (file) => {
   return data.publicUrl;
 };
 
-const modules = {
-  toolbar: [
-    [{ 'header': [1, 2, 3, false] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'align': [] }],
-    ['link', 'image'],
-    ['clean']
-  ],
-  imageUploader: {
-    upload: uploadImage
-  }
-};
-
 const formats = [
   'header', 'bold', 'italic', 'underline', 'strike',
   'list', 'bullet', 'align', 'link', 'image', 'width', 'height', 'style', 'alt'
@@ -72,6 +71,27 @@ const formats = [
 
 const RichTextEditor = ({ value, onChange, placeholder, className }) => {
   const quillRef = useRef(null);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    registerQuillModules().then(() => {
+      setIsReady(true);
+    });
+  }, []);
+
+  const modules = React.useMemo(() => ({
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'align': [] }],
+      ['link', 'image'],
+      ['clean']
+    ],
+    imageUploader: {
+      upload: uploadImage
+    }
+  }), []);
 
   const handleImageResize = useCallback(() => {
     const quill = quillRef.current?.getEditor();
@@ -107,13 +127,23 @@ const RichTextEditor = ({ value, onChange, placeholder, className }) => {
     }
   }, []);
 
+  if (!isReady) {
+    return (
+      <div className="rich-text-editor">
+        <div className="h-64 flex items-center justify-center border rounded bg-muted">
+          Betöltés...
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="rich-text-editor">
-      <div className="mb-2 p-2 bg-muted/50 rounded-md border flex items-center gap-3">
+      <div className="mb-2 p-2 bg-blue-50 dark:bg-blue-950 rounded-md border border-blue-200 dark:border-blue-800 flex items-center gap-3">
         <button
           type="button"
           onClick={handleImageResize}
-          className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors shadow-sm"
         >
           <svg viewBox="0 0 18 18" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5">
             <rect x="2" y="2" width="10" height="10" rx="1"/>
@@ -123,8 +153,8 @@ const RichTextEditor = ({ value, onChange, placeholder, className }) => {
           </svg>
           Képméret módosítása
         </button>
-        <span className="text-xs text-muted-foreground">
-          Kattints a képre, majd erre a gombra
+        <span className="text-sm text-blue-700 dark:text-blue-300">
+          Kattints a képre a szerkesztőben, majd erre a gombra
         </span>
       </div>
       <ReactQuill 
