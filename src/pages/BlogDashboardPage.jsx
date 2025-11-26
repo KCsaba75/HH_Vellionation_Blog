@@ -112,7 +112,7 @@ const BlogDashboardPage = () => {
     }
     const slug = editingPost.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     
-    const { categories, profiles, ...postData } = editingPost;
+    const { categories, subcategories, profiles, ...postData } = editingPost;
     const finalPostData = { ...postData, user_id: user.id, slug };
     
     let response;
