@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect } from 'react';
+import React, { useRef, useCallback, useEffect, useState } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import ImageUploader from 'quill-image-uploader';
 import 'react-quill/dist/quill.snow.css';
@@ -58,11 +58,26 @@ const formats = [
 
 const RichTextEditor = ({ value, onChange, placeholder, className }) => {
   const quillRef = useRef(null);
-  const toolbarId = useRef(`toolbar-${Math.random().toString(36).substr(2, 9)}`);
+  const [toolbarId] = useState(() => `toolbar-${Math.random().toString(36).substr(2, 9)}`);
+  const [modules, setModules] = useState(null);
+
+  useEffect(() => {
+    setModules({
+      toolbar: {
+        container: `#${toolbarId}`,
+      },
+      imageUploader: {
+        upload: uploadImage
+      }
+    });
+  }, [toolbarId]);
 
   const handleImageResize = useCallback(() => {
     const quill = quillRef.current?.getEditor();
-    if (!quill) return;
+    if (!quill) {
+      alert('Szerkesztő nem elérhető!');
+      return;
+    }
 
     const range = quill.getSelection();
     if (!range) {
@@ -91,25 +106,19 @@ const RichTextEditor = ({ value, onChange, placeholder, className }) => {
     }
   }, []);
 
-  const modules = React.useMemo(() => ({
-    toolbar: {
-      container: `#${toolbarId.current}`,
-    },
-    imageUploader: {
-      upload: uploadImage
-    }
-  }), []);
-
-  useEffect(() => {
-    const resizeBtn = document.getElementById(`resize-btn-${toolbarId.current}`);
-    if (resizeBtn) {
-      resizeBtn.onclick = handleImageResize;
-    }
-  }, [handleImageResize]);
+  if (!modules) {
+    return (
+      <div className="rich-text-editor">
+        <div className="h-64 flex items-center justify-center border rounded bg-muted">
+          Betöltés...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="rich-text-editor">
-      <div id={toolbarId.current} className="ql-toolbar ql-snow">
+      <div id={toolbarId} className="ql-toolbar ql-snow">
         <span className="ql-formats">
           <select className="ql-header" defaultValue="">
             <option value="1">Heading 1</option>
@@ -140,10 +149,10 @@ const RichTextEditor = ({ value, onChange, placeholder, className }) => {
         </span>
         <span className="ql-formats">
           <button 
-            id={`resize-btn-${toolbarId.current}`}
             type="button" 
             className="ql-resize-image"
             title="Képméret módosítása"
+            onClick={handleImageResize}
           >
             <svg viewBox="0 0 18 18" width="18" height="18">
               <rect x="2" y="2" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="1.5" rx="1"/>
