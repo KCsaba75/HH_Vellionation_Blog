@@ -19,8 +19,7 @@ import {
 import { supabase } from '@/lib/customSupabaseClient';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import RichTextEditor from '@/components/RichTextEditor';
 import '@/index.css';
 import HierarchicalCategoryManager from '@/components/HierarchicalCategoryManager';
 import CategorySelector from '@/components/CategorySelector';
@@ -421,17 +420,17 @@ const AdminPage = () => {
                     <div className="flex items-center gap-2"><FileText className="h-5 w-5 text-primary" /><h2 className="text-lg sm:text-xl font-semibold">Page Content</h2></div>
                     <div className="prose dark:prose-invert max-w-none">
                       <Label className="text-sm sm:text-lg font-medium">Help Center</Label>
-                      <ReactQuill theme="snow" value={pageContents.help.content} onChange={(c) => handlePageContentChange('help', c)} className="mt-2 bg-background [&_.ql-toolbar]:text-xs [&_.ql-editor]:min-h-[120px]"/>
+                      <RichTextEditor value={pageContents.help.content} onChange={(c) => handlePageContentChange('help', c)} className="mt-2"/>
                       <Button className="mt-2" size="sm" onClick={() => handleSaveSettings('page_content_help', pageContents.help)}><Save className="mr-2 h-4 w-4"/>Save Help Page</Button>
                     </div>
                     <div className="prose dark:prose-invert max-w-none">
                       <Label className="text-sm sm:text-lg font-medium">Privacy Policy</Label>
-                      <ReactQuill theme="snow" value={pageContents.privacy.content} onChange={(c) => handlePageContentChange('privacy', c)} className="mt-2 bg-background [&_.ql-toolbar]:text-xs [&_.ql-editor]:min-h-[120px]"/>
+                      <RichTextEditor value={pageContents.privacy.content} onChange={(c) => handlePageContentChange('privacy', c)} className="mt-2"/>
                       <Button className="mt-2" size="sm" onClick={() => handleSaveSettings('page_content_privacy', pageContents.privacy)}><Save className="mr-2 h-4 w-4"/>Save Privacy Page</Button>
                     </div>
                     <div className="prose dark:prose-invert max-w-none">
                       <Label className="text-sm sm:text-lg font-medium">Terms of Service</Label>
-                      <ReactQuill theme="snow" value={pageContents.terms.content} onChange={(c) => handlePageContentChange('terms', c)} className="mt-2 bg-background [&_.ql-toolbar]:text-xs [&_.ql-editor]:min-h-[120px]"/>
+                      <RichTextEditor value={pageContents.terms.content} onChange={(c) => handlePageContentChange('terms', c)} className="mt-2"/>
                       <Button className="mt-2" size="sm" onClick={() => handleSaveSettings('page_content_terms', pageContents.terms)}><Save className="mr-2 h-4 w-4"/>Save Terms Page</Button>
                     </div>
                   </div>
@@ -460,7 +459,7 @@ const AdminPage = () => {
                     onSubcategoryChange={(id) => setEditingItem({ ...editingItem, subcategory_id: id })}
                     required
                   />
-                  <div className="prose dark:prose-invert max-w-none"><Label htmlFor="post-content" className="text-sm">Content</Label><ReactQuill theme="snow" value={editingItem.content || ''} onChange={c => setEditingItem({...editingItem, content: c})} className="mt-1 bg-background [&_.ql-editor]:min-h-[150px] [&_.ql-toolbar]:text-xs" /></div>
+                  <div className="prose dark:prose-invert max-w-none"><Label htmlFor="post-content" className="text-sm">Content</Label><RichTextEditor value={editingItem.content || ''} onChange={c => setEditingItem({...editingItem, content: c})} className="mt-1" /></div>
                   <div><Label htmlFor="post-seo-title" className="text-sm">SEO Title</Label><input id="post-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
                   <div><Label htmlFor="post-seo-desc" className="text-sm">SEO Description</Label><textarea id="post-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" rows={2} /></div>
                   <div className="flex items-center space-x-2"><Switch id="post-status" checked={editingItem.status === 'published'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'published' : 'draft' })} /><Label htmlFor="post-status">{editingItem.status === 'published' ? 'Published' : 'Draft'}</Label></div>
@@ -469,8 +468,8 @@ const AdminPage = () => {
               {formType === 'solution' && (
                 <>
                   <div><Label htmlFor="solution-name" className="text-sm">Name</Label><input id="solution-name" value={editingItem.name || ''} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" required /></div>
-                  <div className="prose dark:prose-invert max-w-none"><Label htmlFor="solution-excerpt" className="text-sm">Excerpt</Label><ReactQuill theme="snow" value={editingItem.excerpt || ''} onChange={e => setEditingItem({...editingItem, excerpt: e})} className="mt-1 bg-background [&_.ql-editor]:min-h-[80px] [&_.ql-toolbar]:text-xs" modules={{toolbar: [['bold', 'italic', 'underline'], ['link'], ['clean']]}} placeholder="Short summary for cards and previews" /></div>
-                  <div className="prose dark:prose-invert max-w-none"><Label htmlFor="solution-desc" className="text-sm">Description</Label><ReactQuill theme="snow" value={editingItem.description || ''} onChange={d => setEditingItem({...editingItem, description: d})} className="mt-1 bg-background [&_.ql-editor]:min-h-[120px] [&_.ql-toolbar]:text-xs" /></div>
+                  <div className="prose dark:prose-invert max-w-none"><Label htmlFor="solution-excerpt" className="text-sm">Excerpt</Label><RichTextEditor value={editingItem.excerpt || ''} onChange={e => setEditingItem({...editingItem, excerpt: e})} className="mt-1" placeholder="Short summary for cards and previews" /></div>
+                  <div className="prose dark:prose-invert max-w-none"><Label htmlFor="solution-desc" className="text-sm">Description</Label><RichTextEditor value={editingItem.description || ''} onChange={d => setEditingItem({...editingItem, description: d})} className="mt-1" /></div>
                   <CategorySelector
                     type="solutions"
                     categoryId={editingItem.category_id}

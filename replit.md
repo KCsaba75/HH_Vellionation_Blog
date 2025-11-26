@@ -40,7 +40,7 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
 - **Tailwind CSS**: For utility-first styling.
 - **Framer Motion**: For animations.
 - **Radix UI**: For unstyled, accessible UI components.
-- **React Quill**: For rich text editing capabilities.
+- **Tiptap**: For rich text editing with native image resize support via tiptap-extension-resize-image.
 
 ## Recent Updates
 
@@ -61,8 +61,10 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
 - **SPA Routing Fix**: Changed preview script to use `serve dist -s -l 5000` for proper SPA fallback
 
 ### November 26, 2025
-- **Image Resize Button in Toolbar**: Added custom image resize button directly in the Quill editor toolbar
-  - Click on image, then click resize button to set width in pixels
-  - Uses custom toolbar with unique ID per editor instance
-  - SVG icon showing resize affordance
-  - Preserves aspect ratio automatically
+- **Rich Text Editor Migration to Tiptap**: Migrated from React Quill to Tiptap editor
+  - Native drag-handle image resizing (no external plugins needed)
+  - Drag & drop and paste image upload to Supabase
+  - Full toolbar with headings, formatting, lists, alignment, links
+  - Solves React Quill + Radix Dialog hook conflicts
+  - Clean, modern React-first architecture
+  - Used in AdminPage and BlogDashboardPage via shared RichTextEditor component
