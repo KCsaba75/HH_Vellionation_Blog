@@ -443,7 +443,7 @@ const AdminPage = () => {
       </div>
       
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="max-w-[95vw] sm:max-w-[600px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+        <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader><DialogTitle className="text-lg sm:text-xl">{editingItem?.id ? 'Edit' : 'Create'} {formType}</DialogTitle></DialogHeader>
           {editingItem && (
             <form onSubmit={handleFormSubmit} className="space-y-3 sm:space-y-4 pt-4">
@@ -459,7 +459,7 @@ const AdminPage = () => {
                     onSubcategoryChange={(id) => setEditingItem({ ...editingItem, subcategory_id: id })}
                     required
                   />
-                  <div className="prose dark:prose-invert max-w-none"><Label htmlFor="post-content" className="text-sm">Content</Label><RichTextEditor value={editingItem.content || ''} onChange={c => setEditingItem({...editingItem, content: c})} className="mt-1" /></div>
+                  <div className="prose dark:prose-invert max-w-none"><Label htmlFor="post-content" className="text-sm">Content</Label><RichTextEditor value={editingItem.content || ''} onChange={c => setEditingItem({...editingItem, content: c})} className="mt-1" fullWidth={true} /></div>
                   <div><Label htmlFor="post-seo-title" className="text-sm">SEO Title</Label><input id="post-seo-title" value={editingItem.seo_title || ''} onChange={e => setEditingItem({ ...editingItem, seo_title: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
                   <div><Label htmlFor="post-seo-desc" className="text-sm">SEO Description</Label><textarea id="post-seo-desc" value={editingItem.seo_description || ''} onChange={e => setEditingItem({ ...editingItem, seo_description: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" rows={2} /></div>
                   <div className="flex items-center space-x-2"><Switch id="post-status" checked={editingItem.status === 'published'} onCheckedChange={(checked) => setEditingItem({ ...editingItem, status: checked ? 'published' : 'draft' })} /><Label htmlFor="post-status">{editingItem.status === 'published' ? 'Published' : 'Draft'}</Label></div>

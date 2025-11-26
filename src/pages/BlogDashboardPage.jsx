@@ -162,8 +162,9 @@ const BlogDashboardPage = () => {
                         <RichTextEditor
                           value={editingPost.content}
                           onChange={(content) => setEditingPost({ ...editingPost, content: content })}
-                          className="bg-background [&_.ql-editor]:min-h-[300px]"
+                          className="bg-background"
                           placeholder="Write your content here... You can drag & drop or paste images directly!"
+                          fullWidth={true}
                         />
                        </div>
                     </div>

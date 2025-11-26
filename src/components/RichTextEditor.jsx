@@ -129,13 +129,20 @@ const MenuBar = ({ editor }) => {
   );
 };
 
-const RichTextEditor = ({ value, onChange, placeholder, className }) => {
+const RichTextEditor = ({ value, onChange, placeholder, className, fullWidth = false }) => {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3],
+        },
+      }),
       Underline,
       Link.configure({
         openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-primary underline',
+        },
       }),
       ImageResize.configure({
         inline: true,
@@ -151,7 +158,7 @@ const RichTextEditor = ({ value, onChange, placeholder, className }) => {
     },
     editorProps: {
       attributes: {
-        class: 'prose dark:prose-invert max-w-none focus:outline-none min-h-[200px] p-4',
+        class: `prose dark:prose-invert focus:outline-none min-h-[300px] p-6 mx-auto ${fullWidth ? 'max-w-4xl' : 'max-w-none'}`,
       },
       handleDrop: (view, event, slice, moved) => {
         if (!moved && event.dataTransfer?.files?.length) {
