@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
@@ -10,10 +10,20 @@ import { supabase } from '@/lib/customSupabaseClient';
 import { Upload, Save, Eye, Plus, Edit, Trash2 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
+import ImageUploader from 'quill-image-uploader';
+import ImageResize from 'quill-image-resize-module-react';
 import 'react-quill/dist/quill.snow.css';
+import 'quill-image-uploader/dist/quill.imageUploader.min.css';
 import '@/index.css';
 import CategorySelector from '@/components/CategorySelector';
+
+if (!Quill.imports['modules/imageUploader']) {
+  Quill.register('modules/imageUploader', ImageUploader);
+}
+if (!Quill.imports['modules/imageResize']) {
+  Quill.register('modules/imageResize', ImageResize);
+}
 
 const BlogDashboardPage = () => {
   const { user, profile, loading: authLoading } = useAuth();
@@ -24,6 +34,45 @@ const BlogDashboardPage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
+  const quillRef = useRef(null);
+
+  const quillModules = useMemo(() => ({
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'align': [] }],
+      ['link', 'image'],
+      ['clean']
+    ],
+    imageUploader: {
+      upload: async (file) => {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `content-${Date.now()}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('post_images')
+          .upload(fileName, file);
+        
+        if (uploadError) {
+          toast({ title: "Image Upload Failed", description: uploadError.message, variant: "destructive" });
+          throw uploadError;
+        }
+        
+        const { data } = supabase.storage.from('post_images').getPublicUrl(fileName);
+        return data.publicUrl;
+      }
+    },
+    imageResize: {
+      parchment: Quill.import('parchment'),
+      modules: ['Resize', 'DisplaySize']
+    }
+  }), []);
+
+  const quillFormats = [
+    'header', 'bold', 'italic', 'underline', 'strike',
+    'list', 'bullet', 'align', 'link', 'image', 'width', 'height', 'style'
+  ];
 
   useEffect(() => {
     if (!authLoading) {
@@ -159,12 +208,16 @@ const BlogDashboardPage = () => {
                     <div className="lg:col-span-2 space-y-6">
                       <input placeholder="Post Title" value={editingPost.title} onChange={e => setEditingPost({ ...editingPost, title: e.target.value })} className="w-full text-2xl font-bold p-3 rounded-lg border bg-background" required />
                       <textarea placeholder="Excerpt (A short summary of your post)" value={editingPost.excerpt || ''} onChange={e => setEditingPost({ ...editingPost, excerpt: e.target.value })} className="w-full p-3 rounded-lg border bg-background" rows="3" />
-                       <div className="prose dark:prose-invert">
+                       <div className="prose dark:prose-invert max-w-none">
                         <ReactQuill 
+                          ref={quillRef}
                           theme="snow"
                           value={editingPost.content}
                           onChange={(content) => setEditingPost({ ...editingPost, content: content })}
-                          className="bg-background"
+                          modules={quillModules}
+                          formats={quillFormats}
+                          className="bg-background [&_.ql-editor]:min-h-[300px]"
+                          placeholder="Write your content here... You can drag & drop or paste images directly!"
                         />
                        </div>
                     </div>
