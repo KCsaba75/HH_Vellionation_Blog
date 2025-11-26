@@ -68,3 +68,39 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
   - Solves React Quill + Radix Dialog hook conflicts
   - Clean, modern React-first architecture
   - Used in AdminPage and BlogDashboardPage via shared RichTextEditor component
+- **JWT Error Handling Fix**: Improved session cleanup in SupabaseAuthContext
+  - signOut now always clears local state (user, session, profile) even if server logout fails
+  - getProfile detects deleted profiles (PGRST116 error) and auto-signs out user
+  - Fixes "User from sub claim in JWT does not exist" error after profile deletion
+  - Requires Supabase Database Trigger for full auth.users cleanup (see docs below)
+
+## Supabase Database Setup
+
+### Required Database Trigger for Account Deletion
+When a user deletes their profile, this trigger automatically removes them from auth.users, allowing email reuse for re-registration:
+
+```sql
+-- Function to delete auth user when profile is deleted
+CREATE OR REPLACE FUNCTION delete_auth_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  DELETE FROM auth.users WHERE id = OLD.id;
+  RETURN OLD;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Trigger to call the function
+CREATE TRIGGER on_profile_deleted
+  AFTER DELETE ON profiles
+  FOR EACH ROW
+  EXECUTE FUNCTION delete_auth_user();
+```
+
+### Required RLS Policy for Profile Deletion
+```sql
+CREATE POLICY "Users can delete own profile" 
+ON profiles 
+FOR DELETE 
+TO authenticated 
+USING (auth.uid() = id);
+```

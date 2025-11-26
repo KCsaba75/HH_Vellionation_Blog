@@ -15,13 +15,23 @@ export const AuthProvider = ({ children }) => {
   const getProfile = useCallback(async (user) => {
     if (user) {
       try {
-        const { data, error, status } = await supabase
+        const { data, error } = await supabase
           .from('profiles')
           .select(`*`)
           .eq('id', user.id)
           .single();
 
-        if (error && status !== 406) {
+        // PGRST116 means no rows found - user's profile was deleted
+        if (error?.code === 'PGRST116') {
+          console.warn('Profile not found, signing out user');
+          await supabase.auth.signOut();
+          setUser(null);
+          setSession(null);
+          setProfile(null);
+          return;
+        }
+
+        if (error) {
           throw error;
         }
 
@@ -105,9 +115,14 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = useCallback(async () => {
     const { error } = await supabase.auth.signOut();
+    
+    // Always clear local state, even if server signOut fails
+    // This handles cases where user was deleted but JWT still exists
+    setUser(null);
+    setSession(null);
     setProfile(null);
 
-    if (error) {
+    if (error && error.message !== 'User from sub claim in JWT does not exist') {
       toast({
         variant: "destructive",
         title: "Sign out Failed",
