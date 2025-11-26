@@ -59,3 +59,10 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
 - **Blog Search**: Added search input field to BlogPage with real-time filtering by title and excerpt
 - **Solutions Sidebar Navigation**: Redesigned SolutionsPage with left sidebar category navigation and expandable subcategories
 - **SPA Routing Fix**: Changed preview script to use `serve dist -s -l 5000` for proper SPA fallback
+
+### November 26, 2025
+- **Image Resize Button in Toolbar**: Added custom image resize button directly in the Quill editor toolbar
+  - Click on image, then click resize button to set width in pixels
+  - Uses custom toolbar with unique ID per editor instance
+  - SVG icon showing resize affordance
+  - Preserves aspect ratio automatically
