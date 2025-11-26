@@ -262,7 +262,7 @@ const SolutionsPage = () => {
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`h-4 w-4 ${i < (solution.rating || 5) ? 'fill-primary text-primary' : 'text-muted'}`}
+                            className={`h-4 w-4 ${i < (solution.rating || 5) ? 'fill-yellow-400 text-yellow-400' : 'text-muted'}`}
                           />
                         ))}
                       </div>
