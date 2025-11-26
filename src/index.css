@@ -114,7 +114,7 @@
   }
 }
 
-/* Quill BlotFormatter - Image Resize */
+/* Quill Image Resize */
 .ql-editor img {
   cursor: pointer;
   max-width: 100%;
@@ -122,17 +122,44 @@
   display: inline-block;
 }
 
-.blot-formatter__overlay {
-  position: absolute !important;
-  box-sizing: border-box !important;
+.ql-editor .image-resizer {
+  position: relative;
+  display: inline-block;
 }
 
-.blot-formatter__resize-handle {
-  position: absolute !important;
-  height: 12px !important;
-  width: 12px !important;
-  background-color: white !important;
-  border: 1px solid #777 !important;
-  box-sizing: border-box !important;
-  opacity: 0.8 !important;
+.ql-editor .image-resizer img {
+  display: block;
+}
+
+.ql-editor .image-resizer .resize-handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #3b82f6;
+  border: 1px solid white;
+  border-radius: 2px;
+}
+
+.ql-editor .image-resizer .resize-handle.se {
+  right: -6px;
+  bottom: -6px;
+  cursor: se-resize;
+}
+
+.ql-editor .image-resizer .resize-handle.sw {
+  left: -6px;
+  bottom: -6px;
+  cursor: sw-resize;
+}
+
+.ql-editor .image-resizer .resize-handle.ne {
+  right: -6px;
+  top: -6px;
+  cursor: ne-resize;
+}
+
+.ql-editor .image-resizer .resize-handle.nw {
+  left: -6px;
+  top: -6px;
+  cursor: nw-resize;
 }
