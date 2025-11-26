@@ -1,53 +1,37 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react';
+import React, { useRef, useCallback } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { supabase } from '@/lib/customSupabaseClient';
 
-let modulesRegistered = false;
+const BaseImageFormat = Quill.import('formats/image');
+const ImageFormatAttributesList = ['alt', 'height', 'width', 'style'];
 
-const registerQuillModules = async () => {
-  if (modulesRegistered) return;
-  
-  try {
-    const BaseImageFormat = Quill.import('formats/image');
-    const ImageFormatAttributesList = ['alt', 'height', 'width', 'style'];
-
-    class ImageFormat extends BaseImageFormat {
-      static formats(domNode) {
-        return ImageFormatAttributesList.reduce((formats, attribute) => {
-          if (domNode.hasAttribute(attribute)) {
-            formats[attribute] = domNode.getAttribute(attribute);
-          }
-          return formats;
-        }, {});
+class ImageFormat extends BaseImageFormat {
+  static formats(domNode) {
+    return ImageFormatAttributesList.reduce((formats, attribute) => {
+      if (domNode.hasAttribute(attribute)) {
+        formats[attribute] = domNode.getAttribute(attribute);
       }
-
-      format(name, value) {
-        if (ImageFormatAttributesList.indexOf(name) > -1) {
-          if (value) {
-            this.domNode.setAttribute(name, value);
-          } else {
-            this.domNode.removeAttribute(name);
-          }
-        } else {
-          super.format(name, value);
-        }
-      }
-    }
-
-    Quill.register(ImageFormat, true);
-
-    const ImageUploader = (await import('quill-image-uploader')).default;
-    await import('quill-image-uploader/dist/quill.imageUploader.min.css');
-    Quill.register('modules/imageUploader', ImageUploader);
-    
-    modulesRegistered = true;
-  } catch (err) {
-    console.error('Failed to register Quill modules:', err);
+      return formats;
+    }, {});
   }
-};
 
-const uploadImage = async (file) => {
+  format(name, value) {
+    if (ImageFormatAttributesList.indexOf(name) > -1) {
+      if (value) {
+        this.domNode.setAttribute(name, value);
+      } else {
+        this.domNode.removeAttribute(name);
+      }
+    } else {
+      super.format(name, value);
+    }
+  }
+}
+
+Quill.register(ImageFormat, true);
+
+const uploadImageToSupabase = async (file) => {
   const fileExt = file.name.split('.').pop();
   const fileName = `content-${Date.now()}.${fileExt}`;
   
@@ -69,29 +53,19 @@ const formats = [
   'list', 'bullet', 'align', 'link', 'image', 'width', 'height', 'style', 'alt'
 ];
 
+const modules = {
+  toolbar: [
+    [{ 'header': [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['link', 'image'],
+    ['clean']
+  ]
+};
+
 const RichTextEditor = ({ value, onChange, placeholder, className }) => {
   const quillRef = useRef(null);
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    registerQuillModules().then(() => {
-      setIsReady(true);
-    });
-  }, []);
-
-  const modules = React.useMemo(() => ({
-    toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'align': [] }],
-      ['link', 'image'],
-      ['clean']
-    ],
-    imageUploader: {
-      upload: uploadImage
-    }
-  }), []);
 
   const handleImageResize = useCallback(() => {
     const quill = quillRef.current?.getEditor();
@@ -127,15 +101,50 @@ const RichTextEditor = ({ value, onChange, placeholder, className }) => {
     }
   }, []);
 
-  if (!isReady) {
-    return (
-      <div className="rich-text-editor">
-        <div className="h-64 flex items-center justify-center border rounded bg-muted">
-          Betöltés...
-        </div>
-      </div>
-    );
-  }
+  const handlePaste = useCallback(async (e) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        if (file) {
+          try {
+            const url = await uploadImageToSupabase(file);
+            const quill = quillRef.current?.getEditor();
+            if (quill) {
+              const range = quill.getSelection() || { index: quill.getLength() };
+              quill.insertEmbed(range.index, 'image', url);
+            }
+          } catch (err) {
+            alert('Képfeltöltés sikertelen: ' + err.message);
+          }
+        }
+        break;
+      }
+    }
+  }, []);
+
+  const handleDrop = useCallback(async (e) => {
+    const files = e.dataTransfer?.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    if (file.type.startsWith('image/')) {
+      e.preventDefault();
+      try {
+        const url = await uploadImageToSupabase(file);
+        const quill = quillRef.current?.getEditor();
+        if (quill) {
+          const range = quill.getSelection() || { index: quill.getLength() };
+          quill.insertEmbed(range.index, 'image', url);
+        }
+      } catch (err) {
+        alert('Képfeltöltés sikertelen: ' + err.message);
+      }
+    }
+  }, []);
 
   return (
     <div className="rich-text-editor">
@@ -157,16 +166,18 @@ const RichTextEditor = ({ value, onChange, placeholder, className }) => {
           Kattints a képre a szerkesztőben, majd erre a gombra
         </span>
       </div>
-      <ReactQuill 
-        ref={quillRef}
-        theme="snow"
-        value={value}
-        onChange={onChange}
-        modules={modules}
-        formats={formats}
-        className={className}
-        placeholder={placeholder}
-      />
+      <div onPaste={handlePaste} onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
+        <ReactQuill 
+          ref={quillRef}
+          theme="snow"
+          value={value}
+          onChange={onChange}
+          modules={modules}
+          formats={formats}
+          className={className}
+          placeholder={placeholder}
+        />
+      </div>
     </div>
   );
 };
