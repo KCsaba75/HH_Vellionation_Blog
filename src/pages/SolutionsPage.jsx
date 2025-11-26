@@ -235,10 +235,10 @@ const SolutionsPage = () => {
                     transition={{ delay: index * 0.1 }}
                     className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-black dark:border-white"
                   >
-                    <div className="aspect-video bg-secondary/50 flex items-center justify-center">
+                    <div className="aspect-[4/3] bg-secondary/50 flex items-center justify-center">
                       <img
                         alt={solution.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                         src={solution.image_url || "https://images.unsplash.com/photo-1559223669-e0065fa7f142"}
                       />
                     </div>

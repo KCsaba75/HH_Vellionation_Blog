@@ -109,7 +109,7 @@ const SolutionDetailPage = () => {
                 <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">{solution.name}</h1>
 
                 {solution.excerpt && (
-                  <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">{solution.excerpt}</p>
+                  <div className="text-xl lg:text-2xl text-muted-foreground leading-relaxed prose prose-lg dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: solution.excerpt }} />
                 )}
 
                 <div className="flex flex-wrap gap-4 pt-4">
