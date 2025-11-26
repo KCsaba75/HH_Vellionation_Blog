@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/label';
 import RichTextEditor from '@/components/RichTextEditor';
 import '@/index.css';
 import CategorySelector from '@/components/CategorySelector';
+import { awardPoints, checkAndAwardBadges } from '@/lib/gamificationService';
 
 const BlogDashboardPage = () => {
   const { user, profile, loading: authLoading } = useAuth();
@@ -126,6 +127,23 @@ const BlogDashboardPage = () => {
         toast({ title: "Error saving post", description: response.error.message, variant: "destructive" });
     } else {
         toast({ title: "Post saved successfully!" });
+        
+        if (!editingPost.id) {
+          const pointResult = await awardPoints(user.id, 'BLOG_POST_CREATED');
+          if (pointResult.success) {
+            toast({ title: `+${pointResult.pointsAwarded} points earned!`, description: pointResult.rankChanged ? `You've reached ${pointResult.newRank}! 🎉` : undefined });
+          }
+        }
+        
+        if (finalPostData.status === 'published') {
+          const publishBonus = await awardPoints(user.id, 'BLOG_POST_PUBLISHED');
+          if (publishBonus.success) {
+            toast({ title: `+${publishBonus.pointsAwarded} points for publishing!` });
+          }
+        }
+        
+        await checkAndAwardBadges(user.id);
+        
         setIsFormVisible(false);
         setEditingPost(null);
         fetchUserPosts();

@@ -5,6 +5,7 @@ import { supabase } from '@/lib/customSupabaseClient';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { Send, User, Trash2 } from 'lucide-react';
+import { awardPoints, checkAndAwardBadges } from '@/lib/gamificationService';
 
 const CommunityComments = ({ postId }) => {
   const { user, profile } = useAuth();
@@ -53,6 +54,12 @@ const CommunityComments = ({ postId }) => {
       setComments(prev => [...prev, data]);
       setNewComment('');
       toast({ title: 'Comment posted!' });
+      
+      const pointResult = await awardPoints(user.id, 'COMMENT_ADDED');
+      if (pointResult.success) {
+        toast({ title: `+${pointResult.pointsAwarded} points earned!`, description: pointResult.rankChanged ? `You've reached ${pointResult.newRank}! 🎉` : undefined });
+      }
+      await checkAndAwardBadges(user.id);
     }
   };
 

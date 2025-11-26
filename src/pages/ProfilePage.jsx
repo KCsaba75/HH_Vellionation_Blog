@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { User, Award, TrendingUp, Edit2, Save, Upload, Camera, Trash2 } from 'lucide-react';
+import { User, Edit2, Save, Camera, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +18,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import RankProgressCard from '@/components/gamification/RankProgressCard';
+import BadgeGrid from '@/components/gamification/BadgeGrid';
+import DailyLoginButton from '@/components/gamification/DailyLoginButton';
+import { getUserStats, getUserBadges, checkAndAwardBadges } from '@/lib/gamificationService';
 
 const ProfilePage = () => {
   const { user, profile, updateProfile, loading: authLoading } = useAuth();
@@ -26,6 +30,9 @@ const ProfilePage = () => {
   const [formData, setFormData] = useState({ name: '', bio: '', avatar_url: '' });
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
+  const [userStats, setUserStats] = useState(null);
+  const [badges, setBadges] = useState([]);
+  const [loadingGamification, setLoadingGamification] = useState(true);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -40,22 +47,42 @@ const ProfilePage = () => {
     }
   }, [user, profile, authLoading, navigate]);
 
+  useEffect(() => {
+    const loadGamificationData = async () => {
+      if (!user) return;
+      setLoadingGamification(true);
+      try {
+        const [stats, userBadges] = await Promise.all([
+          getUserStats(user.id),
+          getUserBadges(user.id)
+        ]);
+        setUserStats(stats);
+        setBadges(userBadges);
+        await checkAndAwardBadges(user.id);
+        const updatedBadges = await getUserBadges(user.id);
+        setBadges(updatedBadges);
+      } catch (error) {
+        console.error('Error loading gamification data:', error);
+      }
+      setLoadingGamification(false);
+    };
+    loadGamificationData();
+  }, [user]);
+
+  const handleDailyLoginClaimed = async () => {
+    if (user) {
+      const [stats, userBadges] = await Promise.all([
+        getUserStats(user.id),
+        getUserBadges(user.id)
+      ]);
+      setUserStats(stats);
+      setBadges(userBadges);
+    }
+  };
+
   if (authLoading || !profile) {
     return <div className="text-center py-12">Loading profile...</div>;
   }
-
-  const ranks = [
-    { name: 'New Member', points: 0 },
-    { name: 'Contributor', points: 100 },
-    { name: 'Health Hero', points: 500 },
-    { name: 'Vellio Ambassador', points: 1000 }
-  ];
-
-  const currentRankIndex = ranks.findIndex(r => r.name === profile.rank);
-  const nextRank = ranks[currentRankIndex + 1];
-  const progress = nextRank 
-    ? ((profile.points - ranks[currentRankIndex].points) / (nextRank.points - ranks[currentRankIndex].points)) * 100
-    : 100;
 
   const handleSave = async () => {
     await updateProfile(formData);
@@ -196,33 +223,19 @@ const ProfilePage = () => {
               )}
             </div>
 
-            <div className="bg-card rounded-xl shadow-lg p-8 mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingUp className="h-5 w-5 text-primary" />
-                <h2 className="text-xl font-semibold">Rank Progress</h2>
+            <div className="mb-8">
+              <div className="flex justify-end mb-4">
+                <DailyLoginButton userId={user.id} onClaimed={handleDailyLoginClaimed} />
               </div>
-              {nextRank ? (
-                <>
-                  <div className="mb-2 flex justify-between text-sm">
-                    <span>{profile.rank}</span>
-                    <span className="text-muted-foreground">{profile.points} / {nextRank.points} points</span>
-                  </div>
-                  <div className="w-full bg-secondary rounded-full h-3 mb-2">
-                    <div className="bg-primary h-3 rounded-full" style={{ width: `${progress}%` }} />
-                  </div>
-                  <p className="text-sm text-muted-foreground">{nextRank.points - profile.points} points until {nextRank.name}</p>
-                </>
-              ) : (
-                <p className="text-muted-foreground">Congratulations! You've reached the highest rank! 🎉</p>
-              )}
+              <RankProgressCard 
+                points={profile.points || 0}
+                currentStreak={userStats?.currentStreak || profile.current_streak || 0}
+                maxStreak={userStats?.maxStreak || profile.max_streak || 0}
+              />
             </div>
 
-            <div className="bg-card rounded-xl shadow-lg p-8">
-              <div className="flex items-center gap-2 mb-6">
-                <Award className="h-5 w-5 text-primary" />
-                <h2 className="text-xl font-semibold">Badges & Achievements</h2>
-              </div>
-              <p className="text-muted-foreground text-center py-8">No badges yet. Coming soon!</p>
+            <div className="mb-8">
+              <BadgeGrid badges={badges} loading={loadingGamification} />
             </div>
 
             <div className="bg-card rounded-xl shadow-lg p-8 mt-8 border border-destructive/20">
