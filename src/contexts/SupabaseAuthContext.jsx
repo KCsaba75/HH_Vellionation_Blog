@@ -153,6 +153,48 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const resetPassword = useCallback(async (email) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Password Reset Failed",
+        description: error.message || "Something went wrong",
+      });
+    } else {
+      toast({
+        title: "Check your email",
+        description: "We've sent you a password reset link.",
+      });
+    }
+
+    return { error };
+  }, [toast]);
+
+  const updatePassword = useCallback(async (newPassword) => {
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Password Update Failed",
+        description: error.message || "Something went wrong",
+      });
+    } else {
+      toast({
+        title: "Password Updated",
+        description: "Your password has been successfully changed.",
+      });
+    }
+
+    return { error };
+  }, [toast]);
+
   const value = useMemo(() => ({
     user,
     profile,
@@ -162,8 +204,10 @@ export const AuthProvider = ({ children }) => {
     signIn,
     signOut,
     updateProfile,
+    resetPassword,
+    updatePassword,
     isAdmin: profile?.role === 'admin'
-  }), [user, profile, session, loading, signUp, signIn, signOut, updateProfile]);
+  }), [user, profile, session, loading, signUp, signIn, signOut, updateProfile, resetPassword, updatePassword]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
