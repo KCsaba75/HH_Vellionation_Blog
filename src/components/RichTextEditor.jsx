@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react';
+import React, { useRef, useCallback } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import ImageUploader from 'quill-image-uploader';
 import 'react-quill/dist/quill.snow.css';
@@ -51,6 +51,20 @@ const uploadImage = async (file) => {
   return data.publicUrl;
 };
 
+const modules = {
+  toolbar: [
+    [{ 'header': [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['link', 'image'],
+    ['clean']
+  ],
+  imageUploader: {
+    upload: uploadImage
+  }
+};
+
 const formats = [
   'header', 'bold', 'italic', 'underline', 'strike',
   'list', 'bullet', 'align', 'link', 'image', 'width', 'height', 'style', 'alt'
@@ -58,19 +72,6 @@ const formats = [
 
 const RichTextEditor = ({ value, onChange, placeholder, className }) => {
   const quillRef = useRef(null);
-  const [toolbarId] = useState(() => `toolbar-${Math.random().toString(36).substr(2, 9)}`);
-  const [modules, setModules] = useState(null);
-
-  useEffect(() => {
-    setModules({
-      toolbar: {
-        container: `#${toolbarId}`,
-      },
-      imageUploader: {
-        upload: uploadImage
-      }
-    });
-  }, [toolbarId]);
 
   const handleImageResize = useCallback(() => {
     const quill = quillRef.current?.getEditor();
@@ -106,61 +107,24 @@ const RichTextEditor = ({ value, onChange, placeholder, className }) => {
     }
   }, []);
 
-  if (!modules) {
-    return (
-      <div className="rich-text-editor">
-        <div className="h-64 flex items-center justify-center border rounded bg-muted">
-          Betöltés...
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="rich-text-editor">
-      <div id={toolbarId} className="ql-toolbar ql-snow">
-        <span className="ql-formats">
-          <select className="ql-header" defaultValue="">
-            <option value="1">Heading 1</option>
-            <option value="2">Heading 2</option>
-            <option value="3">Heading 3</option>
-            <option value="">Normal</option>
-          </select>
-        </span>
-        <span className="ql-formats">
-          <button className="ql-bold" />
-          <button className="ql-italic" />
-          <button className="ql-underline" />
-          <button className="ql-strike" />
-        </span>
-        <span className="ql-formats">
-          <button className="ql-list" value="ordered" />
-          <button className="ql-list" value="bullet" />
-        </span>
-        <span className="ql-formats">
-          <select className="ql-align" />
-        </span>
-        <span className="ql-formats">
-          <button className="ql-link" />
-          <button className="ql-image" />
-        </span>
-        <span className="ql-formats">
-          <button className="ql-clean" />
-        </span>
-        <span className="ql-formats">
-          <button 
-            type="button" 
-            className="ql-resize-image"
-            title="Képméret módosítása"
-            onClick={handleImageResize}
-          >
-            <svg viewBox="0 0 18 18" width="18" height="18">
-              <rect x="2" y="2" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="1.5" rx="1"/>
-              <path d="M8 14h6a2 2 0 002-2V6" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-              <path d="M14 10l2 2-2 2" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M10 14l2 2 2-2" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+      <div className="mb-2 p-2 bg-muted/50 rounded-md border flex items-center gap-3">
+        <button
+          type="button"
+          onClick={handleImageResize}
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+        >
+          <svg viewBox="0 0 18 18" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <rect x="2" y="2" width="10" height="10" rx="1"/>
+            <path d="M8 14h6a2 2 0 002-2V6"/>
+            <path d="M14 10l2 2-2 2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M10 14l2 2 2-2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          Képméret módosítása
+        </button>
+        <span className="text-xs text-muted-foreground">
+          Kattints a képre, majd erre a gombra
         </span>
       </div>
       <ReactQuill 
