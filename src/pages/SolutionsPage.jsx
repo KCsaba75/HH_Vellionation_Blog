@@ -7,6 +7,11 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/customSupabaseClient';
 import { cn } from '@/lib/utils';
 
+const stripHtml = (html) => {
+  if (!html) return '';
+  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+};
+
 const SolutionsPage = () => {
   const [solutions, setSolutions] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -252,7 +257,7 @@ const SolutionsPage = () => {
                         </div>
                       )}
                       <h3 className="text-lg font-bold mb-2">{solution.name}</h3>
-                      <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{solution.description}</p>
+                      <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{stripHtml(solution.excerpt || solution.description)}</p>
                       <div className="flex items-center gap-1 mb-4">
                         {[...Array(5)].map((_, i) => (
                           <Star
