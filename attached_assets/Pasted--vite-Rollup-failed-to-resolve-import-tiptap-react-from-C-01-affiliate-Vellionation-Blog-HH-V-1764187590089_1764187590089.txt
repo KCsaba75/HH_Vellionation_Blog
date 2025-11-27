@@ -1,0 +1,44 @@
+[vite]: Rollup failed to resolve import "@tiptap/react" from "C:/01_affiliate/Vellionation Blog/HH_Vellionation_Blog/src/components/RichTextEditor.jsx".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+error during build:
+Error: [vite]: Rollup failed to resolve import "@tiptap/react" from "C:/01_affiliate/Vellionation Blog/HH_Vellionation_Blog/src/components/RichTextEditor.jsx".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteWarn (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/vite/dist/node/chunks/dep-827b23df.js:48272:27)
+    at onwarn (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/@vitejs/plugin-react/dist/index.js:90:7)
+    at onRollupWarning (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/vite/dist/node/chunks/dep-827b23df.js:48301:9)
+    at onwarn (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/vite/dist/node/chunks/dep-827b23df.js:48032:13)
+    at file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/rollup/dist/es/shared/node-entry.js:24276:13
+    at Object.logger [as onLog] (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/rollup/dist/es/shared/node-entry.js:25950:9)
+    at ModuleLoader.handleInvalidResolvedId (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/rollup/dist/es/shared/node-entry.js:24862:26)
+    at file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/rollup/dist/es/shared/node-entry.js:24822:26
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+
+c:\01_affiliate\Vellionation Blog\HH_Vellionation_Blog>git pull
+Already up to date.
+
+c:\01_affiliate\Vellionation Blog\HH_Vellionation_Blog>npx vite build
+vite v4.5.14 building for production...
+✓ 1510 modules transformed.
+✓ built in 4.59s
+[vite]: Rollup failed to resolve import "@tiptap/react" from "C:/01_affiliate/Vellionation Blog/HH_Vellionation_Blog/src/components/RichTextEditor.jsx".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+error during build:
+Error: [vite]: Rollup failed to resolve import "@tiptap/react" from "C:/01_affiliate/Vellionation Blog/HH_Vellionation_Blog/src/components/RichTextEditor.jsx".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteWarn (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/vite/dist/node/chunks/dep-827b23df.js:48272:27)
+    at onwarn (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/@vitejs/plugin-react/dist/index.js:90:7)
+    at onRollupWarning (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/vite/dist/node/chunks/dep-827b23df.js:48301:9)
+    at onwarn (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/vite/dist/node/chunks/dep-827b23df.js:48032:13)
+    at file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/rollup/dist/es/shared/node-entry.js:24276:13
+    at Object.logger [as onLog] (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/rollup/dist/es/shared/node-entry.js:25950:9)
+    at ModuleLoader.handleInvalidResolvedId (file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/rollup/dist/es/shared/node-entry.js:24862:26)
+    at file:///c:/01_affiliate/Vellionation%20Blog/HH_Vellionation_Blog/node_modules/rollup/dist/es/shared/node-entry.js:24822:26
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
