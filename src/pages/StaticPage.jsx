@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/customSupabaseClient';
-import 'react-quill/dist/quill.snow.css';
-import '@/index.css';
 
 const StaticPage = ({ pageKey }) => {
   const [pageData, setPageData] = useState({ title: '', content: '' });
@@ -44,11 +42,7 @@ const StaticPage = ({ pageKey }) => {
           {loading ? (
             <div className="text-center">Loading...</div>
           ) : (
-             <div className="prose prose-lg dark:prose-invert max-w-none">
-                <div className="ql-snow">
-                    <div className="ql-editor" dangerouslySetInnerHTML={{ __html: pageData.content }} />
-                </div>
-             </div>
+             <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: pageData.content }} />
           )}
         </motion.div>
       </div>

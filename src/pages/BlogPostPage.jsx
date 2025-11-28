@@ -16,8 +16,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Facebook, Instagram, MessageSquare } from 'lucide-react';
-import 'react-quill/dist/quill.snow.css';
-import '@/index.css';
 
 const BlogPostPage = () => {
   const { slug } = useParams();
@@ -246,11 +244,7 @@ const BlogPostPage = () => {
             </div>
             <div className="mb-12">
               <p className="text-xl text-muted-foreground mb-6">{post.excerpt}</p>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <div className="ql-snow">
-                  <div className="ql-editor" dangerouslySetInnerHTML={{ __html: post.content }} />
-                </div>
-              </div>
+              <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: post.content }} />
             </div>
             
             <div className="flex items-center gap-4 py-6 border-y">
