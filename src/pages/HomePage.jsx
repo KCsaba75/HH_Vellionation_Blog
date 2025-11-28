@@ -124,7 +124,7 @@ const HomePage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <img alt="Community members sharing healthy recipes" className="rounded-2xl shadow-xl w-full" src="https://images.unsplash.com/photo-1683624328172-88fb24625ec1" />
+              <img alt="Community members sharing healthy recipes" className="rounded-2xl shadow-xl w-full" src="https://images.unsplash.com/photo-1683624328172-88fb24625ec1" loading="lazy" />
             </motion.div>
 
             <motion.div

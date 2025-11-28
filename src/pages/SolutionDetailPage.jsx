@@ -74,6 +74,36 @@ const SolutionDetailPage = () => {
       <Helmet>
         <title>{solution.seo_title || solution.name} - Vellio Nation</title>
         <meta name="description" content={solution.seo_description || solution.description} />
+        <link rel="canonical" href={`https://www.vellionation.com/solutions/${solution.id}`} />
+        <meta property="og:type" content="product" />
+        <meta property="og:url" content={`https://www.vellionation.com/solutions/${solution.id}`} />
+        <meta property="og:title" content={solution.seo_title || solution.name} />
+        <meta property="og:description" content={solution.seo_description || solution.description} />
+        <meta property="og:image" content={solution.image_url || "https://www.vellionation.com/images/og-image.jpg"} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={solution.seo_title || solution.name} />
+        <meta name="twitter:description" content={solution.seo_description || solution.description} />
+        <meta name="twitter:image" content={solution.image_url || "https://www.vellionation.com/images/og-image.jpg"} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": solution.name,
+            "description": solution.description,
+            "image": solution.image_url || "https://www.vellionation.com/images/og-image.jpg",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": solution.rating || 5,
+              "bestRating": 5,
+              "worstRating": 1
+            },
+            "brand": {
+              "@type": "Organization",
+              "name": "Vellio Nation"
+            },
+            "url": `https://www.vellionation.com/solutions/${solution.id}`
+          })}
+        </script>
       </Helmet>
 
       <div className="min-h-screen">
@@ -92,7 +122,8 @@ const SolutionDetailPage = () => {
                   <img 
                     alt={solution.name} 
                     className="w-full h-full object-cover" 
-                    src={solution.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800'} 
+                    src={solution.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800'}
+                    loading="lazy"
                   />
                 </div>
               </div>

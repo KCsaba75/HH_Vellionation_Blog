@@ -279,7 +279,7 @@ const BlogPostPage = () => {
               <div className="flex items-center gap-2"><Clock className="h-5 w-5" /><span>{post.read_time || '5 min read'}</span></div>
             </div>
             <div className="aspect-video bg-secondary/50 rounded-xl mb-8 overflow-hidden">
-              <img alt={post.title} className="w-full h-full object-cover" src={post.image_url || "https://images.unsplash.com/photo-1601941707251-5a887e9db2e1"} />
+              <img alt={post.title} className="w-full h-full object-cover" src={post.image_url || "https://images.unsplash.com/photo-1601941707251-5a887e9db2e1"} loading="lazy" />
             </div>
             <div className="mb-12">
               <p className="text-xl text-muted-foreground mb-6">{post.excerpt}</p>

@@ -162,7 +162,7 @@ const CommunityPage = () => {
     return parts.map((part, index) => {
       const match = part.match(/!\[(.*?)\]\((.*?)\)/);
       if (match) {
-        return <img key={index} src={match[2]} alt={match[1]} className="my-2 rounded-lg max-h-80 object-contain"/>;
+        return <img key={index} src={match[2]} alt={match[1]} className="my-2 rounded-lg max-h-80 object-contain" loading="lazy" />;
       }
       return <span key={index}>{part}</span>;
     });
