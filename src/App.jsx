@@ -1,25 +1,25 @@
-
-import React from 'react';
+import React, { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Layout from '@/components/Layout';
-import HomePage from '@/pages/HomePage';
-import BlogPage from '@/pages/BlogPage';
-import BlogPostPage from '@/pages/BlogPostPage';
-import CommunityPage from '@/pages/CommunityPage';
-import SolutionsPage from '@/pages/SolutionsPage';
-import SolutionDetailPage from '@/pages/SolutionDetailPage';
-import ProfilePage from '@/pages/ProfilePage';
-import AdminPage from '@/pages/AdminPage';
-import LoginPage from '@/pages/LoginPage';
-import RegisterPage from '@/pages/RegisterPage';
-import ForgotPasswordPage from '@/pages/ForgotPasswordPage';
-import ResetPasswordPage from '@/pages/ResetPasswordPage';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AuthProvider } from '@/contexts/SupabaseAuthContext';
 import { Toaster } from '@/components/ui/toaster';
-import BlogDashboardPage from '@/pages/BlogDashboardPage';
-import StaticPage from '@/pages/StaticPage';
+
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const BlogPage = lazy(() => import('@/pages/BlogPage'));
+const BlogPostPage = lazy(() => import('@/pages/BlogPostPage'));
+const CommunityPage = lazy(() => import('@/pages/CommunityPage'));
+const SolutionsPage = lazy(() => import('@/pages/SolutionsPage'));
+const SolutionDetailPage = lazy(() => import('@/pages/SolutionDetailPage'));
+const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
+const AdminPage = lazy(() => import('@/pages/AdminPage'));
+const LoginPage = lazy(() => import('@/pages/LoginPage'));
+const RegisterPage = lazy(() => import('@/pages/RegisterPage'));
+const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('@/pages/ResetPasswordPage'));
+const BlogDashboardPage = lazy(() => import('@/pages/BlogDashboardPage'));
+const StaticPage = lazy(() => import('@/pages/StaticPage'));
 
 function App() {
   return (
