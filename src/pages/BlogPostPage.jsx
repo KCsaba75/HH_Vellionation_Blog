@@ -218,6 +218,45 @@ const BlogPostPage = () => {
       <Helmet>
         <title>{post.seo_title || post.title} - Vellio Nation</title>
         <meta name="description" content={post.seo_description || post.excerpt} />
+        <link rel="canonical" href={`https://www.vellionation.com/blog/${post.slug}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://www.vellionation.com/blog/${post.slug}`} />
+        <meta property="og:title" content={post.seo_title || post.title} />
+        <meta property="og:description" content={post.seo_description || post.excerpt} />
+        <meta property="og:image" content={post.image_url || "https://www.vellionation.com/images/og-image.jpg"} />
+        <meta property="article:published_time" content={post.created_at} />
+        <meta property="article:author" content={post.profiles?.name || 'Vellio Team'} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.seo_title || post.title} />
+        <meta name="twitter:description" content={post.seo_description || post.excerpt} />
+        <meta name="twitter:image" content={post.image_url || "https://www.vellionation.com/images/og-image.jpg"} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": post.title,
+            "description": post.excerpt,
+            "image": post.image_url || "https://www.vellionation.com/images/og-image.jpg",
+            "author": {
+              "@type": "Person",
+              "name": post.profiles?.name || "Vellio Team"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Vellio Nation",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.vellionation.com/images/logo.png"
+              }
+            },
+            "datePublished": post.created_at,
+            "dateModified": post.updated_at || post.created_at,
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": `https://www.vellionation.com/blog/${post.slug}`
+            }
+          })}
+        </script>
       </Helmet>
 
       <article className="py-12">

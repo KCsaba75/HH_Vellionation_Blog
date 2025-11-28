@@ -124,6 +124,15 @@ const BlogPage = () => {
       <Helmet>
         <title>Blog - Vellio Nation</title>
         <meta name="description" content="Read inspiring articles about fitness, nutrition, mindset, and motivation from the Vellio Nation community." />
+        <link rel="canonical" href="https://www.vellionation.com/blog" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.vellionation.com/blog" />
+        <meta property="og:title" content="Blog - Vellio Nation" />
+        <meta property="og:description" content="Read inspiring articles about fitness, nutrition, mindset, and motivation from the Vellio Nation community." />
+        <meta property="og:image" content="https://www.vellionation.com/images/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Blog - Vellio Nation" />
+        <meta name="twitter:description" content="Read inspiring articles about fitness, nutrition, mindset, and motivation from the Vellio Nation community." />
       </Helmet>
 
       <section className="py-6 bg-secondary/30">

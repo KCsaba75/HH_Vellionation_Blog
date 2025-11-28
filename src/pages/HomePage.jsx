@@ -34,6 +34,15 @@ const HomePage = () => {
       <Helmet>
         <title>Vellio Nation - Transform Your Life Through Wellness</title>
         <meta name="description" content="Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals." />
+        <link rel="canonical" href="https://www.vellionation.com/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.vellionation.com/" />
+        <meta property="og:title" content="Vellio Nation - Transform Your Life Through Wellness" />
+        <meta property="og:description" content="Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals." />
+        <meta property="og:image" content="https://www.vellionation.com/images/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Vellio Nation - Transform Your Life Through Wellness" />
+        <meta name="twitter:description" content="Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals." />
       </Helmet>
 
       <section className="relative overflow-hidden py-20 md:py-32">

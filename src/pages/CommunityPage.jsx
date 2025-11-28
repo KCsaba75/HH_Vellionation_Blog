@@ -170,7 +170,19 @@ const CommunityPage = () => {
 
   return (
     <>
-      <Helmet><title>Community - Vellio Nation</title><meta name="description" content="Connect with the Vellio Nation community." /></Helmet>
+      <Helmet>
+        <title>Community - Vellio Nation</title>
+        <meta name="description" content="Connect with the Vellio Nation community. Share your wellness journey, get inspired, and support others." />
+        <link rel="canonical" href="https://www.vellionation.com/community" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.vellionation.com/community" />
+        <meta property="og:title" content="Community - Vellio Nation" />
+        <meta property="og:description" content="Connect with the Vellio Nation community. Share your wellness journey, get inspired, and support others." />
+        <meta property="og:image" content="https://www.vellionation.com/images/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Community - Vellio Nation" />
+        <meta name="twitter:description" content="Connect with the Vellio Nation community. Share your wellness journey, get inspired, and support others." />
+      </Helmet>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
           <aside className="w-full md:w-1/4 lg:w-1/5"><h2 className="text-lg font-semibold mb-4 px-3">Categories</h2><nav className="flex flex-col space-y-1">
