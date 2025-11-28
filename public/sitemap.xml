@@ -3,7 +3,7 @@
   <url>
     <loc>https://www.vellionation.com/</loc>
     <lastmod>2025-11-28</lastmod>
-    <changefreq>daily</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
@@ -25,21 +25,45 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.vellionation.com/help</loc>
-    <lastmod>2025-11-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.vellionation.com/privacy</loc>
+    <loc>https://www.vellionation.com/login</loc>
     <lastmod>2025-11-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.vellionation.com/terms</loc>
+    <loc>https://www.vellionation.com/register</loc>
     <lastmod>2025-11-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/help-center</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/privacy-policy</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/terms-of-service</loc>
+    <lastmod>2025-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/blog/what-is-psyllium-husk</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/blog/the-ancient-herb-taking-over-the-wellness-world-everything-you-need-to-know-about-ashwagandha</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
