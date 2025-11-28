@@ -43,6 +43,20 @@ const HomePage = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Vellio Nation - Transform Your Life Through Wellness" />
         <meta name="twitter:description" content="Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals." />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Vellio Nation",
+            "url": "https://www.vellionation.com",
+            "logo": "https://www.vellionation.com/images/logo.png",
+            "description": "A wellness community platform dedicated to healthy living, mindful choices, and sustainable transformation.",
+            "sameAs": [
+              "https://www.facebook.com/vellionation",
+              "https://www.instagram.com/vellionation"
+            ]
+          })}
+        </script>
       </Helmet>
 
       <section className="relative overflow-hidden py-20 md:py-32">
