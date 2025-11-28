@@ -104,3 +104,40 @@
 .rich-content a:hover {
   opacity: 0.8;
 }
+
+/* Legacy Quill Content Support (for existing blog/static content) */
+.rich-content .ql-align-center {
+  text-align: center;
+}
+
+.rich-content .ql-align-right {
+  text-align: right;
+}
+
+.rich-content .ql-align-justify {
+  text-align: justify;
+}
+
+.rich-content .ql-size-small {
+  font-size: 0.75em;
+}
+
+.rich-content .ql-size-large {
+  font-size: 1.5em;
+}
+
+.rich-content .ql-size-huge {
+  font-size: 2.5em;
+}
+
+.rich-content .ql-indent-1 {
+  padding-left: 3em;
+}
+
+.rich-content .ql-indent-2 {
+  padding-left: 6em;
+}
+
+.rich-content .ql-indent-3 {
+  padding-left: 9em;
+}
