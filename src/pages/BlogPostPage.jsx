@@ -257,6 +257,37 @@ const BlogPostPage = () => {
             }
           })}
         </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.vellionation.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://www.vellionation.com/blog"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": post.categories?.name || "Article",
+                "item": `https://www.vellionation.com/blog?category=${post.category_id || ''}`
+              },
+              {
+                "@type": "ListItem",
+                "position": 4,
+                "name": post.title
+              }
+            ]
+          })}
+        </script>
       </Helmet>
 
       <article className="py-12">

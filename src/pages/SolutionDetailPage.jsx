@@ -104,6 +104,37 @@ const SolutionDetailPage = () => {
             "url": `https://www.vellionation.com/solutions/${solution.id}`
           })}
         </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.vellionation.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Solutions",
+                "item": "https://www.vellionation.com/solutions"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": solution.categories?.name || "Product",
+                "item": `https://www.vellionation.com/solutions?category=${solution.category_id || ''}`
+              },
+              {
+                "@type": "ListItem",
+                "position": 4,
+                "name": solution.name
+              }
+            ]
+          })}
+        </script>
       </Helmet>
 
       <div className="min-h-screen">
