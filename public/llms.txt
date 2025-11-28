@@ -1,10 +1,6 @@
 ## Pages
-- [- Vellio Nation](/blogpost): No description available
-- [- Vellio Nation](/solutiondetail): No description available
 - [Admin Dashboard - Vellio Nation](/admin): No description available
-- [Blog - Vellio Nation](/blog): Read inspiring articles about fitness, nutrition, mindset, and motivation from the Vellio Nation community.
 - [Blog Dashboard - Vellio Nation](/blogdashboard): Write and manage your blog posts for Vellio Nation.
-- [Community - Vellio Nation](/community): Connect with the Vellio Nation community.
 - [Forgot Password - Vellio Nation](/forgotpassword): Reset your Vellio Nation password.
 - [Join Vellio Nation](/register): Create your Vellio Nation account and start your wellness journey today.
 - [Login - Vellio Nation](/login): Login to your Vellio Nation account.
@@ -12,4 +8,3 @@
 - [Reset Password - Vellio Nation](/resetpassword): Set your new Vellio Nation password.
 - [Untitled Page](/static): No description available
 - [Vellio Nation - Transform Your Life Through Wellness](/home): Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals.
-- [Wellness Solutions - Vellio Nation](/solutions): Discover hand-picked wellness solutions including products, apps, and educational materials recommended by the Vellio Nation community.
