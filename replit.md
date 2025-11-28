@@ -11,7 +11,7 @@ Do not make changes to the `plugins/` folder.
 Do not make changes to the `tools/` folder.
 
 ## System Architecture
-The application is built with React 18.2 and Vite 4.5 for the frontend, utilizing React Router DOM 6.16 for navigation. Styling is handled with Tailwind CSS 3.3, Tailwind Animate, and Framer Motion for animations. UI components are built using Radix UI alongside custom components. Supabase serves as the backend for authentication and database management, while React Quill is integrated for rich text editing.
+The application is built with React 18.2 and Vite 4.5 for the frontend, utilizing React Router DOM 6.16 for navigation. Styling is handled with Tailwind CSS 3.3, Tailwind Animate, and Framer Motion for animations. UI components are built using Radix UI alongside custom components. Supabase serves as the backend for authentication and database management. Tiptap is used for rich text editing with native image resizing.
 
 ### UI/UX Decisions
 - **Responsive Design**: The application features a fully responsive design, with particular attention paid to mobile optimization for the admin dashboard (card layouts for tables), tab menus, dialog forms, and settings.
@@ -86,6 +86,20 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
   - **RankProgressCard**: Visual rank display with progress bar, streak tracking
   - **BadgeGrid**: Achievement showcase with earned/locked states
   - **Auto-award**: Points and badges awarded automatically on actions
+
+### November 28, 2025
+- **Code Splitting**: Implemented React.lazy() for all page routes with Suspense fallback
+  - Each page loads as separate chunk (AdminPage 7.96 KB, ProfilePage 6.12 KB, etc.)
+  - PageLoader spinner during lazy route loading
+  - Faster initial page load
+- **Project Cleanup & Optimization**:
+  - Removed unused components: CallToAction.jsx, WelcomeMessage.jsx, HeroImage.jsx
+  - Removed unused pages: ProductsPage.jsx, ProductDetailPage.jsx
+  - Removed duplicate AuthContext.jsx (SupabaseAuthContext is used)
+  - Removed React Quill CSS imports from BlogPostPage and StaticPage
+  - Added legacy Quill CSS support in index.css for existing content
+  - Uninstalled 11 unused npm packages (react-quill, quill plugins, tinymce, unused radix components)
+  - Build size reduced by removing 29 packages
 
 ## Supabase Database Setup
 
