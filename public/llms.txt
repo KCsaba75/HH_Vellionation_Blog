@@ -1,4 +1,5 @@
 ## Pages
+- [- Vellio Nation](/solutiondetail): No description available
 - [Admin Dashboard - Vellio Nation](/admin): No description available
 - [Blog Dashboard - Vellio Nation](/blogdashboard): Write and manage your blog posts for Vellio Nation.
 - [Forgot Password - Vellio Nation](/forgotpassword): Reset your Vellio Nation password.
@@ -7,4 +8,3 @@
 - [My Profile - Vellio Nation](/profile): No description available
 - [Reset Password - Vellio Nation](/resetpassword): Set your new Vellio Nation password.
 - [Untitled Page](/static): No description available
-- [Vellio Nation - Transform Your Life Through Wellness](/home): Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals.

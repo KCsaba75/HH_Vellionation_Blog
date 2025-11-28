@@ -100,20 +100,27 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
   - Added legacy Quill CSS support in index.css for existing content
   - Uninstalled 11 unused npm packages (react-quill, quill plugins, tinymce, unused radix components)
   - Build size reduced by removing 29 packages
-- **SEO Enhancements**:
+- **Advanced SEO Enhancements**:
   - Fixed index.html title from "Hostinger Horizons" to "Vellio Nation"
+  - Changed lang attribute from Hungarian (hu) to English (en)
+  - Updated all meta descriptions and OG tags to English
+  - Added theme-color meta tag (#22c55e - primary green)
   - Added robots.txt with sitemap reference
-  - Added sitemap.xml with all main routes
+  - Dynamic sitemap generation script (scripts/generate-sitemap.js) fetches blog posts and solutions from Supabase with lastmod dates
   - Added Open Graph and Twitter cards to all pages (HomePage, BlogPage, CommunityPage, SolutionsPage, BlogPostPage, SolutionDetailPage)
-  - Added JSON-LD structured data (Organization on HomePage, BlogPosting on BlogPostPage, Product on SolutionDetailPage)
+  - JSON-LD structured data: Organization, WebSite+SearchAction on HomePage; BlogPosting on BlogPostPage; Product on SolutionDetailPage
+  - BreadcrumbList JSON-LD schema on BlogPostPage and SolutionDetailPage for navigation trails
   - Added canonical URLs to all pages
 - **Image Optimization**:
-  - Added `loading="lazy"` attribute to images across all pages
-  - Improves initial page load performance
+  - Hero image preload with fetchpriority="high" in index.html
+  - Added width/height attributes to hero image to prevent CLS
+  - Preconnect to Supabase domain for faster API calls
+  - Added `loading="lazy"` attribute to below-the-fold images
 - **Bundle Optimization**:
   - Configured Vite manualChunks for optimal code splitting
   - Vendor chunks: vendor-react (162.90 KB), vendor-ui (132.31 KB), vendor-supabase (133.35 KB), vendor-tiptap (369.22 KB)
   - Improved caching efficiency for vendor libraries
+  - Build process: generate-llms.js → generate-sitemap.js → vite build
 
 ## Supabase Database Setup
 
