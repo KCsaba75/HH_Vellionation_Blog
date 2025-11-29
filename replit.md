@@ -137,9 +137,11 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
   - Admin dashboard now includes "Home Page Images" section in Settings tab
   - Site logo, Hero image, and Community section image can be uploaded/changed via admin
   - Images stored in Supabase Storage (`site_images` bucket) with 1-year cache
-  - Header dynamically loads logo from settings with fallback to default
-  - HomePage dynamically loads hero/community images from settings with fallback defaults
+  - No hardcoded fallback images - shows English placeholder text when no image uploaded:
+    - Header: "Logo placeholder" in circular container
+    - HomePage: "Hero image placeholder" and "Community image placeholder" in styled boxes
   - Settings stored in `home_images` key with `{ logo: url, hero: url, community: url }` structure
+  - Uses `.maybeSingle()` to gracefully handle missing settings without console errors
 
 ## Supabase Database Setup
 
