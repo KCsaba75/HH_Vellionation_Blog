@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 
-const PageLoader = () => {
+const PageLoader = memo(() => {
   return (
     <div className="flex items-center justify-center min-h-[50vh]">
       <div className="flex flex-col items-center gap-4">
@@ -9,6 +9,8 @@ const PageLoader = () => {
       </div>
     </div>
   );
-};
+});
+
+PageLoader.displayName = 'PageLoader';
 
 export default PageLoader;

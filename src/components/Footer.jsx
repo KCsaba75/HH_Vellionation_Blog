@@ -1,9 +1,9 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 
-const Footer = () => {
+const Footer = memo(() => {
   return (
     <footer className="border-t bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -49,6 +49,8 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = 'Footer';
 
 export default Footer;
