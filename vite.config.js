@@ -1,5 +1,4 @@
 import path from 'node:path';
-import fs from 'node:fs';
 import react from '@vitejs/plugin-react';
 import { createLogger, defineConfig } from 'vite';
 import inlineEditPlugin from './plugins/visual-editor/vite-plugin-react-inline-editor.js';
@@ -165,46 +164,6 @@ if (window.navigation && window.self !== window.top) {
 }
 `;
 
-const inlineCriticalCssPlugin = {
-        name: 'inline-critical-css',
-        apply: 'build',
-        enforce: 'post',
-        transformIndexHtml: {
-                enforce: 'post',
-                transform(html) {
-                        try {
-                                const criticalCssPath = path.resolve(__dirname, 'src/critical.css');
-                                const criticalCss = fs.readFileSync(criticalCssPath, 'utf-8');
-                                const minifiedCss = criticalCss
-                                        .replace(/\/\*[\s\S]*?\*\//g, '')
-                                        .replace(/\s+/g, ' ')
-                                        .replace(/\s*{\s*/g, '{')
-                                        .replace(/\s*}\s*/g, '}')
-                                        .replace(/\s*;\s*/g, ';')
-                                        .replace(/\s*:\s*/g, ':')
-                                        .replace(/\s*,\s*/g, ',')
-                                        .trim();
-                                
-                                html = html.replace(
-                                        '</head>',
-                                        `<style id="critical-css">${minifiedCss}</style></head>`
-                                );
-                                
-                                html = html.replace(
-                                        /<link rel="stylesheet"(?: crossorigin)? href="(\/assets\/[^"]+\.css)">/g,
-                                        `<link rel="preload" href="$1" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="$1"></noscript>`
-                                );
-                                
-                                return html;
-                        } catch (error) {
-                                console.warn('Failed to inline critical CSS:', error.message);
-                                return html;
-                        }
-                }
-        }
-};
-
 const addTransformIndexHtml = {
         name: 'add-transform-index-html',
         transformIndexHtml(html) {
@@ -280,7 +239,6 @@ export default defineConfig({
                 ...(isDev ? [inlineEditPlugin(), editModeDevPlugin(), iframeRouteRestorationPlugin(), selectionModePlugin()] : []),
                 react(),
                 addTransformIndexHtml
-                // inlineCriticalCssPlugin - temporarily disabled for debugging
         ],
         server: {
                 cors: true,
