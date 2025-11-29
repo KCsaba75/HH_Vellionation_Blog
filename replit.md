@@ -126,7 +126,7 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
 - **Accessibility Enhancements**:
   - Added aria-label to all icon-only buttons across Header, BlogPostPage, SolutionDetailPage, CommunityPage, CommunityComments
   - Added aria-expanded to mobile menu button
-  - Hungarian language aria-labels for screen reader support
+  - English language aria-labels for screen reader support (US audience)
 - **Performance Optimization**:
   - Removed unused Google Fonts preconnect (using Tailwind system fonts)
   - Added DNS prefetch for Supabase domain

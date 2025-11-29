@@ -65,8 +65,8 @@ const Header = () => {
               </motion.div>
             </Link>
             <div className="hidden md:flex items-center gap-2">
-              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook oldal megnyitása" className="text-muted-foreground hover:text-secondary transition-colors"><Facebook className="h-6 w-6" /></a>
-              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram oldal megnyitása" className="text-muted-foreground hover:text-secondary transition-colors"><Instagram className="h-6 w-6" /></a>
+              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Open Facebook page" className="text-muted-foreground hover:text-secondary transition-colors"><Facebook className="h-6 w-6" /></a>
+              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Open Instagram page" className="text-muted-foreground hover:text-secondary transition-colors"><Instagram className="h-6 w-6" /></a>
             </div>
           </div>
 
@@ -90,7 +90,7 @@ const Header = () => {
               size="icon"
               onClick={toggleTheme}
               className="rounded-full"
-              aria-label={theme === 'dark' ? 'Világos mód bekapcsolása' : 'Sötét mód bekapcsolása'}
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               {theme === 'dark' ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
             </Button>
@@ -151,7 +151,7 @@ const Header = () => {
           <button
             className="md:hidden p-2"
             onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? 'Menü bezárása' : 'Menü megnyitása'}
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
           >
             {isOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
@@ -243,8 +243,8 @@ const Header = () => {
             )}
             
             <div className="flex items-center gap-4 pt-4 border-t">
-              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook oldal megnyitása" className="text-muted-foreground hover:text-secondary transition-colors"><Facebook className="h-6 w-6" /></a>
-              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram oldal megnyitása" className="text-muted-foreground hover:text-secondary transition-colors"><Instagram className="h-6 w-6" /></a>
+              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Open Facebook page" className="text-muted-foreground hover:text-secondary transition-colors"><Facebook className="h-6 w-6" /></a>
+              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Open Instagram page" className="text-muted-foreground hover:text-secondary transition-colors"><Instagram className="h-6 w-6" /></a>
             </div>
 
             <Button

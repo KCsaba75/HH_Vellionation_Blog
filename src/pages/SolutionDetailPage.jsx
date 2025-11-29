@@ -182,7 +182,7 @@ const SolutionDetailPage = () => {
                   </Button>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button size="lg" variant="outline" className="px-6 py-6" aria-label="Megosztás">
+                      <Button size="lg" variant="outline" className="px-6 py-6" aria-label="Share this solution">
                         <Share2 className="h-5 w-5" />
                       </Button>
                     </DropdownMenuTrigger>

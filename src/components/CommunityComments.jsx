@@ -91,7 +91,7 @@ const CommunityComments = ({ postId }) => {
                 <span className="text-xs text-muted-foreground">{new Date(comment.created_at).toLocaleDateString()}</span>
               </div>
               {(comment.user_id === user?.id || profile?.role === 'admin') && (
-                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleDeleteComment(comment.id)} aria-label="Hozzászólás törlése">
+                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleDeleteComment(comment.id)} aria-label="Delete comment">
                   <Trash2 className="h-4 w-4 text-destructive" />
                 </Button>
               )}
@@ -108,9 +108,9 @@ const CommunityComments = ({ postId }) => {
             placeholder="Add a comment..."
             className="w-full p-2 pr-12 rounded-lg border bg-background resize-none text-sm"
             rows="2"
-            aria-label="Hozzászólás írása"
+            aria-label="Write a comment"
           />
-          <Button onClick={handlePostComment} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8" aria-label="Hozzászólás küldése">
+          <Button onClick={handlePostComment} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8" aria-label="Post comment">
             <Send className="h-4 w-4" />
           </Button>
         </div>
