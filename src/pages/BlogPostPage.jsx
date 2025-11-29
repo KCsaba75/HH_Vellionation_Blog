@@ -41,7 +41,7 @@ const BlogPostPage = () => {
       .from('posts')
       .select(`
         *,
-        profiles!posts_user_id_fkey ( name ),
+        profiles!posts_user_id_fkey ( name, avatar_url, bio ),
         categories!posts_category_id_fkey ( name ),
         subcategories:categories!posts_subcategory_id_fkey ( name )
       `)
@@ -341,6 +341,36 @@ const BlogPostPage = () => {
                 </>
               )}
             </div>
+
+            {/* Author Section */}
+            <section className="mt-10 mb-10">
+              <div className="bg-card border rounded-xl p-6 sm:p-8">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                  <div className="flex-shrink-0">
+                    {post.profiles?.avatar_url ? (
+                      <img 
+                        src={post.profiles.avatar_url} 
+                        alt={post.profiles?.name || 'Author'} 
+                        className="w-24 h-24 rounded-full object-cover ring-4 ring-primary/20"
+                      />
+                    ) : (
+                      <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center ring-4 ring-primary/20">
+                        <User className="w-12 h-12 text-primary" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 text-center sm:text-left">
+                    <p className="text-sm text-muted-foreground mb-1">Written by</p>
+                    <h3 className="text-xl font-bold mb-2">{post.profiles?.name || 'Vellio Team'}</h3>
+                    {post.profiles?.bio ? (
+                      <p className="text-muted-foreground leading-relaxed">{post.profiles.bio}</p>
+                    ) : (
+                      <p className="text-muted-foreground italic">Passionate about wellness and healthy living.</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <section className="mt-12">
               <h2 className="text-2xl font-bold mb-6">Comments</h2>
