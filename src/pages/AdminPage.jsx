@@ -42,7 +42,8 @@ const AdminPage = () => {
   });
   const [homeImages, setHomeImages] = useState({
     hero: '',
-    community: ''
+    community: '',
+    logo: ''
   });
 
   const [editingItem, setEditingItem] = useState(null);
@@ -51,6 +52,7 @@ const AdminPage = () => {
   const fileInputRef = useRef(null);
   const heroImageRef = useRef(null);
   const communityImageRef = useRef(null);
+  const logoImageRef = useRef(null);
   const [uploading, setUploading] = useState(false);
   const [uploadingHomeImage, setUploadingHomeImage] = useState(null);
 
@@ -76,7 +78,7 @@ const AdminPage = () => {
         privacy: settingsData.find(s => s.key === 'page_content_privacy')?.value || { content: '' },
         terms: settingsData.find(s => s.key === 'page_content_terms')?.value || { content: '' },
       });
-      setHomeImages(settingsData.find(s => s.key === 'home_images')?.value || { hero: '', community: '' });
+      setHomeImages(settingsData.find(s => s.key === 'home_images')?.value || { hero: '', community: '', logo: '' });
     }
   }, []);
 
@@ -463,19 +465,40 @@ const AdminPage = () => {
                     <div className="flex items-center gap-2"><Image className="h-5 w-5 text-primary" /><h2 className="text-lg sm:text-xl font-semibold">Home Page Images</h2></div>
                     <p className="text-sm text-muted-foreground">Upload images for the home page. For best performance, use WebP format and keep file size under 500KB.</p>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {/* Site Logo */}
+                      <div className="space-y-3">
+                        <Label className="text-sm font-medium">Site Logo</Label>
+                        {homeImages.logo ? (
+                          <div className="relative">
+                            <img src={homeImages.logo} alt="Logo preview" className="w-full h-32 object-contain rounded-lg border-2 border-primary bg-white p-2" />
+                            <button type="button" onClick={() => handleRemoveHomeImage('logo')} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg" aria-label="Remove site logo">
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="w-full h-32 border-2 border-dashed border-muted-foreground/30 rounded-lg flex items-center justify-center">
+                            <span className="text-muted-foreground text-sm">No logo uploaded</span>
+                          </div>
+                        )}
+                        <input type="file" ref={logoImageRef} onChange={(e) => handleHomeImageUpload(e, 'logo')} accept="image/*" className="hidden" aria-label="Upload site logo file" />
+                        <Button type="button" size="sm" onClick={() => logoImageRef.current?.click()} disabled={uploadingHomeImage === 'logo'} className="w-full" aria-label={uploadingHomeImage === 'logo' ? 'Uploading site logo' : homeImages.logo ? 'Change site logo' : 'Upload site logo'}>
+                          <Upload className="mr-2 h-4 w-4" />{uploadingHomeImage === 'logo' ? 'Uploading...' : homeImages.logo ? 'Change Logo' : 'Upload Logo'}
+                        </Button>
+                      </div>
+
                       {/* Hero Image */}
                       <div className="space-y-3">
                         <Label className="text-sm font-medium">Hero Image (Main Banner)</Label>
                         {homeImages.hero ? (
                           <div className="relative">
-                            <img src={homeImages.hero} alt="Hero preview" className="w-full h-48 object-cover rounded-lg border-2 border-primary" />
+                            <img src={homeImages.hero} alt="Hero preview" className="w-full h-32 object-cover rounded-lg border-2 border-primary" />
                             <button type="button" onClick={() => handleRemoveHomeImage('hero')} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg" aria-label="Remove hero image">
                               <X className="h-4 w-4" />
                             </button>
                           </div>
                         ) : (
-                          <div className="w-full h-48 border-2 border-dashed border-muted-foreground/30 rounded-lg flex items-center justify-center">
+                          <div className="w-full h-32 border-2 border-dashed border-muted-foreground/30 rounded-lg flex items-center justify-center">
                             <span className="text-muted-foreground text-sm">No image uploaded</span>
                           </div>
                         )}
@@ -490,13 +513,13 @@ const AdminPage = () => {
                         <Label className="text-sm font-medium">Community Section Image</Label>
                         {homeImages.community ? (
                           <div className="relative">
-                            <img src={homeImages.community} alt="Community preview" className="w-full h-48 object-cover rounded-lg border-2 border-primary" />
+                            <img src={homeImages.community} alt="Community preview" className="w-full h-32 object-cover rounded-lg border-2 border-primary" />
                             <button type="button" onClick={() => handleRemoveHomeImage('community')} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg" aria-label="Remove community image">
                               <X className="h-4 w-4" />
                             </button>
                           </div>
                         ) : (
-                          <div className="w-full h-48 border-2 border-dashed border-muted-foreground/30 rounded-lg flex items-center justify-center">
+                          <div className="w-full h-32 border-2 border-dashed border-muted-foreground/30 rounded-lg flex items-center justify-center">
                             <span className="text-muted-foreground text-sm">No image uploaded</span>
                           </div>
                         )}
