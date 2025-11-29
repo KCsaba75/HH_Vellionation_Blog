@@ -1,11 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Heart, Users, TrendingUp, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/lib/customSupabaseClient';
+
+const DEFAULT_HERO_IMAGE = '/images/hero-outdoor-fitness.jpg?v=8';
+const DEFAULT_COMMUNITY_IMAGE = 'https://images.unsplash.com/photo-1683624328172-88fb24625ec1';
 
 const HomePage = () => {
+  const [homeImages, setHomeImages] = useState({
+    hero: DEFAULT_HERO_IMAGE,
+    community: DEFAULT_COMMUNITY_IMAGE
+  });
+
+  useEffect(() => {
+    const fetchHomeImages = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('settings')
+          .select('value')
+          .eq('key', 'home_images')
+          .single();
+        
+        if (error) {
+          console.warn('Failed to fetch home images, using defaults:', error.message);
+          return;
+        }
+        
+        if (data?.value) {
+          setHomeImages({
+            hero: data.value.hero || DEFAULT_HERO_IMAGE,
+            community: data.value.community || DEFAULT_COMMUNITY_IMAGE
+          });
+        }
+      } catch (err) {
+        console.warn('Error fetching home images:', err);
+      }
+    };
+    fetchHomeImages();
+  }, []);
   const features = [
     {
       icon: Heart,
@@ -110,7 +145,7 @@ const HomePage = () => {
               <img 
                 alt="Wellness fitness group exercising together in nature" 
                 className="rounded-2xl shadow-2xl w-full" 
-                src="/images/hero-outdoor-fitness.jpg?v=8"
+                src={homeImages.hero}
                 width="800"
                 height="533"
                 fetchpriority="high"
@@ -161,7 +196,7 @@ const HomePage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <img alt="Community members sharing healthy recipes" className="rounded-2xl shadow-xl w-full" src="https://images.unsplash.com/photo-1683624328172-88fb24625ec1" loading="lazy" />
+              <img alt="Community members sharing healthy recipes" className="rounded-2xl shadow-xl w-full" src={homeImages.community} loading="lazy" />
             </motion.div>
 
             <motion.div

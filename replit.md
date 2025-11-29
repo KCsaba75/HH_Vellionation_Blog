@@ -133,6 +133,12 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
   - Added critical inline CSS for faster initial render
   - React.memo() applied to PageLoader and Footer components
   - Production build: 14.18s build time, optimized chunks
+- **Home Page Image Management**:
+  - Admin dashboard now includes "Home Page Images" section in Settings tab
+  - Hero image and Community section image can be uploaded/changed via admin
+  - Images stored in Supabase Storage (`site_images` bucket) with 1-year cache
+  - HomePage dynamically loads images from settings with fallback defaults
+  - Settings stored in `home_images` key with `{ hero: url, community: url }` structure
 
 ## Supabase Database Setup
 

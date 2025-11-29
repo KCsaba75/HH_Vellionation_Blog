@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
-import { Plus, Trash2, Edit, CheckCircle, Eye, BarChart, User, Upload, Settings, Save, Package, MessageSquare, FileText, X } from 'lucide-react';
+import { Plus, Trash2, Edit, CheckCircle, Eye, BarChart, User, Upload, Settings, Save, Package, MessageSquare, FileText, X, Image } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -40,12 +40,19 @@ const AdminPage = () => {
     privacy: { content: '' },
     terms: { content: '' },
   });
+  const [homeImages, setHomeImages] = useState({
+    hero: '',
+    community: ''
+  });
 
   const [editingItem, setEditingItem] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [formType, setFormType] = useState(null);
   const fileInputRef = useRef(null);
+  const heroImageRef = useRef(null);
+  const communityImageRef = useRef(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadingHomeImage, setUploadingHomeImage] = useState(null);
 
   const fetchData = useCallback(async () => {
     const { count: usersCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
@@ -69,6 +76,7 @@ const AdminPage = () => {
         privacy: settingsData.find(s => s.key === 'page_content_privacy')?.value || { content: '' },
         terms: settingsData.find(s => s.key === 'page_content_terms')?.value || { content: '' },
       });
+      setHomeImages(settingsData.find(s => s.key === 'home_images')?.value || { hero: '', community: '' });
     }
   }, []);
 
@@ -212,7 +220,7 @@ const AdminPage = () => {
   };
   
   const handleSaveSettings = async (key, value) => {
-    const { error } = await supabase.from('settings').update({ value }).eq('key', key);
+    const { error } = await supabase.from('settings').upsert({ key, value }, { onConflict: 'key' });
     if (error) {
       toast({ title: `Error saving ${key}`, description: error.message, variant: 'destructive' });
     } else {
@@ -220,7 +228,55 @@ const AdminPage = () => {
     }
   };
 
-  
+  const handleHomeImageUpload = async (event, imageType) => {
+    if (!event.target.files || event.target.files.length === 0) return;
+    const file = event.target.files[0];
+    const fileExt = file.name.split('.').pop().toLowerCase();
+    const fileName = `home-${imageType}-${Date.now()}.${fileExt}`;
+    
+    setUploadingHomeImage(imageType);
+    
+    const { error: uploadError } = await supabase.storage.from('site_images').upload(fileName, file, {
+      cacheControl: '31536000',
+      upsert: true
+    });
+
+    if (uploadError) {
+      toast({ title: "Image Upload Failed", description: uploadError.message, variant: "destructive" });
+      setUploadingHomeImage(null);
+      return;
+    }
+
+    const { data } = supabase.storage.from('site_images').getPublicUrl(fileName);
+    const newHomeImages = { ...homeImages, [imageType]: data.publicUrl };
+    
+    const { error: saveError } = await supabase.from('settings').upsert({ key: 'home_images', value: newHomeImages }, { onConflict: 'key' });
+    
+    if (saveError) {
+      toast({ title: "Failed to save image settings", description: saveError.message, variant: "destructive" });
+      setUploadingHomeImage(null);
+      return;
+    }
+    
+    setHomeImages(newHomeImages);
+    setUploadingHomeImage(null);
+    toast({ title: `${imageType === 'hero' ? 'Hero' : 'Community'} image updated!` });
+  };
+
+  const handleRemoveHomeImage = async (imageType) => {
+    const newHomeImages = { ...homeImages, [imageType]: '' };
+    
+    const { error } = await supabase.from('settings').upsert({ key: 'home_images', value: newHomeImages }, { onConflict: 'key' });
+    
+    if (error) {
+      toast({ title: "Failed to remove image", description: error.message, variant: "destructive" });
+      return;
+    }
+    
+    setHomeImages(newHomeImages);
+    toast({ title: `${imageType === 'hero' ? 'Hero' : 'Community'} image removed` });
+  };
+
   const handlePageContentChange = (page, content) => {
     setPageContents(prev => ({...prev, [page]: {content}}));
   };
@@ -402,6 +458,56 @@ const AdminPage = () => {
 
               <TabsContent value="settings">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
+                  {/* Home Page Images */}
+                  <div className="bg-card p-4 sm:p-6 rounded-xl shadow-lg space-y-4 sm:space-y-6 lg:col-span-2">
+                    <div className="flex items-center gap-2"><Image className="h-5 w-5 text-primary" /><h2 className="text-lg sm:text-xl font-semibold">Home Page Images</h2></div>
+                    <p className="text-sm text-muted-foreground">Upload images for the home page. For best performance, use WebP format and keep file size under 500KB.</p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Hero Image */}
+                      <div className="space-y-3">
+                        <Label className="text-sm font-medium">Hero Image (Main Banner)</Label>
+                        {homeImages.hero ? (
+                          <div className="relative">
+                            <img src={homeImages.hero} alt="Hero preview" className="w-full h-48 object-cover rounded-lg border-2 border-primary" />
+                            <button type="button" onClick={() => handleRemoveHomeImage('hero')} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg" aria-label="Remove hero image">
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="w-full h-48 border-2 border-dashed border-muted-foreground/30 rounded-lg flex items-center justify-center">
+                            <span className="text-muted-foreground text-sm">No image uploaded</span>
+                          </div>
+                        )}
+                        <input type="file" ref={heroImageRef} onChange={(e) => handleHomeImageUpload(e, 'hero')} accept="image/*" className="hidden" aria-label="Upload hero image file" />
+                        <Button type="button" size="sm" onClick={() => heroImageRef.current?.click()} disabled={uploadingHomeImage === 'hero'} className="w-full" aria-label={uploadingHomeImage === 'hero' ? 'Uploading hero image' : homeImages.hero ? 'Change hero image' : 'Upload hero image'}>
+                          <Upload className="mr-2 h-4 w-4" />{uploadingHomeImage === 'hero' ? 'Uploading...' : homeImages.hero ? 'Change Image' : 'Upload Image'}
+                        </Button>
+                      </div>
+
+                      {/* Community Image */}
+                      <div className="space-y-3">
+                        <Label className="text-sm font-medium">Community Section Image</Label>
+                        {homeImages.community ? (
+                          <div className="relative">
+                            <img src={homeImages.community} alt="Community preview" className="w-full h-48 object-cover rounded-lg border-2 border-primary" />
+                            <button type="button" onClick={() => handleRemoveHomeImage('community')} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg" aria-label="Remove community image">
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="w-full h-48 border-2 border-dashed border-muted-foreground/30 rounded-lg flex items-center justify-center">
+                            <span className="text-muted-foreground text-sm">No image uploaded</span>
+                          </div>
+                        )}
+                        <input type="file" ref={communityImageRef} onChange={(e) => handleHomeImageUpload(e, 'community')} accept="image/*" className="hidden" aria-label="Upload community image file" />
+                        <Button type="button" size="sm" onClick={() => communityImageRef.current?.click()} disabled={uploadingHomeImage === 'community'} className="w-full" aria-label={uploadingHomeImage === 'community' ? 'Uploading community image' : homeImages.community ? 'Change community image' : 'Upload community image'}>
+                          <Upload className="mr-2 h-4 w-4" />{uploadingHomeImage === 'community' ? 'Uploading...' : homeImages.community ? 'Change Image' : 'Upload Image'}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* General Settings */}
                   <div className="bg-card p-4 sm:p-6 rounded-xl shadow-lg space-y-4 sm:space-y-6 lg:col-span-2">
                      <div className="flex items-center gap-2"><Settings className="h-5 w-5 text-primary" /><h2 className="text-lg sm:text-xl font-semibold">General Settings</h2></div>
