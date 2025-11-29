@@ -211,8 +211,8 @@ const CommunityPage = () => {
                     </div>
                   </div>
                   <div className="text-foreground mb-4 whitespace-pre-wrap">{renderContent(post.content)}</div>
-                  <div className="flex items-center gap-4 pt-4 border-t"><Button variant="ghost" size="sm" className="gap-2" onClick={() => toggleLike(post.id, post.user_has_liked)}><Heart className={cn('h-4 w-4', post.user_has_liked && 'text-red-500 fill-current')} />{post.likes} Likes</Button>
-                    <Dialog><DialogTrigger asChild><Button variant="ghost" size="sm" className="gap-2"><MessageCircle className="h-4 w-4" /> {post.comment_count} Comments</Button></DialogTrigger><DialogContent className="sm:max-w-[425px]"><DialogHeader><DialogTitle>Comments</DialogTitle></DialogHeader><CommunityComments postId={post.id} /></DialogContent></Dialog>
+                  <div className="flex items-center gap-4 pt-4 border-t"><Button variant="ghost" size="sm" className="gap-2" onClick={() => toggleLike(post.id, post.user_has_liked)} aria-label={post.user_has_liked ? 'Kedvelés visszavonása' : 'Bejegyzés kedvelése'}><Heart className={cn('h-4 w-4', post.user_has_liked && 'text-red-500 fill-current')} />{post.likes} Likes</Button>
+                    <Dialog><DialogTrigger asChild><Button variant="ghost" size="sm" className="gap-2" aria-label="Hozzászólások megnyitása"><MessageCircle className="h-4 w-4" /> {post.comment_count} Comments</Button></DialogTrigger><DialogContent className="sm:max-w-[425px]"><DialogHeader><DialogTitle>Comments</DialogTitle></DialogHeader><CommunityComments postId={post.id} /></DialogContent></Dialog>
                   </div>
                 </motion.article>
               )))}
@@ -225,7 +225,7 @@ const CommunityPage = () => {
                     {uploadedImages.map((imageUrl, index) => (
                       <div key={index} className="relative">
                         <img src={imageUrl} alt={`Upload ${index + 1}`} className="h-20 w-20 object-cover rounded-lg border-2 border-primary" />
-                        <button type="button" onClick={() => removeImage(imageUrl)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg">
+                        <button type="button" onClick={() => removeImage(imageUrl)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg" aria-label="Kép eltávolítása">
                           <X className="h-4 w-4" />
                         </button>
                       </div>
@@ -233,8 +233,8 @@ const CommunityPage = () => {
                   </div>
                 )}
                 <div className="relative">
-                  <textarea ref={newPostTextAreaRef} value={newPostContent} onChange={(e) => setNewPostContent(e.target.value)} onPaste={handlePaste} placeholder={selectedCategoryId === null ? "Select a category to post..." : "Share with the community... (drag-and-drop or paste an image)"} className="w-full p-3 pr-12 rounded-lg border bg-background resize-none" rows="3" disabled={selectedCategoryId === null} />
-                  <Button onClick={handleCreatePost} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9" disabled={(!newPostContent.trim() && uploadedImages.length === 0) || selectedCategoryId === null}><Send className="h-4 w-4" /></Button>
+                  <textarea ref={newPostTextAreaRef} value={newPostContent} onChange={(e) => setNewPostContent(e.target.value)} onPaste={handlePaste} placeholder={selectedCategoryId === null ? "Select a category to post..." : "Share with the community... (drag-and-drop or paste an image)"} className="w-full p-3 pr-12 rounded-lg border bg-background resize-none" rows="3" disabled={selectedCategoryId === null} aria-label="Új bejegyzés írása" />
+                  <Button onClick={handleCreatePost} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9" disabled={(!newPostContent.trim() && uploadedImages.length === 0) || selectedCategoryId === null} aria-label="Bejegyzés küldése"><Send className="h-4 w-4" /></Button>
                 </div>
               </motion.div>
             )}

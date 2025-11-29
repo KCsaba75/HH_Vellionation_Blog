@@ -65,8 +65,8 @@ const Header = () => {
               </motion.div>
             </Link>
             <div className="hidden md:flex items-center gap-2">
-              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-secondary transition-colors"><Facebook className="h-6 w-6" /></a> {/* Increased icon size */}
-              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-secondary transition-colors"><Instagram className="h-6 w-6" /></a> {/* Increased icon size */}
+              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook oldal megnyitása" className="text-muted-foreground hover:text-secondary transition-colors"><Facebook className="h-6 w-6" /></a>
+              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram oldal megnyitása" className="text-muted-foreground hover:text-secondary transition-colors"><Instagram className="h-6 w-6" /></a>
             </div>
           </div>
 
@@ -90,8 +90,9 @@ const Header = () => {
               size="icon"
               onClick={toggleTheme}
               className="rounded-full"
+              aria-label={theme === 'dark' ? 'Világos mód bekapcsolása' : 'Sötét mód bekapcsolása'}
             >
-              {theme === 'dark' ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />} {/* Increased icon size */}
+              {theme === 'dark' ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
             </Button>
 
             {user ? (
@@ -150,8 +151,10 @@ const Header = () => {
           <button
             className="md:hidden p-2"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? 'Menü bezárása' : 'Menü megnyitása'}
+            aria-expanded={isOpen}
           >
-            {isOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />} {/* Increased icon size */}
+            {isOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
           </button>
         </div>
 
@@ -240,8 +243,8 @@ const Header = () => {
             )}
             
             <div className="flex items-center gap-4 pt-4 border-t">
-              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-secondary transition-colors"><Facebook className="h-6 w-6" /></a>
-              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-secondary transition-colors"><Instagram className="h-6 w-6" /></a>
+              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook oldal megnyitása" className="text-muted-foreground hover:text-secondary transition-colors"><Facebook className="h-6 w-6" /></a>
+              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram oldal megnyitása" className="text-muted-foreground hover:text-secondary transition-colors"><Instagram className="h-6 w-6" /></a>
             </div>
 
             <Button

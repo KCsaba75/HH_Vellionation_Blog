@@ -318,7 +318,7 @@ const BlogPostPage = () => {
             </div>
             
             <div className="flex items-center gap-4 py-6 border-y">
-              <Button variant="outline" className="gap-2" onClick={toggleLike}>
+              <Button variant="outline" className="gap-2" onClick={toggleLike} aria-label={userHasLiked ? 'Kedvelés visszavonása' : 'Cikk kedvelése'}>
                 <Heart className={`h-5 w-5 ${userHasLiked ? 'text-red-500 fill-current' : ''}`} />
                 {likes.length}
               </Button>
@@ -326,11 +326,11 @@ const BlogPostPage = () => {
               <div className="flex-grow" />
               {user && (
                 <>
-                  <Button variant="outline" className="gap-2" onClick={handlePrintPdf}>
+                  <Button variant="outline" className="gap-2" onClick={handlePrintPdf} aria-label="PDF letöltése">
                     <FileText className="h-5 w-5" /> PDF
                   </Button>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild><Button variant="outline" className="gap-2"><Share2 className="h-5 w-5" /> Share</Button></DropdownMenuTrigger>
+                    <DropdownMenuTrigger asChild><Button variant="outline" className="gap-2" aria-label="Megosztás"><Share2 className="h-5 w-5" /> Share</Button></DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={() => handleShare('facebook')}><Facebook className="mr-2 h-4 w-4 text-[#1877F2]" />Facebook</DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleShare('messenger')}><MessageSquare className="mr-2 h-4 w-4 text-[#00B2FF]" />Messenger</DropdownMenuItem>
@@ -344,7 +344,7 @@ const BlogPostPage = () => {
 
             <section className="mt-12">
               <h2 className="text-2xl font-bold mb-6">Comments</h2>
-              {user && (<div className="mb-8"><textarea value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Share your thoughts..." className="w-full p-4 rounded-lg border bg-background resize-none" rows="4" /><Button onClick={handleComment} className="mt-2"><MessageCircle className="mr-2 h-4 w-4" />Post Comment</Button></div>)}
+              {user && (<div className="mb-8"><textarea value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Share your thoughts..." className="w-full p-4 rounded-lg border bg-background resize-none" rows="4" aria-label="Hozzászólás írása" /><Button onClick={handleComment} className="mt-2" aria-label="Hozzászólás küldése"><MessageCircle className="mr-2 h-4 w-4" />Post Comment</Button></div>)}
               <div className="space-y-6">
                 {comments.map(comment => (<div key={comment.id} className="bg-card p-6 rounded-lg"><div className="flex items-center gap-2 mb-2"><User className="h-5 w-5 text-muted-foreground" /><span className="font-semibold">{comment.profiles?.name || 'Anonymous'}</span><span className="text-sm text-muted-foreground">{new Date(comment.created_at).toLocaleDateString()}</span></div><p className="text-muted-foreground">{comment.content}</p></div>))}
                 {comments.length === 0 && (<p className="text-center text-muted-foreground py-8">No comments yet. Be the first to share your thoughts!</p>)}
