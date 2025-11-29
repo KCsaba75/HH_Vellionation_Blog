@@ -142,6 +142,12 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
     - HomePage: "Hero image placeholder" and "Community image placeholder" in styled boxes
   - Settings stored in `home_images` key with `{ logo: url, hero: url, community: url }` structure
   - Uses `.maybeSingle()` to gracefully handle missing settings without console errors
+- **Blog Author Section**:
+  - Added author card below blog post content (before comments)
+  - Displays circular profile picture (with User icon fallback)
+  - Shows author name and bio from profiles table
+  - Fallback bio text for authors without bio set
+  - Responsive layout: stacked on mobile, side-by-side on desktop
 
 ## Supabase Database Setup
 
