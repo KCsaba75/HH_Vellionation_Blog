@@ -122,6 +122,18 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
   - Improved caching efficiency for vendor libraries
   - Build process: generate-llms.js → generate-sitemap.js → vite build
 
+### November 29, 2025
+- **Accessibility Enhancements**:
+  - Added aria-label to all icon-only buttons across Header, BlogPostPage, SolutionDetailPage, CommunityPage, CommunityComments
+  - Added aria-expanded to mobile menu button
+  - Hungarian language aria-labels for screen reader support
+- **Performance Optimization**:
+  - Removed unused Google Fonts preconnect (using Tailwind system fonts)
+  - Added DNS prefetch for Supabase domain
+  - Added critical inline CSS for faster initial render
+  - React.memo() applied to PageLoader and Footer components
+  - Production build: 14.18s build time, optimized chunks
+
 ## Supabase Database Setup
 
 ### Required Database Trigger for Account Deletion
