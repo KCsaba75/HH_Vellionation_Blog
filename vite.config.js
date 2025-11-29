@@ -279,8 +279,8 @@ export default defineConfig({
         plugins: [
                 ...(isDev ? [inlineEditPlugin(), editModeDevPlugin(), iframeRouteRestorationPlugin(), selectionModePlugin()] : []),
                 react(),
-                addTransformIndexHtml,
-                inlineCriticalCssPlugin
+                addTransformIndexHtml
+                // inlineCriticalCssPlugin - temporarily disabled for debugging
         ],
         server: {
                 cors: true,
