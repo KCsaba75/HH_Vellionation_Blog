@@ -6,13 +6,10 @@ import { ArrowRight, Heart, Users, TrendingUp, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/customSupabaseClient';
 
-const DEFAULT_HERO_IMAGE = '/images/hero-outdoor-fitness.jpg?v=8';
-const DEFAULT_COMMUNITY_IMAGE = 'https://images.unsplash.com/photo-1683624328172-88fb24625ec1';
-
 const HomePage = () => {
   const [homeImages, setHomeImages] = useState({
-    hero: DEFAULT_HERO_IMAGE,
-    community: DEFAULT_COMMUNITY_IMAGE
+    hero: '',
+    community: ''
   });
 
   useEffect(() => {
@@ -22,17 +19,17 @@ const HomePage = () => {
           .from('settings')
           .select('value')
           .eq('key', 'home_images')
-          .single();
+          .maybeSingle();
         
         if (error) {
-          console.warn('Failed to fetch home images, using defaults:', error.message);
+          console.warn('Failed to fetch home images:', error.message);
           return;
         }
         
         if (data?.value) {
           setHomeImages({
-            hero: data.value.hero || DEFAULT_HERO_IMAGE,
-            community: data.value.community || DEFAULT_COMMUNITY_IMAGE
+            hero: data.value.hero || '',
+            community: data.value.community || ''
           });
         }
       } catch (err) {
@@ -142,14 +139,20 @@ const HomePage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <img 
-                alt="Wellness fitness group exercising together in nature" 
-                className="rounded-2xl shadow-2xl w-full" 
-                src={homeImages.hero}
-                width="800"
-                height="533"
-                fetchpriority="high"
-              />
+              {homeImages.hero ? (
+                <img 
+                  alt="Wellness fitness group exercising together in nature" 
+                  className="rounded-2xl shadow-2xl w-full" 
+                  src={homeImages.hero}
+                  width="800"
+                  height="533"
+                  fetchpriority="high"
+                />
+              ) : (
+                <div className="rounded-2xl shadow-2xl w-full h-64 sm:h-80 md:h-96 bg-muted border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                  <span className="text-muted-foreground text-lg">Hero image placeholder</span>
+                </div>
+              )}
             </motion.div>
           </div>
         </div>
@@ -196,7 +199,13 @@ const HomePage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <img alt="Community members sharing healthy recipes" className="rounded-2xl shadow-xl w-full" src={homeImages.community} loading="lazy" />
+              {homeImages.community ? (
+                <img alt="Community members sharing healthy recipes" className="rounded-2xl shadow-xl w-full" src={homeImages.community} loading="lazy" />
+              ) : (
+                <div className="rounded-2xl shadow-xl w-full h-64 sm:h-80 bg-muted border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                  <span className="text-muted-foreground text-lg">Community image placeholder</span>
+                </div>
+              )}
             </motion.div>
 
             <motion.div

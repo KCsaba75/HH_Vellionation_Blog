@@ -15,25 +15,28 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { supabase } from '@/lib/customSupabaseClient';
 
-const DEFAULT_LOGO = 'https://horizons-cdn.hostinger.com/c18b618d-7399-4232-9a94-f974a0bdecb5/061c15a45918afd6f0222252773611d0.png';
-
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { user, profile, signOut } = useAuth();
   const navigate = useNavigate();
   const [socialLinks, setSocialLinks] = useState({ facebook: '#', instagram: '#' });
-  const [logoUrl, setLogoUrl] = useState(DEFAULT_LOGO);
+  const [logoUrl, setLogoUrl] = useState('');
 
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('settings')
           .select('key, value')
           .in('key', ['social_links', 'home_images']);
         
-        if (data) {
+        if (error) {
+          console.warn('Failed to fetch header settings:', error.message);
+          return;
+        }
+        
+        if (data && data.length > 0) {
           const socialData = data.find(s => s.key === 'social_links');
           const homeImagesData = data.find(s => s.key === 'home_images');
           
@@ -68,8 +71,12 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link to="/" className="flex items-center gap-4 group"> {/* Increased gap for larger logo/text */}
-                <div className="w-16 h-16 rounded-full border-2 border-white group-hover:scale-105 transition-transform">
-                     <img alt="Vellio Nation Logo" className="w-full h-full rounded-full object-cover" src={logoUrl} />
+                <div className="w-16 h-16 rounded-full border-2 border-white group-hover:scale-105 transition-transform flex items-center justify-center bg-muted">
+                     {logoUrl ? (
+                       <img alt="Vellio Nation Logo" className="w-full h-full rounded-full object-cover" src={logoUrl} />
+                     ) : (
+                       <span className="text-xs text-muted-foreground text-center px-1">Logo placeholder</span>
+                     )}
                 </div>
               <motion.div
                 whileHover={{ scale: 1.05 }}
