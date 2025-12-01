@@ -155,6 +155,8 @@ const SolutionDetailPage = () => {
                     className="w-full h-full object-cover" 
                     src={solution.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800'}
                     loading="lazy"
+                    width="800"
+                    height="450"
                   />
                 </div>
               </div>
