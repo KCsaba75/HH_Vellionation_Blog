@@ -149,6 +149,16 @@ The application is built with React 18.2 and Vite 4.5 for the frontend, utilizin
   - Fallback bio text for authors without bio set
   - Responsive layout: stacked on mobile, side-by-side on desktop
 
+### December 1, 2025
+- **Performance Optimization - Critical CSS & Async Loading**:
+  - Removed old hardcoded hero image preload tag from index.html
+  - Added width/height attributes to all major images (HomePage, BlogPostPage, SolutionDetailPage) to prevent CLS
+  - Added cacheControl (1 year) to all image upload functions (RichTextEditor, CommunityPage, AdminPage)
+  - Created src/styles/critical.css with above-the-fold styles (CSS variables, header, layout, typography)
+  - Added Vite plugin (criticalCssPlugin) to inline critical CSS and convert main stylesheet to async preload
+  - Build process now inlines critical CSS and defers main CSS with preload/onload pattern
+  - Eliminates render-blocking CSS warning and improves LCP
+
 ## Supabase Database Setup
 
 ### Required Database Trigger for Account Deletion
