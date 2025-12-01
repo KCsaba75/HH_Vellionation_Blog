@@ -206,7 +206,10 @@ const AdminPage = () => {
     const bucket = formType === 'post' ? 'post_images' : 'solution_images';
 
     setUploading(true);
-    const { error: uploadError } = await supabase.storage.from(bucket).upload(filePath, file);
+    const { error: uploadError } = await supabase.storage.from(bucket).upload(filePath, file, {
+      cacheControl: '31536000',
+      upsert: false
+    });
 
     if (uploadError) {
       toast({ title: "Image Upload Failed", description: uploadError.message, variant: "destructive" });

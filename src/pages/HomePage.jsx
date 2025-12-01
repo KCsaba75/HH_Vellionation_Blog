@@ -200,7 +200,7 @@ const HomePage = () => {
               viewport={{ once: true }}
             >
               {homeImages.community ? (
-                <img alt="Community members sharing healthy recipes" className="rounded-2xl shadow-xl w-full" src={homeImages.community} loading="lazy" />
+                <img alt="Community members sharing healthy recipes" className="rounded-2xl shadow-xl w-full" src={homeImages.community} loading="lazy" width="800" height="533" />
               ) : (
                 <div className="rounded-2xl shadow-xl w-full h-64 sm:h-80 bg-muted border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
                   <span className="text-muted-foreground text-lg">Community image placeholder</span>

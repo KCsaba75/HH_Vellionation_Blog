@@ -14,7 +14,10 @@ const uploadImageToSupabase = async (file) => {
   
   const { error: uploadError } = await supabase.storage
     .from('post_images')
-    .upload(fileName, file);
+    .upload(fileName, file, {
+      cacheControl: '31536000',
+      upsert: false
+    });
   
   if (uploadError) {
     console.error('Image upload failed:', uploadError.message);

@@ -62,7 +62,10 @@ const CommunityPage = () => {
     if (!user) return;
     const fileExt = file.name.split('.').pop();
     const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-    const { error: uploadError } = await supabase.storage.from('community_post_images').upload(fileName, file);
+    const { error: uploadError } = await supabase.storage.from('community_post_images').upload(fileName, file, {
+      cacheControl: '31536000',
+      upsert: false
+    });
 
     if (uploadError) {
       toast({ title: "Image Upload Failed", description: uploadError.message, variant: "destructive" });
