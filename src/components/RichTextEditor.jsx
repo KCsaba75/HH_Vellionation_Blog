@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
@@ -204,6 +204,15 @@ const RichTextEditor = ({ value, onChange, placeholder, className, fullWidth = f
       },
     },
   });
+
+  useEffect(() => {
+    if (editor && value !== undefined && value !== null) {
+      const currentContent = editor.getHTML();
+      if (currentContent !== value && value !== '') {
+        editor.commands.setContent(value, false);
+      }
+    }
+  }, [editor, value]);
 
   return (
     <div className={`rich-text-editor border rounded-lg overflow-hidden bg-background ${className || ''}`}>
