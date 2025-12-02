@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/customSupabaseClient';
+import { regenerateSeoFiles } from '@/lib/seoFileGenerator';
 import { Upload, Save, Eye, Plus, Edit, Trash2 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
@@ -147,6 +148,7 @@ const BlogDashboardPage = () => {
         setIsFormVisible(false);
         setEditingPost(null);
         fetchUserPosts();
+        regenerateSeoFiles();
     }
   };
 

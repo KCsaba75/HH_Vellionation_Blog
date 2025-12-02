@@ -17,6 +17,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { supabase } from '@/lib/customSupabaseClient';
+import { regenerateSeoFiles } from '@/lib/seoFileGenerator';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import RichTextEditor from '@/components/RichTextEditor';
@@ -141,6 +142,9 @@ const AdminPage = () => {
     } else {
       toast({title: 'Item deleted!'});
       fetchData();
+      if (table === 'posts' || table === 'solutions') {
+        regenerateSeoFiles();
+      }
     }
   };
   
@@ -194,6 +198,7 @@ const AdminPage = () => {
       setIsFormOpen(false);
       setEditingItem(null);
       fetchData();
+      regenerateSeoFiles();
     }
   };
 
