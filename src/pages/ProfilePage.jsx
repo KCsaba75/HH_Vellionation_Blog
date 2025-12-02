@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/customSupabaseClient';
+import { convertToWebPForAvatar } from '@/lib/imageUtils';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -123,25 +124,32 @@ const ProfilePage = () => {
       return;
     }
 
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-    const filePath = `${fileName}`;
-
     setUploading(true);
-    const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file);
+    
+    try {
+      const webpFile = await convertToWebPForAvatar(file, 256, 0.85);
+      const fileName = `${user.id}-${Date.now()}.webp`;
 
-    if (uploadError) {
-      toast({ title: "Avatar Upload Failed", description: uploadError.message, variant: "destructive" });
+      const { error: uploadError } = await supabase.storage.from('avatars').upload(fileName, webpFile, {
+        contentType: 'image/webp'
+      });
+
+      if (uploadError) {
+        toast({ title: "Avatar Upload Failed", description: uploadError.message, variant: "destructive" });
+        setUploading(false);
+        return;
+      }
+
+      const { data } = supabase.storage.from('avatars').getPublicUrl(fileName);
+
+      setFormData({ ...formData, avatar_url: data.publicUrl });
+      await updateProfile({ avatar_url: data.publicUrl });
       setUploading(false);
-      return;
+      toast({ title: "Profile picture updated successfully!" });
+    } catch (err) {
+      toast({ title: "Image conversion failed", description: err.message, variant: "destructive" });
+      setUploading(false);
     }
-
-    const { data } = supabase.storage.from('avatars').getPublicUrl(filePath);
-
-    setFormData({ ...formData, avatar_url: data.publicUrl });
-    await updateProfile({ avatar_url: data.publicUrl });
-    setUploading(false);
-    toast({ title: "Profile picture updated successfully!" });
   };
 
   return (
