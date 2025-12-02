@@ -7,7 +7,6 @@ Vellio Nation is a wellness-focused blog and community platform built with React
 I prefer detailed explanations.
 I want iterative development.
 Ask before making major changes.
-Do not make changes to the `plugins/` folder.
 Do not make changes to the `tools/` folder.
 
 ## System Architecture
