@@ -6,17 +6,19 @@ import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import ImageResize from 'tiptap-extension-resize-image';
 import { supabase } from '@/lib/customSupabaseClient';
+import { convertToWebPWithResize } from '@/lib/imageUtils';
 import { Bold, Italic, Underline as UnderlineIcon, Strikethrough, List, ListOrdered, AlignLeft, AlignCenter, AlignRight, Link as LinkIcon, Image as ImageIcon, Undo, Redo, Heading1, Heading2, Heading3 } from 'lucide-react';
 
 const uploadImageToSupabase = async (file) => {
-  const fileExt = file.name.split('.').pop();
-  const fileName = `content-${Date.now()}.${fileExt}`;
+  const webpFile = await convertToWebPWithResize(file, 1920, 1080, 0.85);
+  const fileName = `content-${Date.now()}.webp`;
   
   const { error: uploadError } = await supabase.storage
     .from('post_images')
-    .upload(fileName, file, {
+    .upload(fileName, webpFile, {
       cacheControl: '31536000',
-      upsert: false
+      upsert: false,
+      contentType: 'image/webp'
     });
   
   if (uploadError) {
