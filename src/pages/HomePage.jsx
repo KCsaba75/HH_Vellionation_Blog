@@ -64,17 +64,17 @@ const HomePage = () => {
   return (
     <>
       <Helmet>
-        <title>Vellio Nation - Transform Your Life Through Wellness</title>
-        <meta name="description" content="Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals." />
+        <title>Weight Loss After 40 | Vellio Nation - Healthy Living for Men & Women</title>
+        <meta name="description" content="Discover proven weight loss strategies for men and women over 40. Join Vellio Nation for expert tips on losing weight after 40, healthy eating, metabolism boosting, and sustainable lifestyle changes." />
         <link rel="canonical" href="https://www.vellionation.com/" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.vellionation.com/" />
-        <meta property="og:title" content="Vellio Nation - Transform Your Life Through Wellness" />
-        <meta property="og:description" content="Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals." />
+        <meta property="og:title" content="Weight Loss After 40 | Vellio Nation - Healthy Living for Men & Women" />
+        <meta property="og:description" content="Discover proven weight loss strategies for men and women over 40. Expert tips on losing weight, healthy eating, and sustainable lifestyle changes for the 40+ community." />
         <meta property="og:image" content="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Vellio Nation - Transform Your Life Through Wellness" />
-        <meta name="twitter:description" content="Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals." />
+        <meta name="twitter:title" content="Weight Loss After 40 | Vellio Nation - Healthy Living for Men & Women" />
+        <meta name="twitter:description" content="Discover proven weight loss strategies for men and women over 40. Expert tips on losing weight, healthy eating, and sustainable lifestyle changes for the 40+ community." />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -82,7 +82,7 @@ const HomePage = () => {
             "name": "Vellio Nation",
             "url": "https://www.vellionation.com",
             "logo": "https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/logo.png",
-            "description": "A wellness community platform dedicated to healthy living, mindful choices, and sustainable transformation.",
+            "description": "A wellness community helping men and women over 40 achieve sustainable weight loss through healthy eating, fitness guidance, and lifestyle transformation.",
             "sameAs": [
               "https://www.facebook.com/vellionation",
               "https://www.instagram.com/vellionation"
