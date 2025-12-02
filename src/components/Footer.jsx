@@ -1,15 +1,43 @@
 
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
+import { supabase } from '@/lib/customSupabaseClient';
 
 const Footer = memo(() => {
+  const [logoUrl, setLogoUrl] = useState('');
+
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('settings')
+          .select('value')
+          .eq('key', 'home_images')
+          .single();
+        
+        if (!error && data?.value?.logo) {
+          setLogoUrl(data.value.logo);
+        }
+      } catch (err) {
+        console.warn('Failed to fetch footer logo:', err);
+      }
+    };
+    fetchLogo();
+  }, []);
+
   return (
     <footer className="border-t bg-background">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <img src="https://horizons-cdn.hostinger.com/c18b618d-7399-4232-9a94-f974a0bdecb5/ee6cbd272290ba6f659412a474e03a08.png" alt="Vellio Nation" className="h-10 mb-4" width="40" height="40" loading="lazy" />
+            {logoUrl ? (
+              <img src={logoUrl} alt="Vellio Nation" className="h-10 mb-4 rounded-full object-cover" width="40" height="40" loading="lazy" />
+            ) : (
+              <div className="h-10 w-10 mb-4 rounded-full bg-muted flex items-center justify-center">
+                <span className="text-xs text-muted-foreground">Logo</span>
+              </div>
+            )}
             <p className="text-sm text-muted-foreground">
               Your journey to wellness starts here.
             </p>
