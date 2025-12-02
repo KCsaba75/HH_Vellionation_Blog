@@ -1,10 +1,25 @@
-## Pages
-- [- Vellio Nation](/solutiondetail): No description available
-- [Admin Dashboard - Vellio Nation](/admin): No description available
-- [Blog Dashboard - Vellio Nation](/blogdashboard): Write and manage your blog posts for Vellio Nation.
-- [Forgot Password - Vellio Nation](/forgotpassword): Reset your Vellio Nation password.
-- [Join Vellio Nation](/register): Create your Vellio Nation account and start your wellness journey today.
-- [Login - Vellio Nation](/login): Login to your Vellio Nation account.
-- [My Profile - Vellio Nation](/profile): No description available
-- [Reset Password - Vellio Nation](/resetpassword): Set your new Vellio Nation password.
-- [Untitled Page](/static): No description available
+# Vellio Nation
+
+> A wellness community platform dedicated to healthy living, mindful choices, and sustainable transformation.
+
+## Static Pages
+- [Vellio Nation - Your Health & Wellness Community](https://www.vellionation.com/): Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals.
+- [Blog - Vellio Nation](https://www.vellionation.com/blog): Explore wellness articles, health tips, and lifestyle advice from our community of experts.
+- [Community - Vellio Nation](https://www.vellionation.com/community): Connect with like-minded individuals on their wellness journey. Share experiences and support each other.
+- [Solutions - Vellio Nation](https://www.vellionation.com/solutions): Discover wellness products, apps, and educational resources to support your healthy lifestyle.
+- [Login - Vellio Nation](https://www.vellionation.com/login): Login to your Vellio Nation account.
+- [Join Vellio Nation](https://www.vellionation.com/register): Create your Vellio Nation account and start your wellness journey today.
+- [Forgot Password - Vellio Nation](https://www.vellionation.com/forgot-password): Reset your Vellio Nation password.
+- [Help Center - Vellio Nation](https://www.vellionation.com/help-center): Find answers to common questions and get support.
+- [Privacy Policy - Vellio Nation](https://www.vellionation.com/privacy-policy): Learn how we protect your data and privacy.
+- [Terms of Service - Vellio Nation](https://www.vellionation.com/terms-of-service): Read our terms and conditions for using Vellio Nation.
+
+## Blog Posts
+- [ What Is Psyllium Husk?](https://www.vellionation.com/blog/what-is-psyllium-husk): Psyllium husk is made from the outer shell of the Plantago ovata seed, commonly known as Indian plantain. When mixed with water, it forms a gel-like s...
+- [The Ancient Herb Taking Over the Wellness World: Everything You Need to Know About Ashwagandha](https://www.vellionation.com/blog/the-ancient-herb-taking-over-the-wellness-world-everything-you-need-to-know-about-ashwagandha): Have you ever felt like the stress of modern life is simply eating you alive? You sleep, yet wake up exhausted. You work, yet feel drained. And withou...
+
+## Solutions
+- [LeanBiome](https://www.vellionation.com/solutions/c50667d2-013b-4b0c-99e8-e1fac68caec5): Why people choose it?Fires up your metabolismCrushes cravingsStabilizes blood sugarSupports rapid, visible fat lossBoosts energy without jittersYou wa...
+
+---
+Generated: 2025-12-02
