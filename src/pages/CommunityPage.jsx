@@ -10,6 +10,7 @@ import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/customSupabaseClient';
 import { cn } from '@/lib/utils';
 import CommunityComments from '@/components/CommunityComments';
+import { convertToWebPWithResize } from '@/lib/imageUtils';
 
 const CommunityPage = () => {
   const { user } = useAuth();
@@ -59,20 +60,28 @@ const CommunityPage = () => {
   }, [fetchPosts]);
 
   const handleImageUpload = useCallback(async (file) => {
-    if (!user) return;
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-    const { error: uploadError } = await supabase.storage.from('community_post_images').upload(fileName, file, {
-      cacheControl: '31536000',
-      upsert: false
-    });
+    if (!user) return null;
+    
+    try {
+      const webpFile = await convertToWebPWithResize(file, 1920, 1080, 0.85);
+      const fileName = `${user.id}-${Date.now()}.webp`;
+      
+      const { error: uploadError } = await supabase.storage.from('community_post_images').upload(fileName, webpFile, {
+        cacheControl: '31536000',
+        upsert: false,
+        contentType: 'image/webp'
+      });
 
-    if (uploadError) {
-      toast({ title: "Image Upload Failed", description: uploadError.message, variant: "destructive" });
+      if (uploadError) {
+        toast({ title: "Image Upload Failed", description: uploadError.message, variant: "destructive" });
+        return null;
+      }
+      const { data } = supabase.storage.from('community_post_images').getPublicUrl(fileName);
+      return data.publicUrl;
+    } catch (err) {
+      toast({ title: "Image conversion failed", description: err.message, variant: "destructive" });
       return null;
     }
-    const { data } = supabase.storage.from('community_post_images').getPublicUrl(fileName);
-    return data.publicUrl;
   }, [user]);
 
   const insertTextAtCursor = (text) => {
