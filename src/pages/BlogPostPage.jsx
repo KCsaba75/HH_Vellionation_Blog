@@ -337,7 +337,7 @@ const BlogPostPage = () => {
               {/* FTC Disclaimer */}
               {disclaimer && (
                 <div className="mt-8 p-4 bg-muted/50 border border-muted-foreground/20 rounded-lg">
-                  <div className="text-xs text-muted-foreground italic prose prose-sm dark:prose-invert max-w-none [&_p]:my-1" dangerouslySetInnerHTML={{ __html: disclaimer }} />
+                  <div className="text-sm text-muted-foreground [&_img]:inline [&_img]:align-middle [&_img]:mr-2 [&_img]:max-h-8 [&_p]:inline [&_p]:my-0 [&_a]:text-primary [&_a]:underline [&_strong]:font-bold [&_em]:italic" dangerouslySetInnerHTML={{ __html: disclaimer }} />
                 </div>
               )}
             </div>
