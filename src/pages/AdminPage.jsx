@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from '@/lib/customSupabaseClient';
 import { regenerateSeoFiles } from '@/lib/seoFileGenerator';
+import { convertToWebPWithResize } from '@/lib/imageUtils';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import RichTextEditor from '@/components/RichTextEditor';
@@ -205,28 +206,35 @@ const AdminPage = () => {
   const handleImageUpload = async (event) => {
     if (!event.target.files || event.target.files.length === 0 || !editingItem) return;
     const file = event.target.files[0];
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${profile.id}-${Date.now()}.${fileExt}`;
-    const filePath = `${fileName}`;
     const bucket = formType === 'post' ? 'post_images' : 'solution_images';
 
     setUploading(true);
-    const { error: uploadError } = await supabase.storage.from(bucket).upload(filePath, file, {
-      cacheControl: '31536000',
-      upsert: false
-    });
+    
+    try {
+      const webpFile = await convertToWebPWithResize(file, 1920, 1080, 0.85);
+      const fileName = `${profile.id}-${Date.now()}.webp`;
 
-    if (uploadError) {
-      toast({ title: "Image Upload Failed", description: uploadError.message, variant: "destructive" });
+      const { error: uploadError } = await supabase.storage.from(bucket).upload(fileName, webpFile, {
+        cacheControl: '31536000',
+        upsert: false,
+        contentType: 'image/webp'
+      });
+
+      if (uploadError) {
+        toast({ title: "Image Upload Failed", description: uploadError.message, variant: "destructive" });
+        setUploading(false);
+        return;
+      }
+
+      const { data } = supabase.storage.from(bucket).getPublicUrl(fileName);
+
+      setEditingItem({ ...editingItem, image_url: data.publicUrl });
       setUploading(false);
-      return;
+      toast({ title: "Image uploaded successfully!" });
+    } catch (err) {
+      toast({ title: "Image conversion failed", description: err.message, variant: "destructive" });
+      setUploading(false);
     }
-
-    const { data } = supabase.storage.from(bucket).getPublicUrl(filePath);
-
-    setEditingItem({ ...editingItem, image_url: data.publicUrl });
-    setUploading(false);
-    toast({ title: "Image uploaded successfully!" });
   };
   
   const handleSaveSettings = async (key, value) => {
@@ -241,36 +249,43 @@ const AdminPage = () => {
   const handleHomeImageUpload = async (event, imageType) => {
     if (!event.target.files || event.target.files.length === 0) return;
     const file = event.target.files[0];
-    const fileExt = file.name.split('.').pop().toLowerCase();
-    const fileName = `home-${imageType}-${Date.now()}.${fileExt}`;
     
     setUploadingHomeImage(imageType);
     
-    const { error: uploadError } = await supabase.storage.from('site_images').upload(fileName, file, {
-      cacheControl: '31536000',
-      upsert: true
-    });
+    try {
+      const webpFile = await convertToWebPWithResize(file, 1920, 1080, 0.85);
+      const fileName = `home-${imageType}-${Date.now()}.webp`;
 
-    if (uploadError) {
-      toast({ title: "Image Upload Failed", description: uploadError.message, variant: "destructive" });
-      setUploadingHomeImage(null);
-      return;
-    }
+      const { error: uploadError } = await supabase.storage.from('site_images').upload(fileName, webpFile, {
+        cacheControl: '31536000',
+        upsert: true,
+        contentType: 'image/webp'
+      });
 
-    const { data } = supabase.storage.from('site_images').getPublicUrl(fileName);
-    const newHomeImages = { ...homeImages, [imageType]: data.publicUrl };
-    
-    const { error: saveError } = await supabase.from('settings').upsert({ key: 'home_images', value: newHomeImages }, { onConflict: 'key' });
-    
-    if (saveError) {
-      toast({ title: "Failed to save image settings", description: saveError.message, variant: "destructive" });
+      if (uploadError) {
+        toast({ title: "Image Upload Failed", description: uploadError.message, variant: "destructive" });
+        setUploadingHomeImage(null);
+        return;
+      }
+
+      const { data } = supabase.storage.from('site_images').getPublicUrl(fileName);
+      const newHomeImages = { ...homeImages, [imageType]: data.publicUrl };
+      
+      const { error: saveError } = await supabase.from('settings').upsert({ key: 'home_images', value: newHomeImages }, { onConflict: 'key' });
+      
+      if (saveError) {
+        toast({ title: "Failed to save image settings", description: saveError.message, variant: "destructive" });
+        setUploadingHomeImage(null);
+        return;
+      }
+      
+      setHomeImages(newHomeImages);
       setUploadingHomeImage(null);
-      return;
+      toast({ title: `${imageType === 'hero' ? 'Hero' : 'Community'} image updated!` });
+    } catch (err) {
+      toast({ title: "Image conversion failed", description: err.message, variant: "destructive" });
+      setUploadingHomeImage(null);
     }
-    
-    setHomeImages(newHomeImages);
-    setUploadingHomeImage(null);
-    toast({ title: `${imageType === 'hero' ? 'Hero' : 'Community'} image updated!` });
   };
 
   const handleRemoveHomeImage = async (imageType) => {
