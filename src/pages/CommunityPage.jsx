@@ -174,17 +174,17 @@ const CommunityPage = () => {
   return (
     <>
       <Helmet>
-        <title>Community - Vellio Nation</title>
-        <meta name="description" content="Connect with the Vellio Nation community. Share your wellness journey, get inspired, and support others." />
+        <title>Weight Loss Community for 40+ | Support & Motivation</title>
+        <meta name="description" content="Join our supportive community of men and women over 40 on their weight loss journey. Share experiences, get motivated, and find accountability partners for sustainable healthy living." />
         <link rel="canonical" href="https://www.vellionation.com/community" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.vellionation.com/community" />
-        <meta property="og:title" content="Community - Vellio Nation" />
-        <meta property="og:description" content="Connect with the Vellio Nation community. Share your wellness journey, get inspired, and support others." />
+        <meta property="og:title" content="Weight Loss Community for 40+ | Support & Motivation" />
+        <meta property="og:description" content="Join our supportive community of men and women over 40 on their weight loss journey. Share experiences and find accountability partners." />
         <meta property="og:image" content="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Community - Vellio Nation" />
-        <meta name="twitter:description" content="Connect with the Vellio Nation community. Share your wellness journey, get inspired, and support others." />
+        <meta name="twitter:title" content="Weight Loss Community for 40+ | Support & Motivation" />
+        <meta name="twitter:description" content="Join our supportive community of men and women over 40 on their weight loss journey. Share experiences and find accountability partners." />
       </Helmet>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
