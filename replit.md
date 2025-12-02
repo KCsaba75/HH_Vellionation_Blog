@@ -30,7 +30,7 @@ The application uses React 18.2 with Vite 4.5 for the frontend, and React Router
 - **Performance Optimization**: Features code splitting with `React.lazy()` and Suspense, image optimization (preload, lazy loading, width/height attributes), critical CSS inlining, and async main stylesheet loading to improve LCP and overall performance.
 - **Accessibility**: Enhanced with `aria-label` attributes for icon-only buttons and improved screen reader support.
 - **Site Image Management**: Admin dashboard allows uploading and managing site-wide images (logo, hero, community section) stored in Supabase Storage, with robust placeholder handling.
-- **Dynamic Content Generation**: A build script generates `llms.txt` dynamically from Supabase content, including blog posts, solutions, and static page descriptions.
+- **Dynamic Content Generation**: Build scripts generate `llms.txt` and `sitemap.xml` from Supabase content. SEO files are also regenerated automatically when posts/solutions are created, updated, or deleted via `regenerateSeoFiles()` function.
 
 ### Feature Specifications
 - **Blog Management**: Comprehensive tools for creating, managing, and searching blog posts, with rich text, categorization, and SEO metadata.
