@@ -129,7 +129,7 @@ const BlogPage = () => {
         <meta property="og:url" content="https://www.vellionation.com/blog" />
         <meta property="og:title" content="Blog - Vellio Nation" />
         <meta property="og:description" content="Read inspiring articles about fitness, nutrition, mindset, and motivation from the Vellio Nation community." />
-        <meta property="og:image" content="https://www.vellionation.com/images/og-image.jpg" />
+        <meta property="og:image" content="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Blog - Vellio Nation" />
         <meta name="twitter:description" content="Read inspiring articles about fitness, nutrition, mindset, and motivation from the Vellio Nation community." />

@@ -181,7 +181,7 @@ const CommunityPage = () => {
         <meta property="og:url" content="https://www.vellionation.com/community" />
         <meta property="og:title" content="Community - Vellio Nation" />
         <meta property="og:description" content="Connect with the Vellio Nation community. Share your wellness journey, get inspired, and support others." />
-        <meta property="og:image" content="https://www.vellionation.com/images/og-image.jpg" />
+        <meta property="og:image" content="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Community - Vellio Nation" />
         <meta name="twitter:description" content="Connect with the Vellio Nation community. Share your wellness journey, get inspired, and support others." />

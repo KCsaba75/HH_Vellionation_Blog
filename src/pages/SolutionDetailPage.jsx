@@ -79,18 +79,18 @@ const SolutionDetailPage = () => {
         <meta property="og:url" content={`https://www.vellionation.com/solutions/${solution.id}`} />
         <meta property="og:title" content={solution.seo_title || solution.name} />
         <meta property="og:description" content={solution.seo_description || solution.description} />
-        <meta property="og:image" content={solution.image_url || "https://www.vellionation.com/images/og-image.jpg"} />
+        <meta property="og:image" content={solution.image_url || "https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg"} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={solution.seo_title || solution.name} />
         <meta name="twitter:description" content={solution.seo_description || solution.description} />
-        <meta name="twitter:image" content={solution.image_url || "https://www.vellionation.com/images/og-image.jpg"} />
+        <meta name="twitter:image" content={solution.image_url || "https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg"} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Product",
             "name": solution.name,
             "description": solution.description,
-            "image": solution.image_url || "https://www.vellionation.com/images/og-image.jpg",
+            "image": solution.image_url || "https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg",
             "aggregateRating": {
               "@type": "AggregateRating",
               "ratingValue": solution.rating || 5,

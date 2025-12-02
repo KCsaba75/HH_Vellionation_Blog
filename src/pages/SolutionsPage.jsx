@@ -133,7 +133,7 @@ const SolutionsPage = () => {
         <meta property="og:url" content="https://www.vellionation.com/solutions" />
         <meta property="og:title" content="Wellness Solutions - Vellio Nation" />
         <meta property="og:description" content="Discover hand-picked wellness solutions including products, apps, and educational materials recommended by the Vellio Nation community." />
-        <meta property="og:image" content="https://www.vellionation.com/images/og-image.jpg" />
+        <meta property="og:image" content="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Wellness Solutions - Vellio Nation" />
         <meta name="twitter:description" content="Discover hand-picked wellness solutions including products, apps, and educational materials recommended by the Vellio Nation community." />

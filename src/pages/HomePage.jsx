@@ -71,7 +71,7 @@ const HomePage = () => {
         <meta property="og:url" content="https://www.vellionation.com/" />
         <meta property="og:title" content="Vellio Nation - Transform Your Life Through Wellness" />
         <meta property="og:description" content="Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals." />
-        <meta property="og:image" content="https://www.vellionation.com/images/og-image.jpg" />
+        <meta property="og:image" content="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Vellio Nation - Transform Your Life Through Wellness" />
         <meta name="twitter:description" content="Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals." />
@@ -81,7 +81,7 @@ const HomePage = () => {
             "@type": "Organization",
             "name": "Vellio Nation",
             "url": "https://www.vellionation.com",
-            "logo": "https://www.vellionation.com/images/logo.png",
+            "logo": "https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/logo.png",
             "description": "A wellness community platform dedicated to healthy living, mindful choices, and sustainable transformation.",
             "sameAs": [
               "https://www.facebook.com/vellionation",
