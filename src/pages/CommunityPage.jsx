@@ -165,7 +165,7 @@ const CommunityPage = () => {
     return parts.map((part, index) => {
       const match = part.match(/!\[(.*?)\]\((.*?)\)/);
       if (match) {
-        return <img key={index} src={match[2]} alt={match[1]} className="my-2 rounded-lg max-h-80 object-contain" loading="lazy" />;
+        return <img key={index} src={match[2]} alt={match[1]} className="my-2 rounded-lg max-h-80 object-contain" loading="lazy" width="400" height="300" />;
       }
       return <span key={index}>{part}</span>;
     });
@@ -227,7 +227,7 @@ const CommunityPage = () => {
                   <div className="flex flex-wrap gap-2 mb-3">
                     {uploadedImages.map((imageUrl, index) => (
                       <div key={index} className="relative">
-                        <img src={imageUrl} alt={`Upload ${index + 1}`} className="h-20 w-20 object-cover rounded-lg border-2 border-primary" />
+                        <img src={imageUrl} alt={`Upload ${index + 1}`} className="h-20 w-20 object-cover rounded-lg border-2 border-primary" width="80" height="80" />
                         <button type="button" onClick={() => removeImage(imageUrl)} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg" aria-label="Remove image">
                           <X className="h-4 w-4" />
                         </button>

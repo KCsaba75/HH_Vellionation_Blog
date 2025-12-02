@@ -161,6 +161,8 @@ const ProfilePage = () => {
                         src={formData.avatar_url} 
                         alt={profile.name} 
                         className="h-24 w-24 rounded-full object-cover ring-4 ring-primary/20"
+                        width="96"
+                        height="96"
                       />
                     ) : (
                       <div className="bg-primary/10 rounded-full p-6 h-24 w-24 flex items-center justify-center">

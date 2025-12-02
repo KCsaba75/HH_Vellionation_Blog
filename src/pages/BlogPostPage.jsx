@@ -352,6 +352,8 @@ const BlogPostPage = () => {
                         src={post.profiles.avatar_url} 
                         alt={post.profiles?.name || 'Author'} 
                         className="w-24 h-24 rounded-full object-cover ring-4 ring-primary/20"
+                        width="96"
+                        height="96"
                       />
                     ) : (
                       <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center ring-4 ring-primary/20">
@@ -410,6 +412,9 @@ const BlogPostPage = () => {
                         alt={latestPost.title}
                         className="w-full h-full object-cover"
                         src={latestPost.image_url || "https://images.unsplash.com/photo-1601941707251-5a887e9db2e1"}
+                        loading="lazy"
+                        width="280"
+                        height="158"
                       />
                     </div>
                     <div className="p-3">

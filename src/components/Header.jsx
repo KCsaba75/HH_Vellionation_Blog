@@ -73,7 +73,7 @@ const Header = () => {
             <Link to="/" className="flex items-center gap-4 group"> {/* Increased gap for larger logo/text */}
                 <div className="w-16 h-16 rounded-full border-2 border-white group-hover:scale-105 transition-transform flex items-center justify-center bg-muted">
                      {logoUrl ? (
-                       <img alt="Vellio Nation Logo" className="w-full h-full rounded-full object-cover" src={logoUrl} />
+                       <img alt="Vellio Nation Logo" className="w-full h-full rounded-full object-cover" src={logoUrl} width="64" height="64" />
                      ) : (
                        <span className="text-xs text-muted-foreground text-center px-1">Logo placeholder</span>
                      )}
@@ -125,6 +125,8 @@ const Header = () => {
                         src={profile.avatar_url} 
                         alt={profile?.name || 'User'} 
                         className="h-8 w-8 rounded-full object-cover ring-2 ring-primary/20"
+                        width="32"
+                        height="32"
                       />
                     ) : (
                       <User className="h-6 w-6" />
@@ -209,6 +211,8 @@ const Header = () => {
                       src={profile.avatar_url} 
                       alt={profile?.name || 'User'} 
                       className="h-6 w-6 rounded-full object-cover ring-2 ring-primary/20"
+                      width="24"
+                      height="24"
                     />
                   ) : (
                     <User className="h-5 w-5" />

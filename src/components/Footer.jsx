@@ -9,7 +9,7 @@ const Footer = memo(() => {
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <img src="https://horizons-cdn.hostinger.com/c18b618d-7399-4232-9a94-f974a0bdecb5/ee6cbd272290ba6f659412a474e03a08.png" alt="Vellio Nation" className="h-10 mb-4" />
+            <img src="https://horizons-cdn.hostinger.com/c18b618d-7399-4232-9a94-f974a0bdecb5/ee6cbd272290ba6f659412a474e03a08.png" alt="Vellio Nation" className="h-10 mb-4" width="40" height="40" loading="lazy" />
             <p className="text-sm text-muted-foreground">
               Your journey to wellness starts here.
             </p>

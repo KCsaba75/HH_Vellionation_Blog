@@ -254,6 +254,9 @@ const SolutionsPage = () => {
                         alt={solution.name}
                         className="w-full h-full object-contain"
                         src={solution.image_url || "https://images.unsplash.com/photo-1559223669-e0065fa7f142"}
+                        loading="lazy"
+                        width="400"
+                        height="300"
                       />
                     </div>
                     <div className="p-5">
