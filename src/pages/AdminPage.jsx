@@ -479,7 +479,7 @@ const AdminPage = () => {
                         <Label className="text-sm font-medium">Site Logo</Label>
                         {homeImages.logo ? (
                           <div className="relative">
-                            <img src={homeImages.logo} alt="Logo preview" className="w-full h-32 object-contain rounded-lg border-2 border-primary bg-white p-2" />
+                            <img src={homeImages.logo} alt="Logo preview" className="w-full h-32 object-contain rounded-lg border-2 border-primary bg-white p-2" width="200" height="128" loading="lazy" />
                             <button type="button" onClick={() => handleRemoveHomeImage('logo')} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg" aria-label="Remove site logo">
                               <X className="h-4 w-4" />
                             </button>
@@ -500,7 +500,7 @@ const AdminPage = () => {
                         <Label className="text-sm font-medium">Hero Image (Main Banner)</Label>
                         {homeImages.hero ? (
                           <div className="relative">
-                            <img src={homeImages.hero} alt="Hero preview" className="w-full h-32 object-cover rounded-lg border-2 border-primary" />
+                            <img src={homeImages.hero} alt="Hero preview" className="w-full h-32 object-cover rounded-lg border-2 border-primary" width="200" height="128" loading="lazy" />
                             <button type="button" onClick={() => handleRemoveHomeImage('hero')} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg" aria-label="Remove hero image">
                               <X className="h-4 w-4" />
                             </button>
@@ -521,7 +521,7 @@ const AdminPage = () => {
                         <Label className="text-sm font-medium">Community Section Image</Label>
                         {homeImages.community ? (
                           <div className="relative">
-                            <img src={homeImages.community} alt="Community preview" className="w-full h-32 object-cover rounded-lg border-2 border-primary" />
+                            <img src={homeImages.community} alt="Community preview" className="w-full h-32 object-cover rounded-lg border-2 border-primary" width="200" height="128" loading="lazy" />
                             <button type="button" onClick={() => handleRemoveHomeImage('community')} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg" aria-label="Remove community image">
                               <X className="h-4 w-4" />
                             </button>
@@ -626,7 +626,7 @@ const AdminPage = () => {
                     <Label className="text-sm">Image</Label>
                     {editingItem.image_url && (
                       <div className="relative inline-block mt-2 mb-2 w-full">
-                        <img src={editingItem.image_url} alt="Preview" className="w-full max-w-xs sm:max-w-sm rounded-lg object-cover border-2 border-primary" />
+                        <img src={editingItem.image_url} alt="Preview" className="w-full max-w-xs sm:max-w-sm rounded-lg object-cover border-2 border-primary" width="320" height="200" loading="lazy" />
                         <button type="button" onClick={() => setEditingItem({ ...editingItem, image_url: '' })} className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 shadow-lg">
                           <X className="h-4 w-4" />
                         </button>

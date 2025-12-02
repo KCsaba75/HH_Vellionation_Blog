@@ -209,7 +209,7 @@ const BlogDashboardPage = () => {
                       <div className="bg-muted p-4 rounded-lg space-y-4">
                         <h3 className="font-semibold">Featured Image</h3>
                         <div className="flex items-center gap-4">
-                            {editingPost.image_url && <img src={editingPost.image_url} alt="Featured" className="w-20 h-20 rounded-lg object-cover" />}
+                            {editingPost.image_url && <img src={editingPost.image_url} alt="Featured" className="w-20 h-20 rounded-lg object-cover" width="80" height="80" loading="lazy" />}
                             <Button type="button" onClick={() => fileInputRef.current.click()} disabled={uploading}>
                                 <Upload className="mr-2 h-4 w-4" />
                                 {uploading ? "Uploading..." : "Upload"}
