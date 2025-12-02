@@ -310,7 +310,13 @@ const BlogPostPage = () => {
               <div className="flex items-center gap-2"><Clock className="h-5 w-5" /><span>{post.read_time || '5 min read'}</span></div>
             </div>
             <div className="aspect-video bg-secondary/50 rounded-xl mb-8 overflow-hidden">
-              <img alt={post.title} className="w-full h-full object-cover" src={post.image_url || "https://images.unsplash.com/photo-1601941707251-5a887e9db2e1"} loading="lazy" width="800" height="450" />
+              {post.image_url ? (
+                <img alt={post.title} className="w-full h-full object-cover" src={post.image_url} loading="lazy" width="800" height="450" />
+              ) : (
+                <div className="w-full h-full bg-muted flex items-center justify-center">
+                  <span className="text-muted-foreground">No image</span>
+                </div>
+              )}
             </div>
             <div className="mb-12">
               <p className="text-xl text-muted-foreground mb-6">{post.excerpt}</p>
@@ -408,14 +414,20 @@ const BlogPostPage = () => {
                 >
                   <Link to={`/blog/${latestPost.slug}`}>
                     <div className="aspect-video bg-secondary/50">
-                      <img
-                        alt={latestPost.title}
-                        className="w-full h-full object-cover"
-                        src={latestPost.image_url || "https://images.unsplash.com/photo-1601941707251-5a887e9db2e1"}
-                        loading="lazy"
-                        width="280"
-                        height="158"
-                      />
+                      {latestPost.image_url ? (
+                        <img
+                          alt={latestPost.title}
+                          className="w-full h-full object-cover"
+                          src={latestPost.image_url}
+                          loading="lazy"
+                          width="280"
+                          height="158"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-muted flex items-center justify-center">
+                          <span className="text-muted-foreground text-xs">No image</span>
+                        </div>
+                      )}
                     </div>
                     <div className="p-3">
                       {latestPost.categories?.name && (

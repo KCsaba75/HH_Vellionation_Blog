@@ -250,14 +250,20 @@ const SolutionsPage = () => {
                     className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-black dark:border-white"
                   >
                     <div className="aspect-[4/3] bg-secondary/50 flex items-center justify-center">
-                      <img
-                        alt={solution.name}
-                        className="w-full h-full object-contain"
-                        src={solution.image_url || "https://images.unsplash.com/photo-1559223669-e0065fa7f142"}
-                        loading="lazy"
-                        width="400"
-                        height="300"
-                      />
+                      {solution.image_url ? (
+                        <img
+                          alt={solution.name}
+                          className="w-full h-full object-contain"
+                          src={solution.image_url}
+                          loading="lazy"
+                          width="400"
+                          height="300"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-muted flex items-center justify-center">
+                          <span className="text-muted-foreground text-sm">No image</span>
+                        </div>
+                      )}
                     </div>
                     <div className="p-5">
                       {solution.categories?.name && (

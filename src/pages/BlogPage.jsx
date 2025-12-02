@@ -267,7 +267,13 @@ const BlogPage = () => {
                       className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-black dark:border-white"
                     >
                       <div className="aspect-video bg-secondary/50 flex items-center justify-center">
-                        <img alt={post.title} className="w-full h-full object-cover" src={post.image_url || "https://images.unsplash.com/photo-1601941707251-5a887e9db2e1"} loading="lazy" width="400" height="225" />
+                        {post.image_url ? (
+                          <img alt={post.title} className="w-full h-full object-cover" src={post.image_url} loading="lazy" width="400" height="225" />
+                        ) : (
+                          <div className="w-full h-full bg-muted flex items-center justify-center">
+                            <span className="text-muted-foreground text-sm">No image</span>
+                          </div>
+                        )}
                       </div>
                       <div className="p-6">
                         <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">

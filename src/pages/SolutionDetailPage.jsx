@@ -150,14 +150,20 @@ const SolutionDetailPage = () => {
               {/* Image */}
               <div className="order-2 lg:order-1 min-h-[300px] lg:min-h-[450px]">
                 <div className="h-full w-full bg-secondary/30 rounded-2xl overflow-hidden shadow-2xl">
-                  <img 
-                    alt={solution.name} 
-                    className="w-full h-full object-cover" 
-                    src={solution.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800'}
-                    loading="lazy"
-                    width="800"
-                    height="450"
-                  />
+                  {solution.image_url ? (
+                    <img 
+                      alt={solution.name} 
+                      className="w-full h-full object-cover" 
+                      src={solution.image_url}
+                      loading="lazy"
+                      width="800"
+                      height="450"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-muted flex items-center justify-center min-h-[300px]">
+                      <span className="text-muted-foreground text-lg">No image</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
