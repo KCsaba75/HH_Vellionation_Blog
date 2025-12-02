@@ -7,7 +7,9 @@ const SITE_URL = 'https://www.vellionation.com';
 const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://rtklsdtadtqpgoibulux.supabase.co';
 const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ0a2xzZHRhZHRxcGdvaWJ1bHV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIzOTM0MTAsImV4cCI6MjA3Nzk2OTQxMH0.mLf0EfbHZc0ur069ihRwEIIVIMmvO0ogthymfKa0rHs';
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: { persistSession: false }
+});
 
 const staticPages = [
   { url: '/', changefreq: 'weekly', priority: '1.0' },
