@@ -3,14 +3,14 @@ import { supabase } from './customSupabaseClient';
 const SITE_URL = 'https://www.vellionation.com';
 
 const staticPages = [
-  { url: '/', title: 'Vellio Nation - Your Health & Wellness Community', description: 'Join Vellio Nation and embark on your wellness journey. Get inspired, connect with our community, and achieve your health goals.' },
-  { url: '/blog', title: 'Blog - Vellio Nation', description: 'Explore wellness articles, health tips, and lifestyle advice from our community of experts.' },
-  { url: '/community', title: 'Community - Vellio Nation', description: 'Connect with like-minded individuals on their wellness journey. Share experiences and support each other.' },
-  { url: '/solutions', title: 'Solutions - Vellio Nation', description: 'Discover wellness products, apps, and educational resources to support your healthy lifestyle.' },
-  { url: '/login', title: 'Login - Vellio Nation', description: 'Login to your Vellio Nation account.' },
-  { url: '/register', title: 'Join Vellio Nation', description: 'Create your Vellio Nation account and start your wellness journey today.' },
+  { url: '/', title: 'Weight Loss After 40 | Vellio Nation - Healthy Living for Men & Women', description: 'Discover proven weight loss strategies for men and women over 40. Expert tips on losing weight, healthy eating, metabolism boosting, and sustainable lifestyle changes.' },
+  { url: '/blog', title: 'Weight Loss Blog for 40+ | Diet, Fitness & Healthy Living Tips', description: 'Expert weight loss tips for men and women over 40. Articles on metabolism boosting, healthy eating habits, exercise routines, and lifestyle changes for sustainable results.' },
+  { url: '/community', title: 'Weight Loss Community for 40+ | Support & Motivation', description: 'Join our supportive community of men and women over 40 on their weight loss journey. Share experiences, get motivated, and find accountability partners.' },
+  { url: '/solutions', title: 'Weight Loss Products & Apps for 40+ | Recommended Solutions', description: 'Discover the best weight loss products, fitness apps, and health tools for men and women over 40. Expert-recommended solutions for metabolism support and healthy living.' },
+  { url: '/login', title: 'Login - Vellio Nation', description: 'Login to your Vellio Nation account to access weight loss resources for 40+.' },
+  { url: '/register', title: 'Join Vellio Nation | Weight Loss Community for 40+', description: 'Create your Vellio Nation account and join thousands of men and women over 40 on their weight loss journey.' },
   { url: '/forgot-password', title: 'Forgot Password - Vellio Nation', description: 'Reset your Vellio Nation password.' },
-  { url: '/help-center', title: 'Help Center - Vellio Nation', description: 'Find answers to common questions and get support.' },
+  { url: '/help-center', title: 'Help Center - Vellio Nation', description: 'Find answers to common questions about weight loss after 40 and get support.' },
   { url: '/privacy-policy', title: 'Privacy Policy - Vellio Nation', description: 'Learn how we protect your data and privacy.' },
   { url: '/terms-of-service', title: 'Terms of Service - Vellio Nation', description: 'Read our terms and conditions for using Vellio Nation.' },
 ];
@@ -42,7 +42,7 @@ export async function generateLlmsTxt() {
 
   entries.push('# Vellio Nation');
   entries.push('');
-  entries.push('> A wellness community platform dedicated to healthy living, mindful choices, and sustainable transformation.');
+  entries.push('> A wellness community helping men and women over 40 achieve sustainable weight loss through healthy eating, fitness guidance, and lifestyle transformation.');
   entries.push('');
   entries.push('## Static Pages');
 
