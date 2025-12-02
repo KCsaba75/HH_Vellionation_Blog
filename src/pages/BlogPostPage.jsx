@@ -27,6 +27,7 @@ const BlogPostPage = () => {
   const [loading, setLoading] = useState(true);
   const [likes, setLikes] = useState([]);
   const [latestPosts, setLatestPosts] = useState([]);
+  const [disclaimer, setDisclaimer] = useState('');
   
   const postUrl = window.location.href;
 
@@ -89,6 +90,17 @@ const BlogPostPage = () => {
       .limit(4);
 
     setLatestPosts(latestData || []);
+
+    // Fetch blog disclaimer for FTC compliance
+    const { data: disclaimerData } = await supabase
+      .from('settings')
+      .select('value')
+      .eq('key', 'blog_disclaimer')
+      .single();
+
+    if (disclaimerData?.value) {
+      setDisclaimer(disclaimerData.value);
+    }
     
     setLoading(false);
   }, [slug]);
@@ -321,6 +333,13 @@ const BlogPostPage = () => {
             <div className="mb-12">
               <p className="text-xl text-muted-foreground mb-6">{post.excerpt}</p>
               <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+              
+              {/* FTC Disclaimer */}
+              {disclaimer && (
+                <div className="mt-8 p-4 bg-muted/50 border border-muted-foreground/20 rounded-lg">
+                  <div className="text-xs text-muted-foreground italic prose prose-sm dark:prose-invert max-w-none [&_p]:my-1" dangerouslySetInnerHTML={{ __html: disclaimer }} />
+                </div>
+              )}
             </div>
             
             <div className="flex items-center gap-4 py-6 border-y">

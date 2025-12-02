@@ -47,6 +47,7 @@ const AdminPage = () => {
     community: '',
     logo: ''
   });
+  const [disclaimer, setDisclaimer] = useState('');
 
   const [editingItem, setEditingItem] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -81,6 +82,7 @@ const AdminPage = () => {
         terms: settingsData.find(s => s.key === 'page_content_terms')?.value || { content: '' },
       });
       setHomeImages(settingsData.find(s => s.key === 'home_images')?.value || { hero: '', community: '', logo: '' });
+      setDisclaimer(settingsData.find(s => s.key === 'blog_disclaimer')?.value || '');
     }
   }, []);
 
@@ -560,6 +562,21 @@ const AdminPage = () => {
                      <div><Label htmlFor="facebook-url" className="text-sm">Facebook URL</Label><input id="facebook-url" value={socialLinks.facebook} onChange={e => setSocialLinks({...socialLinks, facebook: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
                      <div><Label htmlFor="instagram-url" className="text-sm">Instagram URL</Label><input id="instagram-url" value={socialLinks.instagram} onChange={e => setSocialLinks({...socialLinks, instagram: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
                      <Button onClick={() => handleSaveSettings('social_links', socialLinks)} size="sm" className="text-xs sm:text-sm"><Save className="mr-2 h-4 w-4" />Save Social Links</Button>
+                  </div>
+
+                  {/* Blog Disclaimer - FTC Compliance */}
+                  <div className="bg-card p-4 sm:p-6 rounded-xl shadow-lg space-y-4 sm:space-y-6 lg:col-span-2">
+                     <div className="flex items-center gap-2"><FileText className="h-5 w-5 text-primary" /><h2 className="text-lg sm:text-xl font-semibold">Blog Disclaimer</h2></div>
+                     <p className="text-sm text-muted-foreground">This disclaimer will appear at the bottom of all blog posts. Use it for FTC disclosure, affiliate disclaimers, or medical advice warnings.</p>
+                     <div className="prose dark:prose-invert max-w-none">
+                       <RichTextEditor 
+                         value={disclaimer} 
+                         onChange={setDisclaimer} 
+                         placeholder="Example: This post may contain affiliate links. We may earn a commission if you make a purchase through these links..."
+                         className="min-h-[80px]"
+                       />
+                     </div>
+                     <Button onClick={() => handleSaveSettings('blog_disclaimer', disclaimer)} size="sm" className="text-xs sm:text-sm"><Save className="mr-2 h-4 w-4" />Save Disclaimer</Button>
                   </div>
 
                   {/* Categories - Hierarchical Management */}
