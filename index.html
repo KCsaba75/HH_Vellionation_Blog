@@ -48,13 +48,15 @@
                 <div id="root"></div>
                 <script type="module" src="/src/main.jsx"></script>
                 
-                <!-- All in One Accessibility Widget (Free Version) -->
+                <!-- All in One Accessibility Widget (Free Version) - Delayed load for performance -->
                 <script>
                         window.addEventListener('load', function() {
-                                var script = document.createElement('script');
-                                script.src = 'https://www.skynettechnologies.com/accessibility/js/all-in-one-accessibility-js-widget-minify.js?colorcode=#22c55e&token=&position=bottom_right';
-                                script.async = true;
-                                document.body.appendChild(script);
+                                setTimeout(function() {
+                                        var script = document.createElement('script');
+                                        script.src = 'https://www.skynettechnologies.com/accessibility/js/all-in-one-accessibility-js-widget-minify.js?colorcode=#22c55e&token=&position=bottom_right';
+                                        script.async = true;
+                                        document.body.appendChild(script);
+                                }, 3000);
                         });
                 </script>
         </body>
