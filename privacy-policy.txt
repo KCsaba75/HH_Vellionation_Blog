@@ -1,0 +1,255 @@
+PRIVACY POLICY
+
+Last Updated: December 5, 2024
+
+Welcome to Vellio Nation ("we," "our," or "us"). We are committed to protecting your privacy and ensuring you have a positive experience on our website www.vellionation.com (the "Site"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our wellness community platform.
+
+Please read this Privacy Policy carefully. By accessing or using our Site, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy. If you do not agree with the terms of this Privacy Policy, please do not access the Site.
+
+1. INFORMATION WE COLLECT
+
+We collect information about you in various ways when you use our Site.
+
+1.1 Personal Information You Provide
+
+When you register for an account, subscribe to our newsletter, post comments, or contact us, we may collect:
+
+- Full name
+- Email address
+- Username and password
+- Profile picture (avatar)
+- Bio and personal description
+- Any other information you voluntarily provide
+
+1.2 Information Automatically Collected
+
+When you visit our Site, we automatically collect certain information about your device and your visit, including:
+
+- IP address
+- Browser type and version
+- Operating system
+- Referring website
+- Pages viewed and time spent on pages
+- Date and time of your visit
+- Click patterns and navigation paths
+
+1.3 Cookies and Tracking Technologies
+
+We use cookies and similar tracking technologies to collect and store information about your preferences and activity on our Site. These include:
+
+- Essential Cookies: Required for the Site to function properly, including authentication and security.
+- Preference Cookies: Store your preferences such as dark/light theme settings.
+- Analytics Cookies: Help us understand how visitors interact with our Site.
+- Article Tracking Cookies: Track daily article reading for guest users (resets at midnight).
+
+For more information about our cookie practices, please see Section 6 below.
+
+2. HOW WE USE YOUR INFORMATION
+
+We use the information we collect for various purposes, including:
+
+2.1 To Provide and Maintain Our Services
+- Create and manage your account
+- Process and complete transactions
+- Provide customer support
+- Send you service-related communications
+
+2.2 To Improve Our Services
+- Analyze usage patterns to enhance user experience
+- Develop new features and functionality
+- Monitor and analyze trends, usage, and activities
+
+2.3 To Communicate With You
+- Send newsletters and marketing communications (with your consent)
+- Respond to your comments, questions, and requests
+- Notify you about changes to our Site or policies
+
+2.4 To Personalize Your Experience
+- Remember your preferences (such as theme settings)
+- Provide personalized content recommendations
+- Track your progress in our gamification system (points, badges, ranks)
+
+2.5 For Legal and Safety Purposes
+- Comply with applicable laws and regulations
+- Enforce our Terms of Service
+- Protect against fraudulent or illegal activity
+
+3. AFFILIATE DISCLOSURE AND THIRD-PARTY LINKS
+
+3.1 Affiliate Relationships
+
+Vellio Nation participates in affiliate marketing programs. This means we may earn commissions when you click on affiliate links on our Site and make purchases from our partner merchants. These affiliate relationships include, but are not limited to, various health, wellness, and lifestyle product providers.
+
+When you click an affiliate link:
+- You may be redirected to a third-party website
+- The third party may place cookies on your device
+- We may receive information about your purchase (not including payment details)
+
+Your purchase price is not affected by our affiliate relationships. We only recommend products and services we believe provide value to our community.
+
+3.2 Third-Party Links
+
+Our Site may contain links to third-party websites, services, and advertisements. We are not responsible for the privacy practices of these third parties. We encourage you to read the privacy policies of any third-party sites you visit.
+
+4. INFORMATION SHARING AND DISCLOSURE
+
+We may share your information in the following circumstances:
+
+4.1 Service Providers
+We share information with third-party service providers who perform services on our behalf, including:
+- Supabase (database and authentication services)
+- Hosting providers
+- Analytics providers
+- Email service providers
+
+4.2 Legal Requirements
+We may disclose your information if required by law, court order, or governmental regulation, or if we believe disclosure is necessary to:
+- Comply with legal process
+- Protect our rights, privacy, safety, or property
+- Protect the safety of our users or the public
+
+4.3 Business Transfers
+If we are involved in a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.
+
+4.4 With Your Consent
+We may share your information with third parties when you give us explicit consent to do so.
+
+5. DATA SECURITY
+
+We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:
+
+- Encryption of data in transit (HTTPS/SSL)
+- Secure password hashing
+- Regular security assessments
+- Access controls and authentication requirements
+- Secure data storage through our service providers
+
+However, no method of transmission over the Internet or electronic storage is 100% secure. While we strive to protect your personal information, we cannot guarantee its absolute security.
+
+6. COOKIES AND TRACKING TECHNOLOGIES
+
+6.1 Types of Cookies We Use
+
+Essential Cookies:
+- Authentication cookies to keep you logged in
+- Security cookies to prevent fraud
+- Session cookies for site functionality
+
+Preference Cookies:
+- Theme preference (dark/light mode) - only stored if you accept cookies
+- Cookie consent preferences
+
+Functional Cookies:
+- Article reading tracking (for guest daily limits)
+- Affiliate disclosure acknowledgment
+
+6.2 Cookie Consent
+
+When you first visit our Site, you will see a cookie consent popup. You may choose to:
+- Accept All: Enable all cookies including preference storage
+- Essential Only: Only essential cookies will be used; your theme preferences will not be saved
+
+6.3 Managing Cookies
+
+You can control cookies through your browser settings. Most browsers allow you to:
+- View what cookies are stored
+- Delete individual or all cookies
+- Block cookies from specific or all websites
+- Set preferences for certain types of cookies
+
+Please note that disabling certain cookies may affect the functionality of our Site.
+
+7. YOUR PRIVACY RIGHTS
+
+Depending on your location, you may have certain rights regarding your personal information:
+
+7.1 Rights Under GDPR (European Economic Area)
+- Right to Access: Request a copy of your personal data
+- Right to Rectification: Request correction of inaccurate data
+- Right to Erasure: Request deletion of your personal data
+- Right to Restrict Processing: Request limitation on how we use your data
+- Right to Data Portability: Receive your data in a portable format
+- Right to Object: Object to certain processing activities
+- Right to Withdraw Consent: Withdraw previously given consent
+
+7.2 Rights Under CCPA (California Residents)
+- Right to Know: What personal information we collect and how it's used
+- Right to Delete: Request deletion of your personal information
+- Right to Opt-Out: Opt out of the sale of personal information (we do not sell personal information)
+- Right to Non-Discrimination: Equal service regardless of exercising privacy rights
+
+7.3 Exercising Your Rights
+
+To exercise any of these rights, please contact us at:
+- Email: privacy@vellionation.com
+- Through your account settings (for data access and deletion)
+
+We will respond to your request within 30 days. We may need to verify your identity before processing your request.
+
+8. DATA RETENTION
+
+We retain your personal information for as long as necessary to:
+- Provide our services to you
+- Comply with legal obligations
+- Resolve disputes
+- Enforce our agreements
+
+When you delete your account, we will delete or anonymize your personal information within 30 days, unless we are required to retain it for legal purposes.
+
+Guest article tracking cookies are automatically deleted at midnight each day.
+
+9. CHILDREN'S PRIVACY
+
+Our Site is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13. If we learn that we have collected personal information from a child under 13, we will take steps to delete that information as quickly as possible.
+
+If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately.
+
+10. INTERNATIONAL DATA TRANSFERS
+
+Your information may be transferred to and processed in countries other than your country of residence. These countries may have different data protection laws than your country.
+
+When we transfer your information internationally, we take appropriate safeguards to ensure your information remains protected in accordance with this Privacy Policy and applicable laws.
+
+11. HEALTH AND WELLNESS DISCLAIMER
+
+While our Site provides health and wellness information, we do not collect or store:
+- Medical records or diagnoses
+- Health insurance information
+- Prescription or medication information
+- Specific health conditions or treatments
+
+The wellness content on our Site is for informational purposes only and should not be considered medical advice. Always consult with qualified healthcare professionals for medical concerns.
+
+12. UPDATES TO THIS PRIVACY POLICY
+
+We may update this Privacy Policy from time to time to reflect changes in our practices or applicable laws. When we make changes:
+- We will update the "Last Updated" date at the top of this policy
+- For significant changes, we will provide notice on our Site or via email
+- Your continued use of the Site after changes constitutes acceptance of the updated policy
+
+We encourage you to review this Privacy Policy periodically.
+
+13. CONTACT US
+
+If you have questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us:
+
+Vellio Nation
+Email: privacy@vellionation.com
+Website: www.vellionation.com
+
+For GDPR-related inquiries, you may also contact your local data protection authority.
+
+14. ADDITIONAL DISCLOSURES
+
+14.1 Do Not Track Signals
+Our Site does not currently respond to "Do Not Track" signals from web browsers.
+
+14.2 Analytics
+We use analytics services to help understand how visitors use our Site. These services may collect information about your use of our Site and other websites.
+
+14.3 Social Media Features
+Our Site may include social media features (such as share buttons). These features may collect your IP address and which page you are visiting, and may set cookies. Your interactions with these features are governed by the privacy policies of the companies providing them.
+
+---
+
+This Privacy Policy is effective as of the date stated at the top of this document. By using Vellio Nation, you consent to this Privacy Policy.
