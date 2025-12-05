@@ -4,7 +4,9 @@ import { Helmet } from 'react-helmet';
 import Layout from '@/components/Layout';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AuthProvider } from '@/contexts/SupabaseAuthContext';
+import { CookieConsentProvider } from '@/contexts/CookieConsentContext';
 import { Toaster } from '@/components/ui/toaster';
+import CookieConsentPopup from '@/components/CookieConsentPopup';
 
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const BlogPage = lazy(() => import('@/pages/BlogPage'));
@@ -24,33 +26,36 @@ const StaticPage = lazy(() => import('@/pages/StaticPage'));
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <Helmet>
-          <title>Vellio Nation - Your Health & Wellness Community</title>
-          <meta name="description" content="Join Vellio Nation - a modern wellness community focused on healthy living, weight loss, and mindful lifestyle transformation." />
-        </Helmet>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route path="blog" element={<BlogPage />} />
-            <Route path="blog/:slug" element={<BlogPostPage />} />
-            <Route path="community" element={<CommunityPage />} />
-            <Route path="solutions" element={<SolutionsPage />} />
-            <Route path="solutions/:id" element={<SolutionDetailPage />} />
-            <Route path="profile" element={<ProfilePage />} />
-            <Route path="admin" element={<AdminPage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="register" element={<RegisterPage />} />
-            <Route path="forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="reset-password" element={<ResetPasswordPage />} />
-            <Route path="dashboard/write" element={<BlogDashboardPage />} />
-            <Route path="help-center" element={<StaticPage pageKey="page_content_help" />} />
-            <Route path="privacy-policy" element={<StaticPage pageKey="page_content_privacy" />} />
-            <Route path="terms-of-service" element={<StaticPage pageKey="page_content_terms" />} />
-          </Route>
-        </Routes>
-        <Toaster />
-      </AuthProvider>
+      <CookieConsentProvider>
+        <AuthProvider>
+          <Helmet>
+            <title>Vellio Nation - Your Health & Wellness Community</title>
+            <meta name="description" content="Join Vellio Nation - a modern wellness community focused on healthy living, weight loss, and mindful lifestyle transformation." />
+          </Helmet>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<HomePage />} />
+              <Route path="blog" element={<BlogPage />} />
+              <Route path="blog/:slug" element={<BlogPostPage />} />
+              <Route path="community" element={<CommunityPage />} />
+              <Route path="solutions" element={<SolutionsPage />} />
+              <Route path="solutions/:id" element={<SolutionDetailPage />} />
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="admin" element={<AdminPage />} />
+              <Route path="login" element={<LoginPage />} />
+              <Route path="register" element={<RegisterPage />} />
+              <Route path="forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="reset-password" element={<ResetPasswordPage />} />
+              <Route path="dashboard/write" element={<BlogDashboardPage />} />
+              <Route path="help-center" element={<StaticPage pageKey="page_content_help" />} />
+              <Route path="privacy-policy" element={<StaticPage pageKey="page_content_privacy" />} />
+              <Route path="terms-of-service" element={<StaticPage pageKey="page_content_terms" />} />
+            </Route>
+          </Routes>
+          <CookieConsentPopup />
+          <Toaster />
+        </AuthProvider>
+      </CookieConsentProvider>
     </ThemeProvider>
   );
 }

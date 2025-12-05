@@ -7,6 +7,7 @@ import { Clock, User, ArrowLeft, Heart, MessageCircle, Share2, Copy, FileText, A
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
+import { useCookieConsent } from '@/contexts/CookieConsentContext';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/customSupabaseClient';
 import {
@@ -16,11 +17,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Facebook, Instagram, MessageSquare } from 'lucide-react';
+import ArticleLimitPopup from '@/components/ArticleLimitPopup';
 
 const BlogPostPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { canReadArticle, markArticleRead } = useCookieConsent();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
@@ -28,6 +31,8 @@ const BlogPostPage = () => {
   const [likes, setLikes] = useState([]);
   const [latestPosts, setLatestPosts] = useState([]);
   const [disclaimer, setDisclaimer] = useState('');
+  const [showLimitPopup, setShowLimitPopup] = useState(false);
+  const [canView, setCanView] = useState(true);
   
   const postUrl = window.location.href;
 
@@ -108,6 +113,20 @@ const BlogPostPage = () => {
   useEffect(() => {
     fetchPostData();
   }, [fetchPostData]);
+
+  useEffect(() => {
+    if (!loading && post && !user) {
+      const allowed = canReadArticle(slug);
+      setCanView(allowed);
+      if (!allowed) {
+        setShowLimitPopup(true);
+      } else {
+        markArticleRead(slug);
+      }
+    } else if (user) {
+      setCanView(true);
+    }
+  }, [loading, post, user, slug, canReadArticle, markArticleRead]);
 
   const handleShare = (platform) => {
     let url = '';
@@ -332,12 +351,28 @@ const BlogPostPage = () => {
             </div>
             <div className="mb-12">
               <p className="text-xl text-muted-foreground mb-6">{post.excerpt}</p>
-              <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: post.content }} />
               
-              {/* FTC Disclaimer */}
-              {disclaimer && (
-                <div className="mt-8 p-4 bg-muted/50 border border-muted-foreground/20 rounded-lg">
-                  <div className="text-sm text-muted-foreground [&_img]:inline [&_img]:align-middle [&_img]:mr-2 [&_img]:max-h-8 [&_p]:inline [&_p]:my-0 [&_a]:text-primary [&_a]:underline [&_strong]:font-bold [&_em]:italic" dangerouslySetInnerHTML={{ __html: disclaimer }} />
+              {canView ? (
+                <>
+                  <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+                  
+                  {disclaimer && (
+                    <div className="mt-8 p-4 bg-muted/50 border border-muted-foreground/20 rounded-lg">
+                      <div className="text-sm text-muted-foreground [&_img]:inline [&_img]:align-middle [&_img]:mr-2 [&_img]:max-h-8 [&_p]:inline [&_p]:my-0 [&_a]:text-primary [&_a]:underline [&_strong]:font-bold [&_em]:italic" dangerouslySetInnerHTML={{ __html: disclaimer }} />
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="relative">
+                  <div className="prose prose-lg dark:prose-invert max-w-none rich-content line-clamp-6 overflow-hidden" dangerouslySetInnerHTML={{ __html: post.content }} />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/80 to-background flex items-end justify-center pb-8">
+                    <div className="text-center">
+                      <p className="text-lg font-semibold mb-3">Want to read more?</p>
+                      <Button onClick={() => setShowLimitPopup(true)}>
+                        Unlock Full Article
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -472,6 +507,11 @@ const BlogPostPage = () => {
           </div>
         </section>
       )}
+      
+      <ArticleLimitPopup 
+        isOpen={showLimitPopup} 
+        onClose={() => setShowLimitPopup(false)} 
+      />
     </>
   );
 };
