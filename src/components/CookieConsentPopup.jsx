@@ -25,15 +25,19 @@ const CookieConsentPopup = () => {
           >
             <div className="bg-card border rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 sm:p-8">
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                     <Cookie className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-bold">Cookie Settings</h2>
-                    <p className="text-sm text-muted-foreground">Welcome to Vellio Nation</p>
+                    <h2 className="text-xl sm:text-2xl font-bold">Welcome to Vellio Nation</h2>
+                    <p className="text-sm text-muted-foreground">Your wellness journey starts here</p>
                   </div>
                 </div>
+                
+                <p className="text-sm text-foreground/80 mb-6 leading-relaxed">
+                  Your experience matters to us! We use cookies to personalize your visit and ensure our site works seamlessly for you. Your privacy and comfort are our top priorities.
+                </p>
 
                 <div className="space-y-4 mb-6">
                   <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
