@@ -48,6 +48,7 @@ const AdminPage = () => {
     logo: ''
   });
   const [disclaimer, setDisclaimer] = useState('');
+  const [trackingCodes, setTrackingCodes] = useState({ google_analytics_id: '', facebook_pixel_id: '' });
 
   const [editingItem, setEditingItem] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -83,6 +84,7 @@ const AdminPage = () => {
       });
       setHomeImages(settingsData.find(s => s.key === 'home_images')?.value || { hero: '', community: '', logo: '' });
       setDisclaimer(settingsData.find(s => s.key === 'blog_disclaimer')?.value || '');
+      setTrackingCodes(settingsData.find(s => s.key === 'tracking_codes')?.value || { google_analytics_id: '', facebook_pixel_id: '' });
     }
   }, []);
 
@@ -562,6 +564,23 @@ const AdminPage = () => {
                      <div><Label htmlFor="facebook-url" className="text-sm">Facebook URL</Label><input id="facebook-url" value={socialLinks.facebook} onChange={e => setSocialLinks({...socialLinks, facebook: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
                      <div><Label htmlFor="instagram-url" className="text-sm">Instagram URL</Label><input id="instagram-url" value={socialLinks.instagram} onChange={e => setSocialLinks({...socialLinks, instagram: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
                      <Button onClick={() => handleSaveSettings('social_links', socialLinks)} size="sm" className="text-xs sm:text-sm"><Save className="mr-2 h-4 w-4" />Save Social Links</Button>
+                  </div>
+
+                  {/* Tracking Codes */}
+                  <div className="bg-card p-4 sm:p-6 rounded-xl shadow-lg space-y-4 sm:space-y-6 lg:col-span-2">
+                     <div className="flex items-center gap-2"><BarChart className="h-5 w-5 text-primary" /><h2 className="text-lg sm:text-xl font-semibold">Analytics & Tracking</h2></div>
+                     <p className="text-sm text-muted-foreground">Add your tracking IDs to enable analytics on all pages. These codes will be automatically injected into every page.</p>
+                     <div>
+                       <Label htmlFor="google-analytics-id" className="text-sm">Google Analytics Measurement ID</Label>
+                       <input id="google-analytics-id" value={trackingCodes.google_analytics_id} onChange={e => setTrackingCodes({...trackingCodes, google_analytics_id: e.target.value})} placeholder="G-XXXXXXXXXX" className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm font-mono" />
+                       <p className="text-xs text-muted-foreground mt-1">Enter your Google Analytics 4 Measurement ID (starts with G-)</p>
+                     </div>
+                     <div>
+                       <Label htmlFor="facebook-pixel-id" className="text-sm">Facebook Pixel ID</Label>
+                       <input id="facebook-pixel-id" value={trackingCodes.facebook_pixel_id} onChange={e => setTrackingCodes({...trackingCodes, facebook_pixel_id: e.target.value})} placeholder="123456789012345" className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm font-mono" />
+                       <p className="text-xs text-muted-foreground mt-1">Enter your Facebook Pixel ID (15-16 digit number)</p>
+                     </div>
+                     <Button onClick={() => handleSaveSettings('tracking_codes', trackingCodes)} size="sm" className="text-xs sm:text-sm"><Save className="mr-2 h-4 w-4" />Save Tracking Codes</Button>
                   </div>
 
                   {/* Blog Disclaimer - FTC Compliance */}

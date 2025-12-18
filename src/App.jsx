@@ -7,6 +7,7 @@ import { AuthProvider } from '@/contexts/SupabaseAuthContext';
 import { CookieConsentProvider } from '@/contexts/CookieConsentContext';
 import { Toaster } from '@/components/ui/toaster';
 import CookieConsentPopup from '@/components/CookieConsentPopup';
+import TrackingScripts from '@/components/TrackingScripts';
 
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const BlogPage = lazy(() => import('@/pages/BlogPage'));
@@ -53,6 +54,7 @@ function App() {
             </Route>
           </Routes>
           <CookieConsentPopup />
+          <TrackingScripts />
           <Toaster />
         </AuthProvider>
       </CookieConsentProvider>
