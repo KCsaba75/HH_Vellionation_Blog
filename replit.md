@@ -39,7 +39,8 @@ The application uses React 18.2 with Vite 4.5 for the frontend, and React Router
 - **Blog Management**: Comprehensive tools for creating, managing, and searching blog posts, with rich text, categorization, and SEO metadata.
 - **Solutions Management**: CRUD for products, apps, and educational materials, including descriptions, affiliate links, ratings, and images, with category-based filtering.
 - **User Management**: Tools to view users, update roles, and manage automatic rank assignments.
-- **Settings Management**: Configuration for social media links, blog/community categories, and static page content.
+- **Settings Management**: Configuration for social media links, blog/community categories, static page content, and analytics tracking codes.
+- **Analytics & Tracking**: Admin-configurable Google Analytics (GA4) and Facebook Pixel integration. Tracking IDs are stored in Supabase settings and injected into all pages via TrackingScripts component. Only valid tracking IDs are accepted (regex validation) to prevent XSS attacks.
 - **Profile Picture Upload**: Secure avatar management via Supabase Storage.
 - **Password Reset**: Implemented forgot password and reset password functionalities using Supabase's built-in methods.
 - **Blog & Solutions Navigation**: Redesigned pages with left sidebar category navigation for improved content discovery.
