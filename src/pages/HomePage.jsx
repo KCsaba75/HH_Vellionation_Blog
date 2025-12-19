@@ -117,7 +117,7 @@ const HomePage = () => {
               transition={{ duration: 0.6 }}
             >
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Master Your Second Half Through <span className="text-primary">Longevity Lifestyle</span>
+                Master Your Second Half Through  a <span className="text-primary">Longevity Lifestyle</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8">
                 Biohacking meets functional medicine. Reclaim your energy, reset your metabolism, and embrace ageless vitality. Your transformation to unstoppable wellness starts here.
@@ -125,7 +125,7 @@ const HomePage = () => {
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" asChild>
                   <Link to="/register">
-                    Get Started <ArrowRight className="ml-2 h-5 w-5" />
+                    Join the Nation <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
@@ -169,7 +169,7 @@ const HomePage = () => {
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Vellio Nation?</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We're more than just a platform - we're a movement towards ageless vitality and sustainable transformation.
+              We're more than just a platform - we're a movement dedicated to ageless vitality and sustainable transformation.
             </p>
           </motion.div>
 
@@ -223,19 +223,19 @@ const HomePage = () => {
                   <div className="bg-primary/10 rounded-full p-1 mr-3 mt-1">
                     <ArrowRight className="h-4 w-4 text-primary" />
                   </div>
-                  <span>Share your longevity journey and inspire others</span>
+                  <span>Share your journey and spark change in others.</span>
                 </li>
                 <li className="flex items-start">
                   <div className="bg-primary/10 rounded-full p-1 mr-3 mt-1">
                     <ArrowRight className="h-4 w-4 text-primary" />
                   </div>
-                  <span>Get functional medicine insights from our experts</span>
+                  <span>Get exclusive functional medicine insights from our experts.</span>
                 </li>
                 <li className="flex items-start">
                   <div className="bg-primary/10 rounded-full p-1 mr-3 mt-1">
                     <ArrowRight className="h-4 w-4 text-primary" />
                   </div>
-                  <span>Track your metabolism reset and climb the vitality ranks</span>
+                  <span>Track your metabolism reset and climb the vitality ranks.</span>
                 </li>
               </ul>
               <Button size="lg" asChild>
@@ -255,7 +255,7 @@ const HomePage = () => {
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Master Your Second Half?</h2>
             <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-              Join Vellio Nation today and unlock your ageless vitality. Your longevity lifestyle transformation starts now.
+              Join Vellio Nation today and unlock your ageless vitality. Your longevity transformation starts now.
             </p>
             <Button size="lg" variant="secondary" asChild>
               <Link to="/register">
