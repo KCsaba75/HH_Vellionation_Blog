@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { Clock, User, ArrowLeft, Heart, MessageCircle, Share2, Copy, FileText, ArrowRight } from 'lucide-react';
+import { Clock, User, ArrowLeft, Heart, MessageCircle, Share2, Copy, FileText, ArrowRight, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
@@ -18,6 +18,24 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Facebook, Instagram, MessageSquare } from 'lucide-react';
 import ArticleLimitPopup from '@/components/ArticleLimitPopup';
+
+const calculateReadingTime = (content) => {
+  if (!content) return 1;
+  const text = content.replace(/<[^>]*>/g, '');
+  const wordCount = text.trim().split(/\s+/).length;
+  const readingTime = Math.ceil(wordCount / 200);
+  return Math.max(1, readingTime);
+};
+
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
 
 const BlogPostPage = () => {
   const { slug } = useParams();
@@ -336,9 +354,10 @@ const BlogPostPage = () => {
               </span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">{post.title}</h1>
-            <div className="flex items-center gap-6 text-muted-foreground mb-8">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-muted-foreground mb-8">
               <div className="flex items-center gap-2"><User className="h-5 w-5" /><span>{post.profiles?.name || 'Vellio Team'}</span></div>
-              <div className="flex items-center gap-2"><Clock className="h-5 w-5" /><span>{post.read_time || '5 min read'}</span></div>
+              <div className="flex items-center gap-2"><Calendar className="h-5 w-5" /><span>{formatDate(post.created_at)}</span></div>
+              <div className="flex items-center gap-2"><Clock className="h-5 w-5" /><span>{calculateReadingTime(post.content)} min read</span></div>
             </div>
             <div className="aspect-video bg-secondary/50 rounded-xl mb-8 overflow-hidden">
               {post.image_url ? (
