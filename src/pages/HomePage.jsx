@@ -41,23 +41,23 @@ const HomePage = () => {
   const features = [
     {
       icon: Heart,
-      title: 'Wellness First',
-      description: 'Prioritize your health with expert guidance and community support'
+      title: 'Longevity Lifestyle',
+      description: 'Embrace sustainable wellness with functional medicine insights and expert guidance'
     },
     {
       icon: Users,
-      title: 'Active Community',
-      description: 'Connect with like-minded individuals on the same journey'
+      title: 'Ageless Vitality Circle',
+      description: 'Connect with driven individuals committed to mastering their second half'
     },
     {
       icon: TrendingUp,
-      title: 'Track Progress',
-      description: 'Monitor your transformation with our gamified ranking system'
+      title: 'Metabolism Reset Tracker',
+      description: 'Monitor your biohacking journey with our gamified transformation system'
     },
     {
       icon: Award,
-      title: 'Earn Badges',
-      description: 'Unlock achievements as you reach your wellness milestones'
+      title: 'Functional Wellness Rewards',
+      description: 'Unlock achievements as you reach your vitality milestones'
     }
   ];
 
@@ -66,6 +66,7 @@ const HomePage = () => {
       <Helmet>
         <title>Weight Loss After 40 | Vellio Nation - Healthy Living for Men & Women</title>
         <meta name="description" content="Discover proven weight loss strategies for men and women over 40. Join Vellio Nation for expert tips on losing weight after 40, healthy eating, metabolism boosting, and sustainable lifestyle changes." />
+        <meta name="keywords" content="weight loss, weight loss over 40, metabolism reset, longevity lifestyle, ageless vitality, biohacking, functional medicine, healthy weight loss, sustainable transformation, midlife wellness" />
         <link rel="canonical" href="https://www.vellionation.com/" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.vellionation.com/" />
@@ -116,10 +117,10 @@ const HomePage = () => {
               transition={{ duration: 0.6 }}
             >
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Transform Your Life Through <span className="text-primary">Wellness</span>
+                Master Your Second Half Through <span className="text-primary">Longevity Lifestyle</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8">
-                Join a community dedicated to healthy living, mindful choices, and sustainable transformation. Your journey to a better you starts here.
+                Biohacking meets functional medicine. Reclaim your energy, reset your metabolism, and embrace ageless vitality. Your transformation to unstoppable wellness starts here.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" asChild>
@@ -168,7 +169,7 @@ const HomePage = () => {
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Vellio Nation?</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We're more than just a platform - we're a movement towards healthier, happier living.
+              We're more than just a platform - we're a movement towards ageless vitality and sustainable transformation.
             </p>
           </motion.div>
 
@@ -213,28 +214,28 @@ const HomePage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Join Our Thriving Community</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Join Our Ageless Vitality Community</h2>
               <p className="text-lg text-muted-foreground mb-6">
-                Connect with thousands of members who share your passion for wellness. Share experiences, get motivated, and celebrate victories together.
+                Connect with driven individuals committed to mastering their second half. Share biohacking insights, get accountability, and celebrate transformation wins together.
               </p>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-start">
                   <div className="bg-primary/10 rounded-full p-1 mr-3 mt-1">
                     <ArrowRight className="h-4 w-4 text-primary" />
                   </div>
-                  <span>Share your journey and inspire others</span>
+                  <span>Share your longevity journey and inspire others</span>
                 </li>
                 <li className="flex items-start">
                   <div className="bg-primary/10 rounded-full p-1 mr-3 mt-1">
                     <ArrowRight className="h-4 w-4 text-primary" />
                   </div>
-                  <span>Get expert advice from our bloggers</span>
+                  <span>Get functional medicine insights from our experts</span>
                 </li>
                 <li className="flex items-start">
                   <div className="bg-primary/10 rounded-full p-1 mr-3 mt-1">
                     <ArrowRight className="h-4 w-4 text-primary" />
                   </div>
-                  <span>Earn badges and climb the ranks</span>
+                  <span>Track your metabolism reset and climb the vitality ranks</span>
                 </li>
               </ul>
               <Button size="lg" asChild>
@@ -252,9 +253,9 @@ const HomePage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Start Your Journey?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Master Your Second Half?</h2>
             <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-              Join Vellio Nation today and take the first step towards a healthier, happier you.
+              Join Vellio Nation today and unlock your ageless vitality. Your longevity lifestyle transformation starts now.
             </p>
             <Button size="lg" variant="secondary" asChild>
               <Link to="/register">
