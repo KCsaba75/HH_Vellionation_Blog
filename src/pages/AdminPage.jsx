@@ -36,7 +36,7 @@ const AdminPage = () => {
   const [solutions, setSolutions] = useState([]);
   const [users, setUsers] = useState([]);
   
-  const [socialLinks, setSocialLinks] = useState({ facebook: '', instagram: '' });
+  const [socialLinks, setSocialLinks] = useState({ facebook: '', instagram: '', youtube: '', spotify: '' });
   const [pageContents, setPageContents] = useState({
     help: { content: '' },
     privacy: { content: '' },
@@ -76,7 +76,7 @@ const AdminPage = () => {
     
     const { data: settingsData } = await supabase.from('settings').select('key, value');
     if (settingsData) {
-      setSocialLinks(settingsData.find(s => s.key === 'social_links')?.value || { facebook: '', instagram: '' });
+      setSocialLinks(settingsData.find(s => s.key === 'social_links')?.value || { facebook: '', instagram: '', youtube: '', spotify: '' });
       setPageContents({
         help: settingsData.find(s => s.key === 'page_content_help')?.value || { content: '' },
         privacy: settingsData.find(s => s.key === 'page_content_privacy')?.value || { content: '' },
@@ -561,8 +561,10 @@ const AdminPage = () => {
                   {/* General Settings */}
                   <div className="bg-card p-4 sm:p-6 rounded-xl shadow-lg space-y-4 sm:space-y-6 lg:col-span-2">
                      <div className="flex items-center gap-2"><Settings className="h-5 w-5 text-primary" /><h2 className="text-lg sm:text-xl font-semibold">General Settings</h2></div>
-                     <div><Label htmlFor="facebook-url" className="text-sm">Facebook URL</Label><input id="facebook-url" value={socialLinks.facebook} onChange={e => setSocialLinks({...socialLinks, facebook: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
-                     <div><Label htmlFor="instagram-url" className="text-sm">Instagram URL</Label><input id="instagram-url" value={socialLinks.instagram} onChange={e => setSocialLinks({...socialLinks, instagram: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" /></div>
+                     <div><Label htmlFor="facebook-url" className="text-sm">Facebook URL</Label><input id="facebook-url" value={socialLinks.facebook} onChange={e => setSocialLinks({...socialLinks, facebook: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" placeholder="https://facebook.com/yourpage" /></div>
+                     <div><Label htmlFor="instagram-url" className="text-sm">Instagram URL</Label><input id="instagram-url" value={socialLinks.instagram} onChange={e => setSocialLinks({...socialLinks, instagram: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" placeholder="https://instagram.com/yourprofile" /></div>
+                     <div><Label htmlFor="youtube-url" className="text-sm">YouTube URL</Label><input id="youtube-url" value={socialLinks.youtube} onChange={e => setSocialLinks({...socialLinks, youtube: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" placeholder="https://youtube.com/@yourchannel" /></div>
+                     <div><Label htmlFor="spotify-url" className="text-sm">Spotify URL</Label><input id="spotify-url" value={socialLinks.spotify} onChange={e => setSocialLinks({...socialLinks, spotify: e.target.value})} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" placeholder="https://open.spotify.com/show/yourshow" /></div>
                      <Button onClick={() => handleSaveSettings('social_links', socialLinks)} size="sm" className="text-xs sm:text-sm"><Save className="mr-2 h-4 w-4" />Save Social Links</Button>
                   </div>
 

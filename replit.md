@@ -18,7 +18,7 @@ The application uses React 18.2 with Vite 4.5 for the frontend, and React Router
 - **Header & Footer**: Ensures consistent navigation and branding.
 
 ### Technical Implementations
-- **Core Features**: Includes user authentication, CRUD operations for blog posts and solutions, community comments, theme switching, an admin dashboard with role-based access, user profile management with avatar uploads, social media integration, and SEO-friendly pages using React Helmet.
+- **Core Features**: Includes user authentication, CRUD operations for blog posts and solutions, community comments, theme switching, an admin dashboard with role-based access, user profile management with avatar uploads, social media integration (Facebook, Instagram, YouTube, Spotify), and SEO-friendly pages using React Helmet.
 - **Admin Dashboard**: Provides full CRUD capabilities for blog posts, solutions, and user management, featuring role-based access control and automatic rank assignment.
 - **User Profiles**: Allows users to manage their information, upload avatars, and track gamified ranks and points.
 - **Category System**: A hierarchical category system with `parent_id` for nested relationships, supporting `blog`, `community`, and `solutions` content types.
@@ -39,7 +39,7 @@ The application uses React 18.2 with Vite 4.5 for the frontend, and React Router
 - **Blog Management**: Comprehensive tools for creating, managing, and searching blog posts, with rich text, categorization, and SEO metadata.
 - **Solutions Management**: CRUD for products, apps, and educational materials, including descriptions, affiliate links, ratings, and images, with category-based filtering.
 - **User Management**: Tools to view users, update roles, and manage automatic rank assignments.
-- **Settings Management**: Configuration for social media links, blog/community categories, static page content, and analytics tracking codes.
+- **Settings Management**: Configuration for social media links (Facebook, Instagram, YouTube, Spotify), blog/community categories, static page content, and analytics tracking codes.
 - **Analytics & Tracking**: Admin-configurable Google Analytics (GA4) and Facebook Pixel integration. Tracking IDs are stored in Supabase settings and injected into all pages via TrackingScripts component. Only valid tracking IDs are accepted (regex validation) to prevent XSS attacks.
 - **Profile Picture Upload**: Secure avatar management via Supabase Storage.
 - **Password Reset**: Implemented forgot password and reset password functionalities using Supabase's built-in methods.
