@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Facebook, Instagram, MessageSquare } from 'lucide-react';
 import ArticleLimitPopup from '@/components/ArticleLimitPopup';
+import ArticleAudioPlayer from '@/components/ArticleAudioPlayer';
 
 const calculateReadingTime = (content) => {
   if (!content) return 1;
@@ -354,11 +355,12 @@ const BlogPostPage = () => {
               </span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">{post.title}</h1>
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-muted-foreground mb-8">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-muted-foreground mb-6">
               <div className="flex items-center gap-2"><User className="h-5 w-5" /><span>{post.profiles?.name || 'Vellio Team'}</span></div>
               <div className="flex items-center gap-2"><Calendar className="h-5 w-5" /><span>{formatDate(post.created_at)}</span></div>
               <div className="flex items-center gap-2"><Clock className="h-5 w-5" /><span>{calculateReadingTime(post.content)} min read</span></div>
             </div>
+            {canView && <ArticleAudioPlayer content={post.content} title={post.title} />}
             <div className="aspect-video bg-secondary/50 rounded-xl mb-8 overflow-hidden">
               {post.image_url ? (
                 <img alt={post.title} className="w-full h-full object-cover" src={post.image_url} loading="lazy" width="800" height="450" />
