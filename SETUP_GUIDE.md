@@ -315,7 +315,7 @@ SET slug = LOWER(
 WHERE slug IS NULL OR slug = '';
 
 ALTER TABLE public.solutions
-  ADD CONSTRAINT IF NOT EXISTS solutions_slug_unique UNIQUE (slug);
+  ADD CONSTRAINT solutions_slug_unique UNIQUE (slug);
 ```
 > Solutions now use slug-based URLs (`/solutions/product-name`) for better SEO. New solutions get their slug auto-generated from the name. Existing solutions need the backfill above.
 
