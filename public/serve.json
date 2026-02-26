@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/seo-files/sitemap.xml",
+      "type": 301
+    },
+    {
+      "source": "/llms.txt",
+      "destination": "https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/seo-files/llms.txt",
+      "type": 301
+    }
+  ],
   "headers": [
     {
       "source": "**/*.html",
