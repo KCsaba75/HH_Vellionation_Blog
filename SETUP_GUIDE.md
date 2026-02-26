@@ -67,6 +67,7 @@ Run each SQL block separately in the Supabase SQL Editor:
 CREATE TABLE IF NOT EXISTS profiles (
   id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
   name TEXT,
+  email TEXT,
   bio TEXT,
   role TEXT DEFAULT 'member' CHECK (role IN ('member', 'blogger', 'admin')),
   rank TEXT DEFAULT 'New Member',
@@ -79,8 +80,8 @@ CREATE TABLE IF NOT EXISTS profiles (
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, name, role)
-  VALUES (NEW.id, NEW.raw_user_meta_data->>'name', 'member');
+  INSERT INTO public.profiles (id, name, email, role)
+  VALUES (NEW.id, NEW.raw_user_meta_data->>'name', NEW.email, 'member');
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
@@ -268,12 +269,36 @@ INSERT INTO settings (key, value) VALUES
 ON CONFLICT (key) DO NOTHING;
 ```
 
-#### 13. Add Founding Member column
+#### 13. Add email and Founding Member columns (migrations for existing installs)
 ```sql
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS email TEXT;
+
 ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS is_founding_member boolean DEFAULT false;
 ```
-> The first 200 registered users are automatically marked as Founding Members at sign-up. This badge appears on their profile page and in the admin user list.
+
+Backfill email for existing users from auth.users:
+```sql
+UPDATE public.profiles p
+SET email = u.email
+FROM auth.users u
+WHERE p.id = u.id AND p.email IS NULL;
+```
+
+Update the trigger so new registrations also save email:
+```sql
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, name, email, role)
+  VALUES (NEW.id, NEW.raw_user_meta_data->>'name', NEW.email, 'member');
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+```
+
+> The first 200 registered users are automatically marked as Founding Members at sign-up. The ⭐ badge appears on their profile page and in the admin user list.
 
 #### 14. Reload the schema
 ```sql

@@ -101,14 +101,17 @@ export const AuthProvider = ({ children }) => {
           .from('profiles')
           .select('*', { count: 'exact', head: true });
 
+        const updates = { email: data.user.email };
         if (count !== null && count <= 200) {
-          await supabase
-            .from('profiles')
-            .update({ is_founding_member: true })
-            .eq('id', data.user.id);
+          updates.is_founding_member = true;
         }
+
+        await supabase
+          .from('profiles')
+          .update(updates)
+          .eq('id', data.user.id);
       } catch (e) {
-        console.warn('Could not set founding member status:', e.message);
+        console.warn('Could not update profile after signup:', e.message);
       }
     }
 
