@@ -23,6 +23,7 @@ import RankProgressCard from '@/components/gamification/RankProgressCard';
 import BadgeGrid from '@/components/gamification/BadgeGrid';
 import DailyLoginButton from '@/components/gamification/DailyLoginButton';
 import { getUserStats, getUserBadges, checkAndAwardBadges } from '@/lib/gamificationService';
+import { FOUNDING_MEMBER } from '@/lib/gamificationConfig';
 
 const ProfilePage = () => {
   const { user, profile, updateProfile, loading: authLoading } = useAuth();
@@ -209,9 +210,14 @@ const ProfilePage = () => {
                     ) : (
                       <h1 className="text-2xl font-bold">{profile.name}</h1>
                     )}
-                    <div className="flex items-center gap-2 mt-1">
+                    <div className="flex flex-wrap items-center gap-2 mt-1">
                       <span className="text-sm bg-accent/20 text-accent px-3 py-1 rounded-full">{profile.rank}</span>
                       <span className="text-sm text-muted-foreground">{profile.points} points</span>
+                      {profile.is_founding_member && (
+                        <span className={`text-sm font-semibold px-3 py-1 rounded-full border flex items-center gap-1 ${FOUNDING_MEMBER.bgColor} ${FOUNDING_MEMBER.color} ${FOUNDING_MEMBER.borderColor}`}>
+                          {FOUNDING_MEMBER.icon} {FOUNDING_MEMBER.name}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>

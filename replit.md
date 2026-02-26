@@ -34,6 +34,7 @@ The application uses React 18.2 with Vite 4.5 for the frontend, and React Router
 - **Article Reading Limit**: Guests limited to 1 article per day. After reading, content is blurred with prompt to register/login. Limit resets at midnight (cookie-based). Logged-in users have unlimited access. Includes midnight timer and visibility change detection for accurate state sync.
 - **Site Image Management**: Admin dashboard allows uploading and managing site-wide images (logo, hero, community section) stored in Supabase Storage, with robust placeholder handling.
 - **Dynamic Content Generation**: Build scripts generate `llms.txt` and `sitemap.xml` from Supabase content. SEO files are also regenerated automatically when posts/solutions are created, updated, or deleted via `regenerateSeoFiles()` function.
+- **Founding Member Feature**: The first 200 registered users automatically receive "Founding Member" status (`is_founding_member boolean` column in profiles). Checked and set client-side during signUp(). The ⭐ Founding Member badge appears on the profile page (next to rank) and in the Admin user list. Config in `src/lib/gamificationConfig.js` (FOUNDING_MEMBER constant). Requires Supabase SQL: `ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS is_founding_member boolean DEFAULT false;`
 
 ### Feature Specifications
 - **Blog Management**: Comprehensive tools for creating, managing, and searching blog posts, with rich text, categorization, and SEO metadata.

@@ -441,7 +441,12 @@ const AdminPage = () => {
                        <table className="w-full text-sm text-left"><thead className="text-xs text-muted-foreground uppercase"><tr><th className="py-3 px-4">Name</th><th className="py-3 px-4">Email</th><th className="py-3 px-4">Rank</th><th className="py-3 px-4">Role</th></tr></thead>
                        <tbody>
                           {users.map(userItem => (<tr key={userItem.id} className="border-b dark:border-gray-700">
-                              <td className="py-3 px-4 font-semibold">{userItem.name}</td>
+                              <td className="py-3 px-4 font-semibold">
+                                <span>{userItem.name}</span>
+                                {userItem.is_founding_member && (
+                                  <span className="ml-2 text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 border border-amber-400 px-2 py-0.5 rounded-full">⭐ Founding</span>
+                                )}
+                              </td>
                               <td className="py-3 px-4">{userItem.email}</td>
                               <td className="py-3 px-4">{userItem.rank}</td>
                               <td className="py-3 px-4">
@@ -460,7 +465,12 @@ const AdminPage = () => {
                      {users.map(userItem => (
                        <div key={userItem.id} className="bg-background/50 border rounded-lg p-4 space-y-3">
                          <div>
-                           <h3 className="font-semibold text-sm">{userItem.name}</h3>
+                           <div className="flex flex-wrap items-center gap-2">
+                             <h3 className="font-semibold text-sm">{userItem.name}</h3>
+                             {userItem.is_founding_member && (
+                               <span className="text-xs font-semibold bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 border border-amber-400 px-2 py-0.5 rounded-full">⭐ Founding</span>
+                             )}
+                           </div>
                            <p className="text-xs text-muted-foreground mt-0.5">{userItem.email}</p>
                          </div>
                          <div className="flex flex-wrap gap-2 text-xs">

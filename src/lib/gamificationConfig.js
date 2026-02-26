@@ -1,3 +1,12 @@
+export const FOUNDING_MEMBER = {
+  name: 'Founding Member',
+  icon: '⭐',
+  color: 'text-amber-500',
+  bgColor: 'bg-amber-100 dark:bg-amber-900/40',
+  borderColor: 'border-amber-400',
+  description: 'One of the first 200 members of Vellio Nation'
+};
+
 export const RANKS = [
   { 
     id: 1, 

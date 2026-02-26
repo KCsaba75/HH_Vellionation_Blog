@@ -268,7 +268,14 @@ INSERT INTO settings (key, value) VALUES
 ON CONFLICT (key) DO NOTHING;
 ```
 
-#### 13. Reload the schema
+#### 13. Add Founding Member column
+```sql
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS is_founding_member boolean DEFAULT false;
+```
+> The first 200 registered users are automatically marked as Founding Members at sign-up. This badge appears on their profile page and in the admin user list.
+
+#### 14. Reload the schema
 ```sql
 NOTIFY pgrst, 'reload schema';
 ```

@@ -92,8 +92,27 @@ export const AuthProvider = ({ children }) => {
         title: "Sign up Failed",
         description: error.message || "Something went wrong",
       });
+      return { user: data?.user, error };
     }
-    return { user: data.user, error };
+
+    if (data?.user) {
+      try {
+        const { count } = await supabase
+          .from('profiles')
+          .select('*', { count: 'exact', head: true });
+
+        if (count !== null && count <= 200) {
+          await supabase
+            .from('profiles')
+            .update({ is_founding_member: true })
+            .eq('id', data.user.id);
+        }
+      } catch (e) {
+        console.warn('Could not set founding member status:', e.message);
+      }
+    }
+
+    return { user: data?.user, error };
   }, [toast]);
 
   const signIn = useCallback(async (email, password) => {
