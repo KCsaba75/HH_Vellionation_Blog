@@ -309,7 +309,7 @@ NOTIFY pgrst, 'reload schema';
 
 ## Step 5: Set Up Storage Buckets
 
-The app needs 4 public storage buckets for images:
+The app needs 5 storage buckets:
 
 1. In Supabase dashboard, click **"Storage"** in the left sidebar
 2. Click **"Create a new bucket"** and create each of these buckets:
@@ -317,12 +317,32 @@ The app needs 4 public storage buckets for images:
    - `post_images` (for blog post featured images)
    - `solution_images` (for solution/product images)
    - `community_post_images` (for community post images)
+   - `seo-files` (for dynamically generated sitemap.xml and llms.txt)
 
 3. **Make all buckets PUBLIC**:
    - Click on each bucket
    - Click the **"Settings"** tab
    - Toggle **"Public bucket"** to ON
    - Click **"Save"**
+
+4. **Add write policies for the `seo-files` bucket** (public buckets allow reading, but writing requires explicit policies):
+
+Run in Supabase SQL Editor:
+```sql
+CREATE POLICY "Allow authenticated uploads to seo-files"
+ON storage.objects FOR INSERT TO authenticated
+WITH CHECK (bucket_id = 'seo-files');
+
+CREATE POLICY "Allow authenticated updates to seo-files"
+ON storage.objects FOR UPDATE TO authenticated
+USING (bucket_id = 'seo-files');
+
+CREATE POLICY "Allow public read of seo-files"
+ON storage.objects FOR SELECT TO public
+USING (bucket_id = 'seo-files');
+```
+
+> Without these policies, sitemap.xml and llms.txt will silently fail to upload after blog/solution changes.
 
 ---
 

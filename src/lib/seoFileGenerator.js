@@ -160,16 +160,18 @@ export async function uploadSeoFilesToStorage() {
       .from('seo-files')
       .upload('llms.txt', llmsBlob, { upsert: true, contentType: 'text/plain' });
 
-    if (llmsError && !llmsError.message.includes('already exists')) {
-      console.error('Error uploading llms.txt:', llmsError);
+    if (llmsError) {
+      console.error('Error uploading llms.txt:', llmsError.message || llmsError);
+      return false;
     }
 
     const { error: sitemapError } = await supabase.storage
       .from('seo-files')
       .upload('sitemap.xml', sitemapBlob, { upsert: true, contentType: 'application/xml' });
 
-    if (sitemapError && !sitemapError.message.includes('already exists')) {
-      console.error('Error uploading sitemap.xml:', sitemapError);
+    if (sitemapError) {
+      console.error('Error uploading sitemap.xml:', sitemapError.message || sitemapError);
+      return false;
     }
 
     console.log('SEO files regenerated successfully');
