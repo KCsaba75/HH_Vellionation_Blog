@@ -68,7 +68,7 @@ export async function generateLlmsTxt() {
 
   const { data: solutions } = await supabase
     .from('solutions')
-    .select('id, name, description')
+    .select('id, slug, name, description')
     .eq('status', 'active')
     .order('created_at', { ascending: false });
 
@@ -77,8 +77,9 @@ export async function generateLlmsTxt() {
     entries.push('## Solutions');
     
     for (const solution of solutions) {
+      if (!solution.slug) continue;
       const description = truncateText(solution.description) || 'Discover this wellness solution on Vellio Nation.';
-      entries.push(`- [${solution.name}](${SITE_URL}/solutions/${solution.id}): ${description}`);
+      entries.push(`- [${solution.name}](${SITE_URL}/solutions/${solution.slug}): ${description}`);
     }
   }
 
@@ -120,14 +121,15 @@ export async function generateSitemapXml() {
 
   const { data: solutions } = await supabase
     .from('solutions')
-    .select('id, created_at')
+    .select('id, slug, created_at')
     .eq('status', 'active')
     .order('created_at', { ascending: false });
 
   if (solutions && solutions.length > 0) {
     for (const solution of solutions) {
+      if (!solution.slug) continue;
       urls.push({
-        loc: `${SITE_URL}/solutions/${solution.id}`,
+        loc: `${SITE_URL}/solutions/${solution.slug}`,
         lastmod: formatDate(solution.created_at),
         changefreq: 'weekly',
         priority: '0.6'

@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const SolutionDetailPage = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [solution, setSolution] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,7 +28,7 @@ const SolutionDetailPage = () => {
       const { data, error } = await supabase
         .from('solutions')
         .select('*')
-        .eq('id', id)
+        .eq('slug', slug)
         .single();
       
       if (error) {
@@ -40,8 +40,8 @@ const SolutionDetailPage = () => {
       setLoading(false);
     };
 
-    if (id) fetchSolution();
-  }, [id]);
+    if (slug) fetchSolution();
+  }, [slug]);
   
   const handleShare = (platform) => {
     let url = '';
@@ -74,9 +74,9 @@ const SolutionDetailPage = () => {
       <Helmet>
         <title>{solution.seo_title || solution.name} - Vellio Nation</title>
         <meta name="description" content={solution.seo_description || solution.description} />
-        <link rel="canonical" href={`https://www.vellionation.com/solutions/${solution.id}`} />
+        <link rel="canonical" href={`https://www.vellionation.com/solutions/${solution.slug}`} />
         <meta property="og:type" content="product" />
-        <meta property="og:url" content={`https://www.vellionation.com/solutions/${solution.id}`} />
+        <meta property="og:url" content={`https://www.vellionation.com/solutions/${solution.slug}`} />
         <meta property="og:title" content={solution.seo_title || solution.name} />
         <meta property="og:description" content={solution.seo_description || solution.description} />
         <meta property="og:image" content={solution.image_url || "https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg"} />
@@ -101,7 +101,7 @@ const SolutionDetailPage = () => {
               "@type": "Organization",
               "name": "Vellio Nation"
             },
-            "url": `https://www.vellionation.com/solutions/${solution.id}`
+            "url": `https://www.vellionation.com/solutions/${solution.slug}`
           })}
         </script>
         <script type="application/ld+json">

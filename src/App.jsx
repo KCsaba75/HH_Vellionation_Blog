@@ -40,7 +40,7 @@ function App() {
               <Route path="blog/:slug" element={<BlogPostPage />} />
               <Route path="community" element={<CommunityPage />} />
               <Route path="solutions" element={<SolutionsPage />} />
-              <Route path="solutions/:id" element={<SolutionDetailPage />} />
+              <Route path="solutions/:slug" element={<SolutionDetailPage />} />
               <Route path="profile" element={<ProfilePage />} />
               <Route path="admin" element={<AdminPage />} />
               <Route path="login" element={<LoginPage />} />

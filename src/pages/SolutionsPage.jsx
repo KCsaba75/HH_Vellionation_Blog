@@ -314,7 +314,7 @@ const SolutionsPage = () => {
                         ))}
                       </div>
                       <Button asChild className="w-full">
-                        <Link to={`/solutions/${solution.id}`}>
+                        <Link to={`/solutions/${solution.slug}`}>
                           View Details <ExternalLink className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>

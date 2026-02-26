@@ -300,7 +300,26 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 > The first 200 registered users are automatically marked as Founding Members at sign-up. The ⭐ badge appears on their profile page and in the admin user list.
 
-#### 14. Reload the schema
+#### 14. Add slug to solutions table (migration for existing installs)
+```sql
+ALTER TABLE public.solutions
+  ADD COLUMN IF NOT EXISTS slug TEXT;
+
+UPDATE public.solutions
+SET slug = LOWER(
+  REGEXP_REPLACE(
+    REGEXP_REPLACE(TRIM(name), '[^a-zA-Z0-9\s]', '', 'g'),
+    '\s+', '-', 'g'
+  )
+)
+WHERE slug IS NULL OR slug = '';
+
+ALTER TABLE public.solutions
+  ADD CONSTRAINT IF NOT EXISTS solutions_slug_unique UNIQUE (slug);
+```
+> Solutions now use slug-based URLs (`/solutions/product-name`) for better SEO. New solutions get their slug auto-generated from the name. Existing solutions need the backfill above.
+
+#### 15. Reload the schema
 ```sql
 NOTIFY pgrst, 'reload schema';
 ```

@@ -188,6 +188,11 @@ const AdminPage = () => {
       const slug = editingItem.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       postData = { ...postData, slug, user_id: profile.id };
     }
+
+    if (formType === 'solution' && !editingItem.id) {
+      const slug = editingItem.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      postData = { ...postData, slug };
+    }
     
     let response;
     if (editingItem.id) {
