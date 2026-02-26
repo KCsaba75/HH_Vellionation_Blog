@@ -2,67 +2,97 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.vellionation.com/</loc>
-    <lastmod>2025-12-02</lastmod>
+    <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/blog</loc>
-    <lastmod>2025-12-02</lastmod>
+    <lastmod>2026-02-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/community</loc>
-    <lastmod>2025-12-02</lastmod>
+    <lastmod>2026-02-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/solutions</loc>
-    <lastmod>2025-12-02</lastmod>
+    <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/login</loc>
-    <lastmod>2025-12-02</lastmod>
+    <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/register</loc>
-    <lastmod>2025-12-02</lastmod>
+    <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/help-center</loc>
-    <lastmod>2025-12-02</lastmod>
+    <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/privacy-policy</loc>
-    <lastmod>2025-12-02</lastmod>
+    <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/terms-of-service</loc>
-    <lastmod>2025-12-02</lastmod>
+    <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.vellionation.com/blog/what-is-psyllium-husk</loc>
-    <lastmod>2025-11-27</lastmod>
+    <loc>https://www.vellionation.com/blog/calorie-math-how-to-calculate-the-formula-for-successful-weight-loss</loc>
+    <lastmod>2026-02-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/blog/meditation-over-40-mental-training-for-a-fitter-lifestyle</loc>
+    <lastmod>2026-02-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/blog/the-20-minute-strength-routine-every-40-adult-needs-to-future-proof-their-body</loc>
+    <lastmod>2025-12-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/blog/the-big-4-0-and-the-scale-why-weight-loss-feels-impossible-over-40-and-what-to-do-about-it</loc>
+    <lastmod>2025-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/blog/why-can-t-you-lose-weight-despite-trying-everything-the-hidden-trap-of-insulin-resistance</loc>
+    <lastmod>2025-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/blog/the-ancient-herb-taking-over-the-wellness-world-everything-you-need-to-know-about-ashwagandha</loc>
-    <lastmod>2025-11-27</lastmod>
+    <lastmod>2025-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/blog/what-is-psyllium-husk</loc>
+    <lastmod>2025-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
