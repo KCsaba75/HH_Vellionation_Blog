@@ -16,6 +16,9 @@ const BlogPage = () => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [categoryCounts, setCategoryCounts] = useState({});
+  const [subcategoryCounts, setSubcategoryCounts] = useState({});
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     const fetchCategoriesAndSubcategories = async () => {
@@ -34,6 +37,23 @@ const BlogPage = () => {
         .not('parent_id', 'is', null)
         .order('position', { ascending: true });
       setSubcategories(subData || []);
+
+      const { data: countData } = await supabase
+        .from('posts')
+        .select('category_id, subcategory_id')
+        .eq('status', 'published');
+
+      if (countData) {
+        setTotalCount(countData.length);
+        const catMap = {};
+        const subMap = {};
+        countData.forEach(({ category_id, subcategory_id }) => {
+          if (category_id) catMap[category_id] = (catMap[category_id] || 0) + 1;
+          if (subcategory_id) subMap[subcategory_id] = (subMap[subcategory_id] || 0) + 1;
+        });
+        setCategoryCounts(catMap);
+        setSubcategoryCounts(subMap);
+      }
     };
     fetchCategoriesAndSubcategories();
   }, []);
@@ -159,16 +179,18 @@ const BlogPage = () => {
                 <nav className="space-y-1">
                   <button
                     onClick={clearFilters}
-                    className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
+                    className={`w-full text-left px-3 py-2 rounded-lg transition-colors flex items-center justify-between ${
                       !selectedCategory ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
                     }`}
                   >
-                    All Articles
+                    <span>All Articles</span>
+                    {totalCount > 0 && <span className={`text-xs ml-1 ${!selectedCategory ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>({totalCount})</span>}
                   </button>
                   {categories.map(category => {
                     const subs = getSubcategoriesForCategory(category.id);
                     const isExpanded = expandedCategories[category.id];
                     const isSelected = selectedCategory === category.id && !selectedSubcategory;
+                    const catCount = categoryCounts[category.id] || 0;
 
                     return (
                       <div key={category.id}>
@@ -187,28 +209,34 @@ const BlogPage = () => {
                           )}
                           <button
                             onClick={() => handleCategoryClick(category.id)}
-                            className={`flex-1 text-left px-3 py-2 rounded-lg transition-colors ${
+                            className={`flex-1 text-left px-3 py-2 rounded-lg transition-colors flex items-center justify-between ${
                               isSelected ? 'bg-primary text-primary-foreground' : 'hover:bg-secondary'
                             } ${subs.length === 0 ? 'ml-5' : ''}`}
                           >
-                            {category.name}
+                            <span>{category.name}</span>
+                            {catCount > 0 && <span className={`text-xs ml-1 ${isSelected ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>({catCount})</span>}
                           </button>
                         </div>
                         {isExpanded && subs.length > 0 && (
                           <div className="ml-6 mt-1 space-y-1">
-                            {subs.map(sub => (
-                              <button
-                                key={sub.id}
-                                onClick={() => handleSubcategoryClick(category.id, sub.id)}
-                                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                                  selectedSubcategory === sub.id
-                                    ? 'bg-primary/80 text-primary-foreground'
-                                    : 'hover:bg-secondary text-muted-foreground'
-                                }`}
-                              >
-                                {sub.name}
-                              </button>
-                            ))}
+                            {subs.map(sub => {
+                              const subCount = subcategoryCounts[sub.id] || 0;
+                              const isSubSelected = selectedSubcategory === sub.id;
+                              return (
+                                <button
+                                  key={sub.id}
+                                  onClick={() => handleSubcategoryClick(category.id, sub.id)}
+                                  className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center justify-between ${
+                                    isSubSelected
+                                      ? 'bg-primary/80 text-primary-foreground'
+                                      : 'hover:bg-secondary text-muted-foreground'
+                                  }`}
+                                >
+                                  <span>{sub.name}</span>
+                                  {subCount > 0 && <span className={`text-xs ml-1 ${isSubSelected ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>({subCount})</span>}
+                                </button>
+                              );
+                            })}
                           </div>
                         )}
                       </div>

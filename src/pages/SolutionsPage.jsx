@@ -20,6 +20,9 @@ const SolutionsPage = () => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [categoryCounts, setCategoryCounts] = useState({});
+  const [subcategoryCounts, setSubcategoryCounts] = useState({});
+  const [totalCount, setTotalCount] = useState(0);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -43,6 +46,23 @@ const SolutionsPage = () => {
       }));
 
       setCategories(categoriesWithSubs);
+
+      const { data: countData } = await supabase
+        .from('solutions')
+        .select('category_id, subcategory_id')
+        .eq('status', 'active');
+
+      if (countData) {
+        setTotalCount(countData.length);
+        const catMap = {};
+        const subMap = {};
+        countData.forEach(({ category_id, subcategory_id }) => {
+          if (category_id) catMap[category_id] = (catMap[category_id] || 0) + 1;
+          if (subcategory_id) subMap[subcategory_id] = (subMap[subcategory_id] || 0) + 1;
+        });
+        setCategoryCounts(catMap);
+        setSubcategoryCounts(subMap);
+      }
     };
     fetchCategories();
   }, []);
@@ -149,68 +169,77 @@ const SolutionsPage = () => {
                 onClick={() => handleCategoryClick(null)}
                 className={cn('w-full justify-start', selectedCategoryId === null && 'bg-primary/10 text-primary')}
               >
-                All
+                <span>All</span>
+                {totalCount > 0 && <span className="text-xs text-muted-foreground ml-1">({totalCount})</span>}
                 {selectedCategoryId === null && <ChevronRight className="ml-auto h-4 w-4" />}
               </Button>
 
-              {categories.map(cat => (
-                <div key={cat.id}>
-                  <div className="flex items-center">
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleCategoryClick(cat.id)}
-                      className={cn(
-                        'flex-1 justify-start',
-                        selectedCategoryId === cat.id && selectedSubcategoryId === null && 'bg-primary/10 text-primary'
-                      )}
-                    >
-                      {cat.name}
-                      {selectedCategoryId === cat.id && selectedSubcategoryId === null && (
-                        <ChevronRight className="ml-auto h-4 w-4" />
-                      )}
-                    </Button>
-                    {cat.subcategories?.length > 0 && (
+              {categories.map(cat => {
+                const catCount = categoryCounts[cat.id] || 0;
+                return (
+                  <div key={cat.id}>
+                    <div className="flex items-center">
                       <Button
                         variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 shrink-0"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleCategory(cat.id);
-                        }}
+                        onClick={() => handleCategoryClick(cat.id)}
+                        className={cn(
+                          'flex-1 justify-start',
+                          selectedCategoryId === cat.id && selectedSubcategoryId === null && 'bg-primary/10 text-primary'
+                        )}
                       >
-                        {expandedCategories[cat.id] ? (
-                          <ChevronDown className="h-4 w-4" />
-                        ) : (
-                          <ChevronRight className="h-4 w-4" />
+                        <span>{cat.name}</span>
+                        {catCount > 0 && <span className="text-xs text-muted-foreground ml-1">({catCount})</span>}
+                        {selectedCategoryId === cat.id && selectedSubcategoryId === null && (
+                          <ChevronRight className="ml-auto h-4 w-4" />
                         )}
                       </Button>
-                    )}
-                  </div>
-
-                  {expandedCategories[cat.id] && cat.subcategories?.length > 0 && (
-                    <div className="ml-4 mt-1 space-y-1 border-l-2 border-muted pl-2">
-                      {cat.subcategories.map(sub => (
+                      {cat.subcategories?.length > 0 && (
                         <Button
-                          key={sub.id}
                           variant="ghost"
-                          size="sm"
-                          onClick={() => handleSubcategoryClick(cat.id, sub.id)}
-                          className={cn(
-                            'w-full justify-start text-sm',
-                            selectedSubcategoryId === sub.id && 'bg-primary/10 text-primary'
-                          )}
+                          size="icon"
+                          className="h-8 w-8 shrink-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleCategory(cat.id);
+                          }}
                         >
-                          {sub.name}
-                          {selectedSubcategoryId === sub.id && (
-                            <ChevronRight className="ml-auto h-4 w-4" />
+                          {expandedCategories[cat.id] ? (
+                            <ChevronDown className="h-4 w-4" />
+                          ) : (
+                            <ChevronRight className="h-4 w-4" />
                           )}
                         </Button>
-                      ))}
+                      )}
                     </div>
-                  )}
-                </div>
-              ))}
+
+                    {expandedCategories[cat.id] && cat.subcategories?.length > 0 && (
+                      <div className="ml-4 mt-1 space-y-1 border-l-2 border-muted pl-2">
+                        {cat.subcategories.map(sub => {
+                          const subCount = subcategoryCounts[sub.id] || 0;
+                          return (
+                            <Button
+                              key={sub.id}
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleSubcategoryClick(cat.id, sub.id)}
+                              className={cn(
+                                'w-full justify-start text-sm',
+                                selectedSubcategoryId === sub.id && 'bg-primary/10 text-primary'
+                              )}
+                            >
+                              <span>{sub.name}</span>
+                              {subCount > 0 && <span className="text-xs text-muted-foreground ml-1">({subCount})</span>}
+                              {selectedSubcategoryId === sub.id && (
+                                <ChevronRight className="ml-auto h-4 w-4" />
+                              )}
+                            </Button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </nav>
           </aside>
 
