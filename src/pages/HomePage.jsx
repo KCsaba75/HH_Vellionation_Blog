@@ -122,21 +122,21 @@ const HomePage = () => {
               <p className="text-lg text-muted-foreground mb-8">
                 Science-backed weight loss and wellness for adults 40+ who refuse to accept slow metabolism, low energy, and "that's just what happens when you age." Your comeback starts here.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col items-start gap-3">
                 <Button size="lg" asChild>
                   <Link to="/register">
                     Join the Nation <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
+                <p className="text-sm text-muted-foreground">
+                  No account needed — start reading free articles today.
+                </p>
                 <Button size="lg" asChild>
                   <Link to="/blog">
                     Explore Blog <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
               </div>
-              <p className="text-sm text-muted-foreground mt-3">
-                No account needed — start reading free articles today.
-              </p>
             </motion.div>
 
             <motion.div
