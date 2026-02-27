@@ -74,7 +74,14 @@ export const CookieConsentProvider = ({ children }) => {
     } else if (consent === 'declined') {
       setHasConsent(false);
     } else {
-      setShowConsentPopup(true);
+      const showPopup = () => setShowConsentPopup(true);
+      const handler = () => showPopup();
+      document.addEventListener('click', handler, { once: true });
+      const fallbackTimer = setTimeout(showPopup, 60000);
+      return () => {
+        document.removeEventListener('click', handler);
+        clearTimeout(fallbackTimer);
+      };
     }
 
     syncArticleState();
