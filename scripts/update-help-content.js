@@ -1,0 +1,191 @@
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY environment variables.');
+  process.exit(1);
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+const helpContent = `
+<h1>Help Center</h1>
+<p>Welcome to the Vellio Nation Help Center. Find answers to the most common questions about using our platform.</p>
+
+<hr/>
+
+<h2>🔊 Listen to Articles (Text-to-Speech)</h2>
+<p>Every blog post on Vellio Nation includes a built-in audio player so you can listen to articles hands-free — perfect when you're exercising, cooking, or simply prefer to listen.</p>
+
+<h3>How to use it</h3>
+<ol>
+  <li>Open any blog post.</li>
+  <li>Find the <strong>"Listen to article"</strong> bar just below the article header.</li>
+  <li>Press the <strong>▶ Play</strong> button to start listening.</li>
+  <li>Use <strong>⏸ Pause</strong> to pause and <strong>▶ Resume</strong> to continue from where you left off.</li>
+  <li>Press <strong>⏹ Stop</strong> to end playback and reset the progress bar.</li>
+</ol>
+
+<h3>Progress bar</h3>
+<p>The green progress bar shows how far through the article you are. The percentage shown on the right updates word by word as the article is read aloud.</p>
+
+<h3>Voice quality</h3>
+<p>The player automatically selects the best available English (US) voice on your device — preferring natural-sounding voices such as Google Neural, Samantha, or similar. The exact voice depends on your browser and operating system.</p>
+
+<h3>Browser compatibility</h3>
+<table>
+  <thead>
+    <tr><th>Browser</th><th>Support</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Google Chrome</td><td>✅ Full support (best experience)</td></tr>
+    <tr><td>Microsoft Edge</td><td>✅ Full support</td></tr>
+    <tr><td>Safari (Mac / iPhone)</td><td>✅ Supported</td></tr>
+    <tr><td>Firefox</td><td>✅ Supported</td></tr>
+    <tr><td>Older browsers</td><td>❌ Player is hidden automatically</td></tr>
+  </tbody>
+</table>
+<p><em>Note: If the player does not appear, your browser does not support the Web Speech API. Try updating your browser or switching to Chrome.</em></p>
+
+<hr/>
+
+<h2>📧 Email Notifications &amp; Newsletter</h2>
+<p>Vellio Nation offers two separate email channels. You are always in control — you can turn them on or off at any time.</p>
+
+<h3>1. New article notifications</h3>
+<p>When a new article is published on Vellio Nation, you can receive an email notification so you never miss fresh wellness content.</p>
+<ul>
+  <li><strong>To enable at registration:</strong> Check the "Notify me when new articles are published" box on the Sign Up page (checked by default).</li>
+  <li><strong>To change later:</strong> Go to your <strong>Profile</strong> page → scroll to <strong>Email Preferences</strong> → toggle <em>"New article email notifications"</em> on or off.</li>
+</ul>
+
+<h3>2. Vellio Nation newsletter</h3>
+<p>Our weekly newsletter delivers curated wellness tips, exclusive content, and community highlights directly to your inbox.</p>
+<ul>
+  <li><strong>To subscribe at registration:</strong> Check the "Vellio Nation newsletter" box on the Sign Up page (checked by default).</li>
+  <li><strong>To change later:</strong> Go to your <strong>Profile</strong> page → scroll to <strong>Email Preferences</strong> → toggle <em>"Vellio Nation newsletter"</em> on or off.</li>
+</ul>
+
+<h3>How to unsubscribe</h3>
+<ol>
+  <li>Log in to your account.</li>
+  <li>Click your avatar in the top right → <strong>Profile</strong>.</li>
+  <li>Scroll down to <strong>Email Preferences</strong>.</li>
+  <li>Toggle off whichever email channel you no longer want.</li>
+  <li>Your preference is saved immediately — no confirmation email required.</li>
+</ol>
+
+<p><em>You can also unsubscribe using the link at the bottom of any email we send you.</em></p>
+
+<hr/>
+
+<h2>♿ Accessibility Features</h2>
+<p>Vellio Nation is designed to be usable by everyone, including people who rely on assistive technologies. We follow the WCAG 2.1 AA standard and the ADA (Americans with Disabilities Act) guidelines for web accessibility.</p>
+
+<h3>All-in-One Accessibility Widget</h3>
+<p>Look for the <strong>accessibility icon</strong> in the <strong>bottom-right corner</strong> of every page. Click it to open a panel with 23 free accessibility features, including:</p>
+<ul>
+  <li><strong>Text size adjustment</strong> — make text larger or smaller</li>
+  <li><strong>High contrast mode</strong> — improve visibility for low-vision users</li>
+  <li><strong>Dyslexia-friendly font</strong> — switch to a typeface optimized for dyslexia</li>
+  <li><strong>Reading guide</strong> — a line follows your cursor to help focus</li>
+  <li><strong>Keyboard navigation highlights</strong> — see clearly which element is focused</li>
+  <li><strong>Pause animations</strong> — stop moving elements for users sensitive to motion</li>
+  <li><strong>Screen reader adjustments</strong> — improve compatibility with JAWS, NVDA, VoiceOver</li>
+  <li><strong>140 language support</strong> — the widget interface is available in 140 languages</li>
+</ul>
+
+<h3>Dark mode / Light mode</h3>
+<p>Click the <strong>moon 🌙 / sun ☀️ icon</strong> in the top navigation bar to switch between dark and light themes. Your preference is remembered across visits.</p>
+
+<h3>Keyboard navigation</h3>
+<p>The entire site can be navigated using a keyboard alone:</p>
+<ul>
+  <li>Press <strong>Tab</strong> to move forward through interactive elements.</li>
+  <li>Press <strong>Shift + Tab</strong> to move backward.</li>
+  <li>Press <strong>Enter</strong> or <strong>Space</strong> to activate buttons and links.</li>
+  <li>When you press Tab on any page, a <strong>"Skip to main content"</strong> button appears at the top-left — press Enter to jump directly to the article or main content, bypassing the navigation menu.</li>
+</ul>
+
+<h3>Screen reader support</h3>
+<p>All images have descriptive alt text, all buttons have accessible labels, and forms are fully labelled for screen readers such as JAWS, NVDA, VoiceOver (Mac/iOS), and TalkBack (Android).</p>
+
+<h3>Reporting an accessibility issue</h3>
+<p>If you encounter an accessibility barrier on Vellio Nation, please contact us. We are committed to resolving any issues promptly.</p>
+
+<hr/>
+
+<h2>🔐 Account &amp; Privacy</h2>
+
+<h3>How do I delete my account?</h3>
+<ol>
+  <li>Log in and go to your <strong>Profile</strong> page.</li>
+  <li>Scroll to the bottom — <strong>Danger Zone</strong> section.</li>
+  <li>Click <strong>"Delete Account"</strong> and confirm the dialog.</li>
+  <li>Your account and all associated data will be permanently deleted from our servers.</li>
+</ol>
+
+<h3>What data do you store?</h3>
+<p>We store your name, email address, profile picture, and content you create (posts, comments). We do not sell your personal data to third parties. See our <a href="/privacy-policy">Privacy Policy</a> for full details.</p>
+
+<h3>How do I reset my password?</h3>
+<ol>
+  <li>Click <strong>"Sign In"</strong> in the navigation.</li>
+  <li>Click <strong>"Forgot password?"</strong> below the login form.</li>
+  <li>Enter your email address and click <strong>"Send Reset Link"</strong>.</li>
+  <li>Check your email and follow the link to set a new password.</li>
+</ol>
+
+<hr/>
+
+<h2>📖 Reading &amp; Content</h2>
+
+<h3>Why is the article blurred?</h3>
+<p>Guests (not logged in) can read <strong>1 article per day</strong> for free. After reading one article, the content is blurred until the next day or until you create a free account.</p>
+<p>Creating an account is free and gives you <strong>unlimited access</strong> to all articles.</p>
+
+<h3>Can I download articles as PDF?</h3>
+<p>Yes — logged-in members can export any article as a PDF. Open the article and look for the <strong>PDF download button</strong> in the article toolbar.</p>
+
+<h3>How do I share an article?</h3>
+<p>Each article has a <strong>Share button</strong> visible to registered members. Click it to copy the link or share directly to social media.</p>
+
+<hr/>
+
+<p style="text-align:center; color: #888; font-size: 0.9em; margin-top: 2rem;">
+  Vellio Nation Help Center — Last updated February 2026 · 
+  <a href="/privacy-policy">Privacy Policy</a> · 
+  <a href="/terms-of-service">Terms of Service</a>
+</p>
+`;
+
+async function updateHelpContent() {
+  console.log('Connecting to Supabase...');
+  console.log('URL:', supabaseUrl);
+
+  const { error } = await supabase
+    .from('settings')
+    .upsert(
+      { key: 'page_content_help', value: { content: helpContent.trim() } },
+      { onConflict: 'key' }
+    );
+
+  if (error) {
+    console.error('\n❌ Could not update Help Center content automatically.');
+    console.error('Reason:', error.message);
+    console.error('\nThis is normal — the settings table requires admin login.');
+    console.error('\n👉 Manual steps:');
+    console.error('   1. Log in to Vellio Nation as an admin user');
+    console.error('   2. Go to Admin Dashboard → Settings → Static Pages tab');
+    console.error('   3. Find the "Help Page" section');
+    console.error('   4. Paste the content from scripts/help-content.html');
+    console.error('   5. Click "Save Help Page"');
+  } else {
+    console.log('\n✅ Help Center content updated successfully in Supabase!');
+    console.log('   Visit /help-center to see the result.');
+  }
+}
+
+updateHelpContent();
