@@ -128,10 +128,15 @@ const HomePage = () => {
                     Join the Nation <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <Link to="/blog">Explore Blog</Link>
+                <Button size="lg" asChild>
+                  <Link to="/blog">
+                    Explore Blog <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
                 </Button>
               </div>
+              <p className="text-sm text-muted-foreground mt-3">
+                No account needed — start reading free articles today.
+              </p>
             </motion.div>
 
             <motion.div
