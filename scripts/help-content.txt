@@ -1,0 +1,147 @@
+Help Center
+
+Welcome to the Vellio Nation Help Center. Find answers to the most common questions about using our platform.
+
+---
+
+Listen to Articles (Text-to-Speech)
+
+Every blog post on Vellio Nation includes a built-in audio player so you can listen to articles hands-free — perfect when you're exercising, cooking, or simply prefer to listen.
+
+How to use it
+
+1. Open any blog post.
+2. Find the "Listen to article" bar just below the article header.
+3. Press the Play button to start listening.
+4. Use Pause to pause and Resume to continue from where you left off.
+5. Press Stop to end playback and reset the progress bar.
+
+Progress bar
+
+The green progress bar shows how far through the article you are. The percentage shown on the right updates word by word as the article is read aloud.
+
+Voice quality
+
+The player automatically selects the best available English (US) voice on your device — preferring natural-sounding voices such as Google Neural, Samantha, or similar. The exact voice depends on your browser and operating system.
+
+Browser compatibility
+
+Google Chrome — Full support (best experience)
+Microsoft Edge — Full support
+Safari (Mac / iPhone) — Supported
+Firefox — Supported
+Older browsers — Player is hidden automatically
+
+Note: If the player does not appear, your browser does not support the Web Speech API. Try updating your browser or switching to Chrome.
+
+---
+
+Email Notifications and Newsletter
+
+Vellio Nation offers two separate email channels. You are always in control — you can turn them on or off at any time.
+
+1. New article notifications
+
+When a new article is published on Vellio Nation, you can receive an email notification so you never miss fresh wellness content.
+
+To enable at registration: Check the "Notify me when new articles are published" box on the Sign Up page (checked by default).
+To change later: Go to your Profile page, scroll to Email Preferences, and toggle "New article email notifications" on or off.
+
+2. Vellio Nation newsletter
+
+Our weekly newsletter delivers curated wellness tips, exclusive content, and community highlights directly to your inbox.
+
+To subscribe at registration: Check the "Vellio Nation newsletter" box on the Sign Up page (checked by default).
+To change later: Go to your Profile page, scroll to Email Preferences, and toggle "Vellio Nation newsletter" on or off.
+
+How to unsubscribe
+
+1. Log in to your account.
+2. Click your avatar in the top right and select Profile.
+3. Scroll down to Email Preferences.
+4. Toggle off whichever email channel you no longer want.
+5. Your preference is saved immediately — no confirmation email required.
+
+You can also unsubscribe using the link at the bottom of any email we send you.
+
+---
+
+Accessibility Features
+
+Vellio Nation is designed to be usable by everyone, including people who rely on assistive technologies. We follow the WCAG 2.1 AA standard and the ADA (Americans with Disabilities Act) guidelines for web accessibility.
+
+All-in-One Accessibility Widget
+
+Look for the accessibility icon in the bottom-right corner of every page. Click it to open a panel with 23 free accessibility features, including:
+
+- Text size adjustment — make text larger or smaller
+- High contrast mode — improve visibility for low-vision users
+- Dyslexia-friendly font — switch to a typeface optimized for dyslexia
+- Reading guide — a line follows your cursor to help focus
+- Keyboard navigation highlights — see clearly which element is focused
+- Pause animations — stop moving elements for users sensitive to motion
+- Screen reader adjustments — improve compatibility with JAWS, NVDA, VoiceOver
+- 140 language support — the widget interface is available in 140 languages
+
+Dark mode / Light mode
+
+Click the moon or sun icon in the top navigation bar to switch between dark and light themes. Your preference is remembered across visits.
+
+Keyboard navigation
+
+The entire site can be navigated using a keyboard alone:
+
+- Press Tab to move forward through interactive elements.
+- Press Shift + Tab to move backward.
+- Press Enter or Space to activate buttons and links.
+- When you press Tab on any page, a "Skip to main content" button appears at the top-left. Press Enter to jump directly to the article or main content, bypassing the navigation menu.
+
+Screen reader support
+
+All images have descriptive alt text, all buttons have accessible labels, and forms are fully labelled for screen readers such as JAWS, NVDA, VoiceOver (Mac/iOS), and TalkBack (Android).
+
+Reporting an accessibility issue
+
+If you encounter an accessibility barrier on Vellio Nation, please contact us. We are committed to resolving any issues promptly.
+
+---
+
+Account and Privacy
+
+How do I delete my account?
+
+1. Log in and go to your Profile page.
+2. Scroll to the bottom — Danger Zone section.
+3. Click "Delete Account" and confirm the dialog.
+4. Your account and all associated data will be permanently deleted from our servers.
+
+What data do you store?
+
+We store your name, email address, profile picture, and content you create (posts, comments). We do not sell your personal data to third parties. See our Privacy Policy for full details.
+
+How do I reset my password?
+
+1. Click "Sign In" in the navigation.
+2. Click "Forgot password?" below the login form.
+3. Enter your email address and click "Send Reset Link".
+4. Check your email and follow the link to set a new password.
+
+---
+
+Reading and Content
+
+Why is the article blurred?
+
+Guests (not logged in) can read 1 article per day for free. After reading one article, the content is blurred until the next day or until you create a free account. Creating an account is free and gives you unlimited access to all articles.
+
+Can I download articles as PDF?
+
+Yes — logged-in members can export any article as a PDF. Open the article and look for the PDF download button in the article toolbar.
+
+How do I share an article?
+
+Each article has a Share button visible to registered members. Click it to copy the link or share directly to social media.
+
+---
+
+Vellio Nation Help Center — Last updated February 2026
