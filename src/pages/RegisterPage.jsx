@@ -58,6 +58,9 @@ const RegisterPage = () => {
       <Helmet>
         <title>Join Vellio Nation</title>
         <meta name="description" content="Create your Vellio Nation account and start your wellness journey today." />
+        <meta property="og:title" content="Join Vellio Nation" />
+        <meta property="og:description" content="Create your Vellio Nation account and start your wellness journey today." />
+        <meta property="og:image" content="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg" />
       </Helmet>
 
       <div className="min-h-[80vh] flex items-center justify-center py-12">
@@ -153,6 +156,7 @@ const RegisterPage = () => {
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                           className="w-full p-3 rounded-lg border bg-background"
+                          autoComplete="email"
                           required
                         />
                       </div>
@@ -164,6 +168,7 @@ const RegisterPage = () => {
                           value={formData.password}
                           onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                           className="w-full p-3 rounded-lg border bg-background"
+                          autoComplete="new-password"
                           required
                           minLength="6"
                         />
@@ -176,6 +181,7 @@ const RegisterPage = () => {
                           value={formData.confirmPassword}
                           onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                           className="w-full p-3 rounded-lg border bg-background"
+                          autoComplete="new-password"
                           required
                         />
                       </div>

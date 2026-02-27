@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
+import DOMPurify from 'dompurify';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
@@ -375,17 +376,17 @@ const BlogPostPage = () => {
               
               {canView ? (
                 <>
-                  <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+                  <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
                   
                   {disclaimer && (
                     <div className="mt-8 p-4 bg-muted/50 border border-muted-foreground/20 rounded-lg">
-                      <div className="text-sm text-muted-foreground [&_img]:inline [&_img]:align-middle [&_img]:mr-2 [&_img]:max-h-8 [&_p]:inline [&_p]:my-0 [&_a]:text-primary [&_a]:underline [&_strong]:font-bold [&_em]:italic" dangerouslySetInnerHTML={{ __html: disclaimer }} />
+                      <div className="text-sm text-muted-foreground [&_img]:inline [&_img]:align-middle [&_img]:mr-2 [&_img]:max-h-8 [&_p]:inline [&_p]:my-0 [&_a]:text-primary [&_a]:underline [&_strong]:font-bold [&_em]:italic" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(disclaimer) }} />
                     </div>
                   )}
                 </>
               ) : (
                 <div className="relative">
-                  <div className="prose prose-lg dark:prose-invert max-w-none rich-content line-clamp-6 overflow-hidden" dangerouslySetInnerHTML={{ __html: post.content }} />
+                  <div className="prose prose-lg dark:prose-invert max-w-none rich-content line-clamp-6 overflow-hidden" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/80 to-background flex items-end justify-center pb-8">
                     <div className="text-center">
                       <p className="text-lg font-semibold mb-3">Want to read more?</p>

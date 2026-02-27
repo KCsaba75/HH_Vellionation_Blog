@@ -28,6 +28,9 @@ const ForgotPasswordPage = () => {
       <Helmet>
         <title>Forgot Password - Vellio Nation</title>
         <meta name="description" content="Reset your Vellio Nation password." />
+        <meta property="og:title" content="Forgot Password - Vellio Nation" />
+        <meta property="og:description" content="Reset your Vellio Nation password." />
+        <meta property="og:image" content="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg" />
       </Helmet>
 
       <div className="min-h-[80vh] flex items-center justify-center py-12">

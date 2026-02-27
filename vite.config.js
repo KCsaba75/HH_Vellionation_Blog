@@ -31,6 +31,9 @@ export default defineConfig({
     },
   },
   build: {
+    esbuild: {
+      drop: ['console', 'debugger'],
+    },
     rollupOptions: {
       output: {
         entryFileNames: 'assets/[name]-[hash].js',

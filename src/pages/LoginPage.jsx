@@ -45,6 +45,9 @@ const LoginPage = () => {
       <Helmet>
         <title>Login - Vellio Nation</title>
         <meta name="description" content="Login to your Vellio Nation account." />
+        <meta property="og:title" content="Login - Vellio Nation" />
+        <meta property="og:description" content="Login to your Vellio Nation account." />
+        <meta property="og:image" content="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg" />
       </Helmet>
 
       <div className="min-h-[80vh] flex items-center justify-center py-12">
@@ -84,6 +87,7 @@ const LoginPage = () => {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full p-3 rounded-lg border bg-background"
+                  autoComplete="email"
                   required
                 />
               </div>
@@ -95,6 +99,7 @@ const LoginPage = () => {
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   className="w-full p-3 rounded-lg border bg-background"
+                  autoComplete="current-password"
                   required
                 />
               </div>

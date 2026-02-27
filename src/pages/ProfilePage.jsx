@@ -158,6 +158,9 @@ const ProfilePage = () => {
     <>
       <Helmet>
         <title>My Profile - Vellio Nation</title>
+        <meta property="og:title" content="My Profile - Vellio Nation" />
+        <meta property="og:description" content="Manage your Vellio Nation profile, badges, and wellness journey." />
+        <meta property="og:image" content="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg" />
       </Helmet>
       <div className="py-12">
         <div className="container mx-auto px-4 max-w-4xl">

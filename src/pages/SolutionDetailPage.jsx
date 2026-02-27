@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
@@ -179,7 +180,7 @@ const SolutionDetailPage = () => {
                 <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">{solution.name}</h1>
 
                 {solution.excerpt && (
-                  <div className="text-xl lg:text-2xl text-muted-foreground leading-relaxed prose prose-lg dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: solution.excerpt }} />
+                  <div className="text-xl lg:text-2xl text-muted-foreground leading-relaxed prose prose-lg dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(solution.excerpt) }} />
                 )}
 
                 <div className="flex flex-wrap gap-4 pt-4">
@@ -216,7 +217,7 @@ const SolutionDetailPage = () => {
               transition={{ delay: 0.2 }}
               className="prose prose-lg lg:prose-xl dark:prose-invert max-w-none prose-p:leading-snug prose-p:my-2 prose-headings:mb-2 prose-headings:mt-4 prose-li:my-0.5"
             >
-              <div dangerouslySetInnerHTML={{ __html: solution.description }} />
+              <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(solution.description) }} />
             </motion.div>
           </div>
         </section>
