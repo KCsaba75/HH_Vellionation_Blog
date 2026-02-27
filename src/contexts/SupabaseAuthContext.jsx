@@ -233,6 +233,23 @@ export const AuthProvider = ({ children }) => {
     return { error };
   }, [toast]);
 
+  const signInWithOAuth = useCallback(async (provider) => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+    if (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: error.message || 'Something went wrong',
+      });
+    }
+    return { error };
+  }, [toast]);
+
   const value = useMemo(() => ({
     user,
     profile,
@@ -240,12 +257,13 @@ export const AuthProvider = ({ children }) => {
     loading,
     signUp,
     signIn,
+    signInWithOAuth,
     signOut,
     updateProfile,
     resetPassword,
     updatePassword,
     isAdmin: profile?.role === 'admin'
-  }), [user, profile, session, loading, signUp, signIn, signOut, updateProfile, resetPassword, updatePassword]);
+  }), [user, profile, session, loading, signUp, signIn, signInWithOAuth, signOut, updateProfile, resetPassword, updatePassword]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

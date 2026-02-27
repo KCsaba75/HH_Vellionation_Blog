@@ -410,6 +410,50 @@ ALTER TABLE public.profiles
 
 ---
 
+## Step 5c: Google & Facebook OAuth Setup
+
+OAuth login lets users sign in with one click using their Google or Facebook account. The setup is done in two places: the provider's developer console and Supabase.
+
+**Your Supabase callback URL (needed in both providers):**
+```
+https://rtklsdtadtqpgoibulux.supabase.co/auth/v1/callback
+```
+
+---
+
+### Google OAuth
+
+1. Go to https://console.cloud.google.com/
+2. Create a new project (or select an existing one)
+3. Navigate to **APIs & Services → Credentials → Create Credentials → OAuth 2.0 Client ID**
+4. Application type: **Web application**
+5. Under **Authorized redirect URIs**, add:
+   `https://rtklsdtadtqpgoibulux.supabase.co/auth/v1/callback`
+6. Copy the **Client ID** and **Client Secret**
+7. In Supabase dashboard → **Authentication → Providers → Google**
+   - Enable Google
+   - Paste Client ID and Client Secret
+   - Save
+
+---
+
+### Facebook OAuth
+
+1. Go to https://developers.facebook.com/
+2. Click **My Apps → Create App → Consumer**
+3. Add product: **Facebook Login → Web**
+4. In **Settings → Basic**: copy the **App ID** and **App Secret**
+5. In **Facebook Login → Settings → Valid OAuth Redirect URIs**, add:
+   `https://rtklsdtadtqpgoibulux.supabase.co/auth/v1/callback`
+6. In Supabase dashboard → **Authentication → Providers → Facebook**
+   - Enable Facebook
+   - Paste App ID and App Secret
+   - Save
+
+> **Note:** Facebook apps start in "Development" mode (only you can log in). To allow all users, switch to **Live** mode in the Facebook Developer dashboard (App Review → Go Live).
+
+---
+
 ## Step 6: Create Your First Admin User
 
 1. In Supabase dashboard, click **"Authentication"** → **"Users"**
