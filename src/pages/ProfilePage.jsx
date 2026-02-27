@@ -30,6 +30,7 @@ const ProfilePage = () => {
   const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({ name: '', bio: '', avatar_url: '' });
+  const [pendingToggle, setPendingToggle] = useState(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
   const [userStats, setUserStats] = useState(null);
@@ -263,9 +264,12 @@ const ProfilePage = () => {
                     <p className="text-muted-foreground text-xs mt-0.5">Receive an email when a new article is published on Vellio Nation.</p>
                   </div>
                   <button
-                    onClick={async () => {
-                      const newVal = !profile.email_notifications;
-                      await updateProfile({ email_notifications: newVal });
+                    onClick={() => {
+                      if (profile.email_notifications) {
+                        setPendingToggle('blog');
+                      } else {
+                        updateProfile({ email_notifications: true });
+                      }
                     }}
                     className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${profile.email_notifications ? 'bg-primary' : 'bg-muted'}`}
                     role="switch"
@@ -282,23 +286,16 @@ const ProfilePage = () => {
                   </div>
                   <button
                     onClick={async () => {
-                      const newVal = !profile.newsletter_subscribed;
-                      await updateProfile({ newsletter_subscribed: newVal });
-                      if (!newVal && profile.systemeio_contact_id) {
-                        try {
-                          const { removeTagFromContact } = await import('@/lib/systemeioClient');
-                          await removeTagFromContact(profile.systemeio_contact_id, 'newsletter');
-                        } catch (e) {
-                          console.warn('systeme.io unsubscribe skipped:', e.message);
-                        }
-                      } else if (newVal) {
+                      if (profile.newsletter_subscribed) {
+                        setPendingToggle('newsletter');
+                      } else {
+                        await updateProfile({ newsletter_subscribed: true });
                         try {
                           const { addContactToSystemeio, addTagToContact } = await import('@/lib/systemeioClient');
                           if (profile.systemeio_contact_id) {
                             await addTagToContact(profile.systemeio_contact_id, 'newsletter');
                           } else {
-                            const { addContactToSystemeio: add } = await import('@/lib/systemeioClient');
-                            const contactId = await add(profile.email, profile.name, ['newsletter']);
+                            const contactId = await addContactToSystemeio(profile.email, profile.name, ['newsletter']);
                             if (contactId) {
                               const { supabase } = await import('@/lib/customSupabaseClient');
                               await supabase.from('profiles').update({ systemeio_contact_id: String(contactId) }).eq('id', user.id);
@@ -319,6 +316,60 @@ const ProfilePage = () => {
                 </div>
               </div>
             </div>
+
+            <AlertDialog open={pendingToggle === 'blog'} onOpenChange={(open) => { if (!open) setPendingToggle(null); }}>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Turn off blog notifications?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    You'll stop receiving emails when new articles are published on Vellio Nation. You might miss out on valuable wellness tips, guides, and community updates.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel onClick={() => setPendingToggle(null)}>Keep notifications</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={async () => {
+                      await updateProfile({ email_notifications: false });
+                      setPendingToggle(null);
+                    }}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    Turn off
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog open={pendingToggle === 'newsletter'} onOpenChange={(open) => { if (!open) setPendingToggle(null); }}>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Unsubscribe from newsletter?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    You'll no longer receive our newsletter with community news, new solutions, exclusive wellness content, and promotions. You can resubscribe anytime from this page.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel onClick={() => setPendingToggle(null)}>Stay subscribed</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={async () => {
+                      await updateProfile({ newsletter_subscribed: false });
+                      if (profile.systemeio_contact_id) {
+                        try {
+                          const { removeTagFromContact } = await import('@/lib/systemeioClient');
+                          await removeTagFromContact(profile.systemeio_contact_id, 'newsletter');
+                        } catch (e) {
+                          console.warn('systeme.io unsubscribe skipped:', e.message);
+                        }
+                      }
+                      setPendingToggle(null);
+                    }}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    Unsubscribe
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
 
             <div className="bg-card rounded-xl shadow-lg p-8 mt-8 border border-destructive/20">
               <h2 className="text-xl font-semibold text-destructive mb-4">Danger Zone</h2>
