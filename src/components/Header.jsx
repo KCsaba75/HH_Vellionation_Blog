@@ -66,6 +66,13 @@ const Header = () => {
   ];
 
   return (
+    <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:px-4 focus:py-2 focus:rounded-md focus:bg-primary focus:text-primary-foreground focus:font-medium focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border py-3">
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between">
@@ -295,6 +302,7 @@ const Header = () => {
         )}
       </nav>
     </header>
+    </>
   );
 };
 
