@@ -1,4 +1,4 @@
-csináld# Vellio Nation Robots.txt
+# Vellio Nation Robots.txt
 User-agent: *
 Allow: /
 
