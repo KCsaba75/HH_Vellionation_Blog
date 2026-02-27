@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
@@ -34,33 +35,18 @@ const RegisterPage = () => {
   });
   const [loading, setLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState(null);
+  const [showEmailForm, setShowEmailForm] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Passwords don't match",
-        description: "Please make sure your passwords match.",
-        variant: "destructive"
-      });
+      toast({ title: "Passwords don't match", description: "Please make sure your passwords match.", variant: "destructive" });
       return;
     }
-
     setLoading(true);
-    const { error } = await signUp(
-      formData.email,
-      formData.password,
-      formData.name,
-      formData.emailNotifications,
-      formData.newsletterSubscribed
-    );
-    
+    const { error } = await signUp(formData.email, formData.password, formData.name, formData.emailNotifications, formData.newsletterSubscribed);
     if (!error) {
-      toast({
-        title: "Welcome to Vellio Nation!",
-        description: "Please check your email to confirm your account.",
-      });
+      toast({ title: "Welcome to Vellio Nation!", description: "Please check your email to confirm your account." });
       navigate('/');
     }
     setLoading(false);
@@ -88,7 +74,7 @@ const RegisterPage = () => {
           >
             <h1 className="text-3xl font-bold mb-6 text-center">Join Vellio Nation</h1>
 
-            <div className="space-y-3 mb-6">
+            <div className="space-y-3 mb-4">
               <button
                 onClick={() => handleOAuth('google')}
                 disabled={!!oauthLoading}
@@ -107,99 +93,114 @@ const RegisterPage = () => {
               </button>
             </div>
 
-            <p className="text-xs text-muted-foreground text-center mb-5 -mt-1">
+            <p className="text-xs text-muted-foreground text-center mb-4">
               Google/Facebook registration uses default email settings, adjustable on your profile page.
             </p>
 
-            <div className="relative mb-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border" />
-              </div>
-              <div className="relative flex justify-center text-xs">
-                <span className="px-3 bg-card text-muted-foreground">or register with email</span>
-              </div>
-            </div>
-            
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Name</label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full p-3 rounded-lg border bg-background"
-                  required
-                />
-              </div>
+            <button
+              type="button"
+              onClick={() => setShowEmailForm((v) => !v)}
+              className="w-full flex items-center justify-center gap-2 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <span>Register with email</span>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showEmailForm ? 'rotate-180' : ''}`} />
+            </button>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Email</label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full p-3 rounded-lg border bg-background"
-                  required
-                />
-              </div>
+            <AnimatePresence initial={false}>
+              {showEmailForm && (
+                <motion.div
+                  key="email-form"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                  style={{ overflow: 'hidden' }}
+                >
+                  <div className="pt-4 border-t border-border mt-2">
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Name</label>
+                        <input
+                          type="text"
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className="w-full p-3 rounded-lg border bg-background"
+                          required
+                        />
+                      </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Password</label>
-                <input
-                  type="password"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full p-3 rounded-lg border bg-background"
-                  required
-                  minLength="6"
-                />
-              </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Email</label>
+                        <input
+                          type="email"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className="w-full p-3 rounded-lg border bg-background"
+                          required
+                        />
+                      </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Confirm Password</label>
-                <input
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  className="w-full p-3 rounded-lg border bg-background"
-                  required
-                />
-              </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Password</label>
+                        <input
+                          type="password"
+                          value={formData.password}
+                          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                          className="w-full p-3 rounded-lg border bg-background"
+                          required
+                          minLength="6"
+                        />
+                      </div>
 
-              <div className="space-y-3 pt-2 border-t border-border">
-                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide pt-1">Email preferences</p>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Confirm Password</label>
+                        <input
+                          type="password"
+                          value={formData.confirmPassword}
+                          onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                          className="w-full p-3 rounded-lg border bg-background"
+                          required
+                        />
+                      </div>
 
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.emailNotifications}
-                    onChange={(e) => setFormData({ ...formData, emailNotifications: e.target.checked })}
-                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-primary cursor-pointer"
-                  />
-                  <span className="text-sm leading-snug">
-                    <span className="font-medium">Blog notifications</span>
-                    <span className="block text-muted-foreground text-xs mt-0.5">Get an email when a new article is published on Vellio Nation.</span>
-                  </span>
-                </label>
+                      <div className="space-y-3 pt-2 border-t border-border">
+                        <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide pt-1">Email preferences</p>
 
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.newsletterSubscribed}
-                    onChange={(e) => setFormData({ ...formData, newsletterSubscribed: e.target.checked })}
-                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-primary cursor-pointer"
-                  />
-                  <span className="text-sm leading-snug">
-                    <span className="font-medium">Vellio Nation newsletter</span>
-                    <span className="block text-muted-foreground text-xs mt-0.5">Updates, community news, new solutions, promotions and wellness tips.</span>
-                  </span>
-                </label>
-              </div>
+                        <label className="flex items-start gap-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={formData.emailNotifications}
+                            onChange={(e) => setFormData({ ...formData, emailNotifications: e.target.checked })}
+                            className="mt-0.5 h-4 w-4 rounded border-gray-300 text-primary cursor-pointer"
+                          />
+                          <span className="text-sm leading-snug">
+                            <span className="font-medium">Blog notifications</span>
+                            <span className="block text-muted-foreground text-xs mt-0.5">Get an email when a new article is published on Vellio Nation.</span>
+                          </span>
+                        </label>
 
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Creating account...' : 'Create Account'}
-              </Button>
-            </form>
+                        <label className="flex items-start gap-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={formData.newsletterSubscribed}
+                            onChange={(e) => setFormData({ ...formData, newsletterSubscribed: e.target.checked })}
+                            className="mt-0.5 h-4 w-4 rounded border-gray-300 text-primary cursor-pointer"
+                          />
+                          <span className="text-sm leading-snug">
+                            <span className="font-medium">Vellio Nation newsletter</span>
+                            <span className="block text-muted-foreground text-xs mt-0.5">Updates, community news, new solutions, promotions and wellness tips.</span>
+                          </span>
+                        </label>
+                      </div>
+
+                      <Button type="submit" className="w-full" disabled={loading}>
+                        {loading ? 'Creating account...' : 'Create Account'}
+                      </Button>
+                    </form>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <p className="text-center text-sm text-muted-foreground mt-6">
               Already have an account?{' '}
