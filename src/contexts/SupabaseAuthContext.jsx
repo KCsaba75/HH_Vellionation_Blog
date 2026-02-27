@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
           setUser(null);
           setSession(null);
           setProfile(null);
-          return;
+          return null;
         }
 
         if (error) {
@@ -38,12 +38,37 @@ export const AuthProvider = ({ children }) => {
         if (data) {
           setProfile(data);
         }
+        return data;
       } catch (error) {
         console.error('Error fetching profile:', error);
+        return null;
       }
     }
+    return null;
   }, []);
 
+  const initOAuthProfile = useCallback(async (user, profileData) => {
+    if (!profileData || profileData.email_notifications !== null) return;
+    try {
+      const { count } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true });
+
+      const updates = {
+        email: user.email,
+        email_notifications: true,
+        newsletter_subscribed: true,
+      };
+      if (count !== null && count <= 200) {
+        updates.is_founding_member = true;
+      }
+
+      await supabase.from('profiles').update(updates).eq('id', user.id);
+      await getProfile(user);
+    } catch (e) {
+      console.warn('Could not initialize OAuth profile:', e.message);
+    }
+  }, [getProfile]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -52,7 +77,10 @@ export const AuthProvider = ({ children }) => {
         const currentUser = session?.user ?? null;
         setUser(currentUser);
         if (currentUser) {
-          await getProfile(currentUser);
+          const profileData = await getProfile(currentUser);
+          if (profileData?.email_notifications === null) {
+            await initOAuthProfile(currentUser, profileData);
+          }
         } else {
           setProfile(null);
         }
@@ -66,14 +94,17 @@ export const AuthProvider = ({ children }) => {
       const currentUser = session?.user ?? null;
       setUser(currentUser);
       if (currentUser) {
-        await getProfile(currentUser);
+        const profileData = await getProfile(currentUser);
+        if (profileData?.email_notifications === null) {
+          await initOAuthProfile(currentUser, profileData);
+        }
       }
       setLoading(false);
     };
     fetchInitialSession();
 
     return () => subscription.unsubscribe();
-  }, [getProfile]);
+  }, [getProfile, initOAuthProfile]);
 
   const signUp = useCallback(async (email, password, name, emailNotifications = true, newsletterSubscribed = true) => {
     const { data, error } = await supabase.auth.signUp({
