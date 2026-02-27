@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
     return () => subscription.unsubscribe();
   }, [getProfile]);
 
-  const signUp = useCallback(async (email, password, name) => {
+  const signUp = useCallback(async (email, password, name, emailNotifications = true, newsletterSubscribed = true) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -101,7 +101,11 @@ export const AuthProvider = ({ children }) => {
           .from('profiles')
           .select('*', { count: 'exact', head: true });
 
-        const updates = { email: data.user.email };
+        const updates = {
+          email: data.user.email,
+          email_notifications: emailNotifications,
+          newsletter_subscribed: newsletterSubscribed,
+        };
         if (count !== null && count <= 200) {
           updates.is_founding_member = true;
         }
@@ -110,6 +114,18 @@ export const AuthProvider = ({ children }) => {
           .from('profiles')
           .update(updates)
           .eq('id', data.user.id);
+
+        if (newsletterSubscribed) {
+          try {
+            const { addContactToSystemeio } = await import('@/lib/systemeioClient');
+            const contactId = await addContactToSystemeio(data.user.email, name, ['newsletter']);
+            if (contactId) {
+              await supabase.from('profiles').update({ systemeio_contact_id: String(contactId) }).eq('id', data.user.id);
+            }
+          } catch (e) {
+            console.warn('systeme.io sync skipped:', e.message);
+          }
+        }
       } catch (e) {
         console.warn('Could not update profile after signup:', e.message);
       }

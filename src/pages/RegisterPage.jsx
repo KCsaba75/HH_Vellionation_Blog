@@ -13,7 +13,9 @@ const RegisterPage = () => {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    emailNotifications: true,
+    newsletterSubscribed: true,
   });
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +32,13 @@ const RegisterPage = () => {
     }
 
     setLoading(true);
-    const { error } = await signUp(formData.email, formData.password, formData.name);
+    const { error } = await signUp(
+      formData.email,
+      formData.password,
+      formData.name,
+      formData.emailNotifications,
+      formData.newsletterSubscribed
+    );
     
     if (!error) {
       toast({
@@ -102,6 +110,36 @@ const RegisterPage = () => {
                   className="w-full p-3 rounded-lg border bg-background"
                   required
                 />
+              </div>
+
+              <div className="space-y-3 pt-2 border-t border-border">
+                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide pt-1">Email preferences</p>
+
+                <label className="flex items-start gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={formData.emailNotifications}
+                    onChange={(e) => setFormData({ ...formData, emailNotifications: e.target.checked })}
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-primary cursor-pointer"
+                  />
+                  <span className="text-sm leading-snug">
+                    <span className="font-medium">Blog notifications</span>
+                    <span className="block text-muted-foreground text-xs mt-0.5">Get an email when a new article is published on Vellio Nation.</span>
+                  </span>
+                </label>
+
+                <label className="flex items-start gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={formData.newsletterSubscribed}
+                    onChange={(e) => setFormData({ ...formData, newsletterSubscribed: e.target.checked })}
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-primary cursor-pointer"
+                  />
+                  <span className="text-sm leading-snug">
+                    <span className="font-medium">Vellio Nation newsletter</span>
+                    <span className="block text-muted-foreground text-xs mt-0.5">Updates, community news, new solutions, promotions and wellness tips.</span>
+                  </span>
+                </label>
               </div>
 
               <Button type="submit" className="w-full" disabled={loading}>

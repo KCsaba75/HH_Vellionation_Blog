@@ -365,6 +365,51 @@ USING (bucket_id = 'seo-files');
 
 ---
 
+## Step 5b: Email System Setup
+
+### Blog Notifications (Resend + Supabase Edge Function)
+
+**1. Create a Resend account:**
+- Sign up at https://resend.com (free tier available)
+- Add and verify your domain (vellionation.com) under Domains
+- Generate an API key under API Keys
+
+**2. Add the Edge Function to Supabase:**
+- In Supabase dashboard → **Edge Functions** → **New function**
+- Name it: `send-blog-notification`
+- Copy the code from `supabase/functions/send-blog-notification/index.ts` in this project
+- Under function settings, add environment variable: `RESEND_API_KEY = your_resend_api_key`
+
+**3. Add required database columns (run in SQL Editor):**
+```sql
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS email_notifications boolean DEFAULT true;
+
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS newsletter_subscribed boolean DEFAULT true;
+
+ALTER TABLE public.profiles
+  ADD COLUMN IF NOT EXISTS systemeio_contact_id TEXT;
+```
+
+> When a blog post is published (from Admin Dashboard or Blog Dashboard), the Edge Function is called automatically and sends an email to all subscribers where `email_notifications = true`.
+
+---
+
+### Newsletter (systeme.io)
+
+**1. Get your systeme.io API key:**
+- Go to your systeme.io account → Profile → API
+- Copy your API key
+
+**2. Add to Replit Secrets:**
+- Key: `VITE_SYSTEMEIO_API_KEY`
+- Value: your systeme.io API key
+
+> When a user registers with newsletter=true, they are automatically added to systeme.io with the "newsletter" tag. Users can manage their subscription from their profile page. Tag removal happens when they unsubscribe.
+
+---
+
 ## Step 6: Create Your First Admin User
 
 1. In Supabase dashboard, click **"Authentication"** → **"Users"**

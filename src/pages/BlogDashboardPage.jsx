@@ -149,6 +149,21 @@ const BlogDashboardPage = () => {
         setEditingPost(null);
         fetchUserPosts();
         regenerateSeoFiles();
+
+        if (finalPostData.status === 'published') {
+          try {
+            await supabase.functions.invoke('send-blog-notification', {
+              body: {
+                postTitle: finalPostData.title,
+                postExcerpt: finalPostData.excerpt || '',
+                postSlug: finalPostData.slug,
+                postImageUrl: finalPostData.featured_image_url || null,
+              },
+            });
+          } catch (e) {
+            console.warn('Blog notification send skipped:', e.message);
+          }
+        }
     }
   };
 

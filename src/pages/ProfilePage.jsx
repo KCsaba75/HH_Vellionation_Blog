@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { User, Edit2, Save, Camera, Trash2 } from 'lucide-react';
+import { User, Edit2, Save, Camera, Trash2, Bell, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -252,6 +252,72 @@ const ProfilePage = () => {
 
             <div className="mb-8">
               <BadgeGrid badges={badges} loading={loadingGamification} />
+            </div>
+
+            <div className="bg-card rounded-xl shadow-lg p-8 mt-8">
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2"><Bell className="h-5 w-5 text-primary" /> Email Preferences</h2>
+              <div className="space-y-4">
+                <div className="flex items-start justify-between gap-4 p-4 rounded-lg border bg-background/50">
+                  <div>
+                    <p className="font-medium text-sm">Blog notifications</p>
+                    <p className="text-muted-foreground text-xs mt-0.5">Receive an email when a new article is published on Vellio Nation.</p>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      const newVal = !profile.email_notifications;
+                      await updateProfile({ email_notifications: newVal });
+                    }}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${profile.email_notifications ? 'bg-primary' : 'bg-muted'}`}
+                    role="switch"
+                    aria-checked={profile.email_notifications}
+                    aria-label="Blog notifications toggle"
+                  >
+                    <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ${profile.email_notifications ? 'translate-x-5' : 'translate-x-0'}`} />
+                  </button>
+                </div>
+                <div className="flex items-start justify-between gap-4 p-4 rounded-lg border bg-background/50">
+                  <div>
+                    <p className="font-medium text-sm flex items-center gap-1.5"><Mail className="h-4 w-4 text-muted-foreground" /> Vellio Nation newsletter</p>
+                    <p className="text-muted-foreground text-xs mt-0.5">Updates, community news, new solutions, promotions and wellness tips.</p>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      const newVal = !profile.newsletter_subscribed;
+                      await updateProfile({ newsletter_subscribed: newVal });
+                      if (!newVal && profile.systemeio_contact_id) {
+                        try {
+                          const { removeTagFromContact } = await import('@/lib/systemeioClient');
+                          await removeTagFromContact(profile.systemeio_contact_id, 'newsletter');
+                        } catch (e) {
+                          console.warn('systeme.io unsubscribe skipped:', e.message);
+                        }
+                      } else if (newVal) {
+                        try {
+                          const { addContactToSystemeio, addTagToContact } = await import('@/lib/systemeioClient');
+                          if (profile.systemeio_contact_id) {
+                            await addTagToContact(profile.systemeio_contact_id, 'newsletter');
+                          } else {
+                            const { addContactToSystemeio: add } = await import('@/lib/systemeioClient');
+                            const contactId = await add(profile.email, profile.name, ['newsletter']);
+                            if (contactId) {
+                              const { supabase } = await import('@/lib/customSupabaseClient');
+                              await supabase.from('profiles').update({ systemeio_contact_id: String(contactId) }).eq('id', user.id);
+                            }
+                          }
+                        } catch (e) {
+                          console.warn('systeme.io subscribe skipped:', e.message);
+                        }
+                      }
+                    }}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${profile.newsletter_subscribed ? 'bg-primary' : 'bg-muted'}`}
+                    role="switch"
+                    aria-checked={profile.newsletter_subscribed}
+                    aria-label="Newsletter subscription toggle"
+                  >
+                    <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ${profile.newsletter_subscribed ? 'translate-x-5' : 'translate-x-0'}`} />
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div className="bg-card rounded-xl shadow-lg p-8 mt-8 border border-destructive/20">

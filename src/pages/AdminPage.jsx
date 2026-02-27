@@ -209,6 +209,21 @@ const AdminPage = () => {
       setEditingItem(null);
       fetchData();
       regenerateSeoFiles();
+
+      if (formType === 'post' && postData.status === 'published') {
+        try {
+          await supabase.functions.invoke('send-blog-notification', {
+            body: {
+              postTitle: postData.title,
+              postExcerpt: postData.excerpt || '',
+              postSlug: postData.slug,
+              postImageUrl: postData.featured_image_url || null,
+            },
+          });
+        } catch (e) {
+          console.warn('Blog notification send skipped:', e.message);
+        }
+      }
     }
   };
 
