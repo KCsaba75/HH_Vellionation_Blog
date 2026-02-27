@@ -117,10 +117,10 @@ const HomePage = () => {
               transition={{ duration: 0.6 }}
             >
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Master Your Second Half Through  a <span className="text-primary">Longevity Lifestyle</span>
+                Your Best Years?<br /><span className="text-primary">They Haven't Happened Yet.</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8">
-                Biohacking meets functional medicine. Reclaim your energy, reset your metabolism, and embrace ageless vitality. Your transformation to unstoppable wellness starts here.
+                Science-backed weight loss and wellness for adults 40+ who refuse to accept slow metabolism, low energy, and "that's just what happens when you age." Your comeback starts here.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" asChild>
