@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/customSupabaseClient';
 import { regenerateSeoFiles } from '@/lib/seoFileGenerator';
+import { convertToWebPWithResize } from '@/lib/imageUtils';
 import { Upload, Save, Eye, Plus, Edit, Trash2 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
@@ -86,12 +87,12 @@ const BlogDashboardPage = () => {
   const handleImageUpload = async (event) => {
     if (!event.target.files || event.target.files.length === 0 || !editingPost) return;
     const file = event.target.files[0];
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+    const fileName = `${user.id}-${Date.now()}.webp`;
     const filePath = `${fileName}`;
 
     setUploading(true);
-    const { error: uploadError } = await supabase.storage.from('post_images').upload(filePath, file);
+    const webpFile = await convertToWebPWithResize(file, 1920, 1080, 0.85);
+    const { error: uploadError } = await supabase.storage.from('post_images').upload(filePath, webpFile, { contentType: 'image/webp' });
 
     if (uploadError) {
       toast({ title: "Image Upload Failed", description: uploadError.message, variant: "destructive" });
