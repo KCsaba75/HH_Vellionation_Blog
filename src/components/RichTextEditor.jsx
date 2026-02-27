@@ -7,7 +7,8 @@ import Underline from '@tiptap/extension-underline';
 import ImageResize from 'tiptap-extension-resize-image';
 import { supabase } from '@/lib/customSupabaseClient';
 import { convertToWebPWithResize } from '@/lib/imageUtils';
-import { Bold, Italic, Underline as UnderlineIcon, Strikethrough, List, ListOrdered, AlignLeft, AlignCenter, AlignRight, Link as LinkIcon, Image as ImageIcon, Undo, Redo, Heading1, Heading2, Heading3 } from 'lucide-react';
+import Youtube from '@tiptap/extension-youtube';
+import { Bold, Italic, Underline as UnderlineIcon, Strikethrough, List, ListOrdered, AlignLeft, AlignCenter, AlignRight, Link as LinkIcon, Image as ImageIcon, Youtube as YoutubeIcon, Undo, Redo, Heading1, Heading2, Heading3 } from 'lucide-react';
 
 const uploadImageToSupabase = async (file) => {
   const webpFile = await convertToWebPWithResize(file, 1920, 1080, 0.85);
@@ -121,6 +122,17 @@ const MenuBar = ({ editor }) => {
       <button type="button" onClick={addImage} className={buttonClass(false)} title="Add Image">
         <ImageIcon className="w-4 h-4" />
       </button>
+      <button
+        type="button"
+        onClick={() => {
+          const url = window.prompt('YouTube URL (pl. https://www.youtube.com/watch?v=...)');
+          if (url) editor.commands.setYoutubeVideo({ src: url });
+        }}
+        className={buttonClass(false)}
+        title="Embed YouTube Video"
+      >
+        <YoutubeIcon className="w-4 h-4" />
+      </button>
       
       <div className="w-px h-6 bg-border mx-1 self-center" />
       
@@ -157,6 +169,15 @@ const RichTextEditor = ({ value, onChange, placeholder, className, fullWidth = f
       }),
       TextAlign.configure({
         types: ['heading', 'paragraph'],
+      }),
+      Youtube.configure({
+        width: 640,
+        height: 360,
+        nocookie: true,
+        modestBranding: true,
+        HTMLAttributes: {
+          class: 'youtube-embed',
+        },
       }),
     ],
     content: value || '',
@@ -219,7 +240,7 @@ const RichTextEditor = ({ value, onChange, placeholder, className, fullWidth = f
       <MenuBar editor={editor} />
       <EditorContent editor={editor} />
       <div className="px-4 py-2 text-xs text-muted-foreground border-t bg-muted/30">
-        Húzd a kép sarkait a méretezéshez | Drag & drop vagy Ctrl+V képek beillesztéséhez
+        Húzd a kép sarkait a méretezéshez | Drag & drop vagy Ctrl+V képek beillesztéséhez | YouTube gomb: videó beágyazáshoz
       </div>
     </div>
   );

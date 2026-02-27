@@ -24,6 +24,7 @@
     "@tiptap/extension-link": "^3.11.0",
     "@tiptap/extension-text-align": "^3.11.0",
     "@tiptap/extension-underline": "^3.11.0",
+    "@tiptap/extension-youtube": "^3.20.0",
     "@tiptap/react": "^3.11.0",
     "@tiptap/starter-kit": "^3.11.0",
     "class-variance-authority": "^0.7.0",

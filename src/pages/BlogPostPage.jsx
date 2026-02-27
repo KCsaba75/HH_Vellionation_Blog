@@ -376,7 +376,19 @@ const BlogPostPage = () => {
               
               {canView ? (
                 <>
-                  <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
+                  <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content, {
+                    ADD_TAGS: ['iframe'],
+                    ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling', 'src', 'width', 'height'],
+                    FORBID_ATTR: [],
+                    afterSanitizeAttributes: (node) => {
+                      if (node.tagName === 'IFRAME') {
+                        const src = node.getAttribute('src') || '';
+                        if (!src.includes('youtube.com') && !src.includes('youtube-nocookie.com')) {
+                          node.remove();
+                        }
+                      }
+                    },
+                  }) }} />
                   
                   {disclaimer && (
                     <div className="mt-8 p-4 bg-muted/50 border border-muted-foreground/20 rounded-lg">

@@ -105,6 +105,36 @@
   opacity: 0.8;
 }
 
+/* YouTube embed responsive wrapper */
+.rich-content .youtube-embed,
+.rich-content iframe[src*="youtube"] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  margin: 1.5rem auto;
+  border: none;
+}
+
+.rich-content div[data-youtube-video] {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.rich-content div[data-youtube-video] iframe {
+  width: 100%;
+  max-width: 720px;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border-radius: 0.75rem;
+  border: none;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+}
+
 /* Legacy Quill Content Support (for existing blog/static content) */
 .rich-content .ql-align-center {
   text-align: center;
