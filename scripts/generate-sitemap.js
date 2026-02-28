@@ -79,18 +79,19 @@ async function generateSitemap() {
   try {
     const { data: solutions, error: solutionsError } = await supabase
       .from('solutions')
-      .select('id, updated_at, created_at')
+      .select('slug, created_at')
       .eq('status', 'active')
-      .order('updated_at', { ascending: false });
+      .order('created_at', { ascending: false });
 
     if (solutionsError) {
       console.warn('Could not fetch solutions:', solutionsError.message);
     } else if (solutions && solutions.length > 0) {
       console.log(`Found ${solutions.length} active solutions`);
       for (const solution of solutions) {
+        if (!solution.slug) continue;
         urls.push({
-          loc: `${SITE_URL}/solutions/${solution.id}`,
-          lastmod: formatDate(solution.updated_at || solution.created_at),
+          loc: `${SITE_URL}/solutions/${escapeXml(solution.slug)}`,
+          lastmod: formatDate(solution.created_at),
           changefreq: 'weekly',
           priority: '0.6'
         });
