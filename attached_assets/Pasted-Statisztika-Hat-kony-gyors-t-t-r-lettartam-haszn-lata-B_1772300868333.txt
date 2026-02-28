@@ -1,0 +1,135 @@
+Statisztika
+Hatékony gyorsítótár-élettartam használata Becsült megtakarítás: 213 KiB
+Ha a gyorsítótárak élettartama hosszú, gyorsabbá válnak az oldal későbbi ismételt megnyitásai. További információ.LCPFCPNincs pontozva
+Kérés
+Gyorsítótár-TTL
+Átviteli méret
+vellionation.com Belső fél
+313 KiB
+/assets/vendor-tiptap-55dc60df.js(www.vellionation.com)
+4 ó
+116 KiB
+/assets/vendor-react-70a932ae.js(www.vellionation.com)
+4 ó
+53 KiB
+/assets/index-b1f4b998.js(www.vellionation.com)
+4 ó
+46 KiB
+/assets/vendor-ui-1d8e8c82.js(www.vellionation.com)
+4 ó
+46 KiB
+/assets/vendor-supabase-c81a82e8.js(www.vellionation.com)
+4 ó
+35 KiB
+/assets/index-b0072b55.css(www.vellionation.com)
+4 ó
+13 KiB
+/assets/HomePage-59ddd4fc.js(www.vellionation.com)
+4 ó
+4 KiB
+Renderelést blokkoló kérelmek megjelenítése Becsült megtakarítás: 160 ms
+Kérelmek blokkolják az oldal kezdeti megjelenítését, ami késleltetheti az LCP-t. Elhalasztás vagy a beágyazás segítségével ezeket a hálózati kérelmeket el lehet távolítani a kritikus útvonalról.LCPFCPNincs pontozva
+URL
+Átviteli méret
+Időtartam
+vellionation.com Belső fél
+12,8 KiB	480 ms
+/assets/index-b0072b55.css(www.vellionation.com)
+12,8 KiB
+480 ms
+Az elrendezésmozgás okozói
+Az elrendezésmozgások akkor fordulnak elő, amikor az elemek bárminemű felhasználói interakció nélkül mozognak. Vizsgálja meg a elrendezésmozgás okait, például az elemeket hozzáadását, eltávolítását vagy az elrendezés betűtípusának változását az oldal betöltődésekor.CLSNincs pontozva
+Elem
+Elrendezésmozgás pontszáma
+Összesen
+0,391
+Your journey to wellness starts here. Quick Links Blog Community Solutions Sup…
+<footer class="border-t bg-background">
+0,391
+Hálózati függőségi fa
+Kerülje a kritikus kérések láncba fűzését a láncok hosszának csökkentésével, a letöltött források méretének csökkentésével, vagy a felesleges források letöltésének késleltetésével, hogy javuljon az oldalbetöltés.LCPNincs pontozva
+Kritikus elérési út maximális várakozási ideje: 488 ms
+Kezdeti navigáció
+https://www.vellionation.com - 400 ms, 1,90 KiB
+/assets/index-b1f4b998.js(www.vellionation.com) - 488 ms, 46,20 KiB
+/assets/index-b0072b55.css(www.vellionation.com) - 471 ms, 12,81 KiB
+Előzetesen kapcsolódott eredethelyek
+Az preconnect tippek segítenek a böngészőnek abban, hogy az oldal betöltésének korábbi szakaszában létesítsen kapcsolatot, így időt takaríthat meg, amikor elküldi az első kérést az adott eredethelynek. A következők azok az eredethelyek, amelyekkel az oldal előre kapcsolódott.
+Eredet
+Forrás
+https://rtklsdtadtqpgoibulux.supabase.co/
+head > link
+<link rel="preconnect" href="https://rtklsdtadtqpgoibulux.supabase.co">
+Nem használt előzetes kapcsolat. Ellenőrizze, hogy megfelelően használja-e a crossorigin attribútumot.
+head > link
+<link crossorigin="anonymous" rel="preconnect" href="https://www.skynettechnologies.com/">
+Nem használt előzetes kapcsolat. Csak az oldal által valószínűleg kérelmezett forrásokhoz használja a preconnect lehetőséget.
+Előzetes kapcsolódás jelöltjei
+Adjon meg preconnect tippeket a legfontosabb eredethelyekhez, de próbáljon meg négynél többet használni.
+Eredet
+Becsült LCP-megtakarítás
+https://rtklsdtadtqpgoibulux.supabase.co
+240 ms
+Képtovábbítás javítása Becsült megtakarítás: 67 KiB
+A képek letöltési idejének csökkentésével javíthatja az oldal és az LCP észlelt betöltési idejét. További információ a képméret optimalizálásárólLCPFCPNincs pontozva
+URL
+Forrás mérete
+Becsült megtakarítás
+supabase.co
+155,0 KiB	66,9 KiB
+Community members sharing healthy recipes
+<img alt="Community members sharing healthy recipes" class="rounded-2xl shadow-xl w-full" src="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_ima…" loading="lazy" width="800" height="533">
+…site_images/home-community-176….webp(rtklsdtadtqpgoibulux.supabase.co)
+98,8 KiB
+55,0 KiB
+A kép tömörítési tényezőjének növelésével javíthatja a kép letöltési méretét.
+35,4 KiB
+Ez a képfájl nagyobb, mint amennyire a megjelenített méretéhez (665x405) szükség van (800x487). A kép letöltési méretének csökkentéséhez használjon reszponzív képeket.
+30,5 KiB
+Wellness fitness group exercising together in nature
+<img alt="Wellness fitness group exercising together in nature" class="rounded-2xl shadow-2xl w-full" src="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_ima…" width="800" height="533" fetchpriority="high">
+…site_images/home-hero-176….webp(rtklsdtadtqpgoibulux.supabase.co)
+56,2 KiB
+11,9 KiB
+Ez a képfájl nagyobb, mint amennyire a megjelenített méretéhez (665x431) szükség van (749x486). A kép letöltési méretének csökkentéséhez használjon reszponzív képeket.
+11,9 KiB
+LCP-lebontás
+Harmadik felek
+Ezek a statisztikák a Chrome DevTools Teljesítmény paneljén is rendelkezésre állnak – nyom rögzítésével részletesebb információkat tekinthet meg.
+Diagnosztika
+Nem használt JavaScript-kódok számának csökkentése Becsült megtakarítás: 221 KiB
+A nem használt JavaScript-kódok számának csökkentésével és a betöltési szkriptek késleltetésével csökkentheti a hálózati tevékenység által felhasznált bájtmennyiséget. További információ a nem használt JavaScript-kódok számának csökkentéséről.LCPFCPNincs pontozva
+URL
+Átviteli méret
+Becsült megtakarítás
+vellionation.com Belső fél
+194,9 KiB	161,2 KiB
+/assets/vendor-tiptap-55dc60df.js(www.vellionation.com)
+115,1 KiB
+106,3 KiB
+/assets/index-b1f4b998.js(www.vellionation.com)
+45,4 KiB
+28,5 KiB
+/assets/vendor-supabase-c81a82e8.js(www.vellionation.com)
+34,4 KiB
+26,4 KiB
+Google Tag Manager tag-manager 
+147,0 KiB	60,2 KiB
+/gtag/js?id=G-NV3K05KYDN(www.googletagmanager.com)
+147,0 KiB
+60,2 KiB
+Nem használt CSS-kódok számának csökkentése Becsült megtakarítás: 51 KiB
+A stíluslapok nem használt szabályainak eltávolításával és a hajtás feletti tartalomhoz nem használt CSS-ek késleltetésével csökkentheti a hálózati tevékenység által felhasznált bájtmennyiséget. További információ a nem használt CSS csökkentéséről.LCPFCPNincs pontozva
+URL
+Átviteli méret
+Becsült megtakarítás
+Nem hozzárendelhető
+40,8 KiB	40,8 KiB
+@charset "UTF-8";@font-face{font-display:swap;font-family:Noto Sans Meetei Mayek;font-style:normal; … } …
+40,8 KiB
+40,8 KiB
+vellionation.com Belső fél
+12,0 KiB	10,5 KiB
+/assets/index-b0072b55.css(www.vellionation.com)
+12,0 KiB
+10,5 KiB
