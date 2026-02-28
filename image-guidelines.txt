@@ -1,0 +1,117 @@
+VELLIO NATION — KÉPHASZNÁLATI ÚTMUTATÓ
+========================================
+Minden képet a rendszer automatikusan WebP formátumra konvertál feltöltés előtt.
+Ezért feltöltéskor JPG, PNG, HEIC stb. is megfelel — a konverzió automatikus.
+
+========================================
+1. LOGO (Site logó)
+========================================
+Hol jelenik meg : Header (64x64 px), Footer (40x40 px)
+Hol töltöd fel  : Admin → Site Images → Logo
+Optimális méret : 400 x 400 px (négyzet arány 1:1)
+Formátum        : WebP (auto-konvertált)
+Minőség         : 0.90 (magas — márkaelem)
+Max fájlméret   : 100 KB feltöltés előtt
+Tipp            : Átlátszó hátterű PNG a legjobb alap, körre vágva jelenik meg
+
+========================================
+2. HERO KÉP (Főoldal — jobb oldali nagy kép)
+========================================
+Hol jelenik meg : HomePage hero szekció, 800x533 px (3:2 arány)
+Hol töltöd fel  : Admin → Site Images → Hero Image
+Optimális méret : 1200 x 800 px (3:2 arány)
+Formátum        : WebP (auto-konvertált, max 1920x1080)
+Minőség         : 0.85
+Max fájlméret   : 500 KB feltöltés előtt
+Supabase transform : ?width=800 (automatikusan alkalmazva)
+Tipp            : Dinamikus, motiváló kép emberekkel — fitness, wellness téma
+
+========================================
+3. KÖZÖSSÉG KÉP (Főoldal — Community szekció)
+========================================
+Hol jelenik meg : HomePage Community szekció, 800x533 px (3:2 arány)
+Hol töltöd fel  : Admin → Site Images → Community Image
+Optimális méret : 1200 x 800 px (3:2 arány)
+Formátum        : WebP (auto-konvertált, max 1920x1080)
+Minőség         : 0.85
+Max fájlméret   : 400 KB feltöltés előtt
+Supabase transform : ?width=700 (automatikusan alkalmazva)
+Tipp            : Csoportos, közösségi hangulatú kép — receptek, sport, jóga stb.
+
+========================================
+4. BLOG POSZT KIEMELT KÉP (Featured image)
+========================================
+Hol jelenik meg : Blog lista kártya (400x225 px), Blog poszt fejléc (800x450 px)
+Hol töltöd fel  : Blog Dashboard → Post szerkesztő → Featured Image
+Optimális méret : 1200 x 675 px (16:9 arány)
+Formátum        : WebP (auto-konvertált, max 1920x1080)
+Minőség         : 0.85
+Max fájlméret   : 500 KB feltöltés előtt
+Tipp            : Mindig 16:9 arányú képet használj — ez tölti ki jól a kártya és fejléc területet
+
+========================================
+5. BLOG POSZT SZÖVEGES KÉPEK (Rich text editor — cikken belüli képek)
+========================================
+Hol jelenik meg : Blog poszt tartalomban, változó szélességben (max 100% konténer)
+Hol töltöd fel  : Blog Dashboard → Rich Text Editor → kép ikon
+Optimális méret : max 1200 x 900 px
+Formátum        : WebP (auto-konvertált, max 1920x1080)
+Minőség         : 0.85
+Max fájlméret   : 800 KB feltöltés előtt
+Tipp            : Az editor drag-and-drop feltöltést és átméretezést is támogat
+
+========================================
+6. PROFIL AVATAR (Felhasználói profilkép)
+========================================
+Hol jelenik meg : Profil oldal, kommentek, blog szerzői doboz — 64-128 px-es körökben
+Hol töltöd fel  : Profil oldal → Avatar szerkesztés
+Optimális méret : 400 x 400 px (négyzet arány 1:1)
+Formátum        : WebP (auto-konvertált, 256x256-ra vágva és méretezve)
+Minőség         : 0.85
+Max fájlméret   : 200 KB feltöltés előtt
+Tipp            : Arc középen legyen — a rendszer automatikusan négyzetre vágja
+
+========================================
+7. KÖZÖSSÉGI POSZT KÉPEK (Community feed)
+========================================
+Hol jelenik meg : Community feed bejegyzésekben, max ~400 px széles
+Hol töltöd fel  : Community → Új poszt → Kép csatolása (drag-and-drop / paste)
+Optimális méret : max 1200 x 900 px
+Formátum        : WebP (auto-konvertált, max 1920x1080)
+Minőség         : 0.85
+Max fájlméret   : 500 KB feltöltés előtt
+Tipp            : Fekvő vagy négyzet formátum a legjobb a feed-ben
+
+========================================
+8. SOLUTION TERMÉK KÉP
+========================================
+Hol jelenik meg : Solutions lista és detail oldal, változó méretek (max ~400-800 px)
+Hol töltöd fel  : Admin → Solutions → szerkesztés → Image
+Optimális méret : 800 x 600 px (4:3 arány) VAGY 800 x 800 px (1:1 négyzet)
+Formátum        : WebP (auto-konvertált, max 1920x1080)
+Minőség         : 0.85
+Max fájlméret   : 400 KB feltöltés előtt
+Tipp            : Termékképnél fehér/semleges háttér ajánlott; app screenshotnál bármilyen arány OK
+
+========================================
+ÁLTALÁNOS SZABÁLYOK
+========================================
+Formátum        : MINDIG WebP — a rendszer auto-konvertál
+Minőség         : 0.85 (standard), 0.90 (logó/brand elemek)
+Névegyezés      : Kerüld a szóközöket és ékezetes betűket a fájlnévben
+Feltöltés előtt : Tömörítés NEM szükséges — a rendszer elvégzi
+Supabase limit  : max 50 MB egy fájlra (a konverzió után 50-100x kisebb lesz)
+
+MÉRET ÖSSZEFOGLALÓ (gyors referencia):
+  Logo            : 400 x 400 px  (1:1)
+  Hero kép        : 1200 x 800 px (3:2)
+  Community kép   : 1200 x 800 px (3:2)
+  Blog featured   : 1200 x 675 px (16:9)
+  Blog inline     : max 1200 px széles
+  Avatar          : 400 x 400 px  (1:1)
+  Community poszt : max 1200 px széles
+  Solution        : 800 x 600 px  (4:3) vagy 800 x 800 px (1:1)
+
+========================================
+Generálva: 2026-02-28 | Vellio Nation
+========================================
