@@ -1,0 +1,109 @@
+Statisztika
+Renderelést blokkoló kérelmek megjelenítése Becsült megtakarítás: 160 ms
+Kérelmek blokkolják az oldal kezdeti megjelenítését, ami késleltetheti az LCP-t. Elhalasztás vagy a beágyazás segítségével ezeket a hálózati kérelmeket el lehet távolítani a kritikus útvonalról.LCPFCPNincs pontozva
+URL
+Átviteli méret
+Időtartam
+vellionation.com Belső fél
+12,8 KiB	180 ms
+/assets/index-325aabc5.css(www.vellionation.com)
+12,8 KiB
+180 ms
+LCP-lebontás
+Minden alrésznek megvannak a maga specifikus javítási stratégiái. Ideális esetben az LCP-idő nagy részét az erőforrások betöltésére kell fordítani, nem pedig késésekre.LCPNincs pontozva
+Alrész
+Időtartam
+Time to First Byte
+0 ms
+Elem renderelési késése
+2900 ms
+After 40, your hormones shift, your metabolism slows, and everything that used …
+<p class="text-lg text-muted-foreground mb-8">
+Hálózati függőségi fa
+Kerülje a kritikus kérések láncba fűzését a láncok hosszának csökkentésével, a letöltött források méretének csökkentésével, vagy a felesleges források letöltésének késleltetésével, hogy javuljon az oldalbetöltés.LCPNincs pontozva
+Kritikus elérési út maximális várakozási ideje: 714 ms
+Kezdeti navigáció
+https://www.vellionation.com - 61 ms, 1,92 KiB
+/assets/index-a4a1fa70.js(www.vellionation.com) - 256 ms, 46,19 KiB
+/assets/index-325aabc5.css(www.vellionation.com) - 714 ms, 12,79 KiB
+Előzetesen kapcsolódott eredethelyek
+Az preconnect tippek segítenek a böngészőnek abban, hogy az oldal betöltésének korábbi szakaszában létesítsen kapcsolatot, így időt takaríthat meg, amikor elküldi az első kérést az adott eredethelynek. A következők azok az eredethelyek, amelyekkel az oldal előre kapcsolódott.
+Eredet
+Forrás
+https://rtklsdtadtqpgoibulux.supabase.co/
+head > link
+<link rel="preconnect" href="https://rtklsdtadtqpgoibulux.supabase.co" crossorigin="">
+head > link
+<link crossorigin="anonymous" rel="preconnect" href="https://www.skynettechnologies.com/">
+Nem használt előzetes kapcsolat. Csak az oldal által valószínűleg kérelmezett forrásokhoz használja a preconnect lehetőséget.
+Előzetes kapcsolódás jelöltjei
+Adjon meg preconnect tippeket a legfontosabb eredethelyekhez, de próbáljon meg négynél többet használni.
+Nincsenek további eredethelyek, amelyek jó jelöltek lennének az előzetes kapcsolódásra
+Képtovábbítás javítása Becsült megtakarítás: 55 KiB
+A képek letöltési idejének csökkentésével javíthatja az oldal és az LCP észlelt betöltési idejét. További információ a képméret optimalizálásárólLCPFCPNincs pontozva
+URL
+Forrás mérete
+Becsült megtakarítás
+supabase.co
+155,0 KiB	54,6 KiB
+Community members sharing healthy recipes
+<img alt="Community members sharing healthy recipes" class="absolute inset-0 w-full h-full object-cover" src="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_ima…" loading="lazy" width="800" height="533">
+…site_images/home-community-176….webp?width=700(rtklsdtadtqpgoibulux.supabase.co)
+98,8 KiB
+46,3 KiB
+A kép tömörítési tényezőjének növelésével javíthatja a kép letöltési méretét.
+40,9 KiB
+Ez a képfájl nagyobb, mint amennyire a megjelenített méretéhez (728x443) szükség van (731x487). A kép letöltési méretének csökkentéséhez használjon reszponzív képeket.
+9,3 KiB
+Wellness fitness group exercising together in nature
+<img alt="Wellness fitness group exercising together in nature" class="absolute inset-0 w-full h-full object-cover" src="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_ima…" width="800" height="533" fetchpriority="high">
+…site_images/home-hero-176….webp?width=800(rtklsdtadtqpgoibulux.supabase.co)
+56,2 KiB
+8,3 KiB
+Ez a képfájl nagyobb, mint amennyire a megjelenített méretéhez (683x443) szükség van (730x486). A kép letöltési méretének csökkentéséhez használjon reszponzív képeket.
+8,3 KiB
+Harmadik felek
+Ezek a statisztikák a Chrome DevTools Teljesítmény paneljén is rendelkezésre állnak – nyom rögzítésével részletesebb információkat tekinthet meg.
+Diagnosztika
+Nem használt JavaScript-kódok számának csökkentése Becsült megtakarítás: 296 KiB
+A nem használt JavaScript-kódok számának csökkentésével és a betöltési szkriptek késleltetésével csökkentheti a hálózati tevékenység által felhasznált bájtmennyiséget. További információ a nem használt JavaScript-kódok számának csökkentéséről.LCPFCPNincs pontozva
+URL
+Átviteli méret
+Becsült megtakarítás
+vellionation.com Belső fél
+194,9 KiB	161,2 KiB
+/assets/vendor-tiptap-55dc60df.js(www.vellionation.com)
+115,1 KiB
+106,2 KiB
+/assets/index-a4a1fa70.js(www.vellionation.com)
+45,4 KiB
+28,5 KiB
+/assets/vendor-supabase-c81a82e8.js(www.vellionation.com)
+34,4 KiB
+26,4 KiB
+skynettechnologies.com
+159,7 KiB	74,2 KiB
+…js/accessibility-loader.js?colorcode=(www.skynettechnologies.com)
+159,7 KiB
+74,2 KiB
+Google Tag Manager tag-manager 
+147,1 KiB	60,2 KiB
+/gtag/js?id=G-NV3K05KYDN(www.googletagmanager.com)
+147,1 KiB
+60,2 KiB
+Nem használt CSS-kódok számának csökkentése Becsült megtakarítás: 51 KiB
+A stíluslapok nem használt szabályainak eltávolításával és a hajtás feletti tartalomhoz nem használt CSS-ek késleltetésével csökkentheti a hálózati tevékenység által felhasznált bájtmennyiséget. További információ a nem használt CSS csökkentéséről.LCPFCPNincs pontozva
+URL
+Átviteli méret
+Becsült megtakarítás
+Nem hozzárendelhető
+40,8 KiB	40,8 KiB
+@charset "UTF-8";@font-face{font-display:swap;font-family:Noto Sans Meetei Mayek;font-style:normal; … } …
+40,8 KiB
+40,8 KiB
+vellionation.com Belső fél
+12,0 KiB	10,5 KiB
+/assets/index-325aabc5.css(www.vellionation.com)
+12,0 KiB
+10,5 KiB
+Kerülje a fő szálban a hosszú feladatokat 3 hosszú feladat található
