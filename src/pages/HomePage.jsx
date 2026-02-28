@@ -167,20 +167,22 @@ const HomePage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              {homeImages.hero ? (
-                <img 
-                  alt="Wellness fitness group exercising together in nature" 
-                  className="rounded-2xl shadow-2xl w-full" 
-                  src={homeImages.hero}
-                  width="800"
-                  height="533"
-                  fetchpriority="high"
-                />
-              ) : (
-                <div className="rounded-2xl shadow-2xl w-full h-64 sm:h-80 md:h-96 bg-muted border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-                  <span className="text-muted-foreground text-lg">Hero image placeholder</span>
-                </div>
-              )}
+              <div className="relative w-full rounded-2xl shadow-2xl overflow-hidden" style={{aspectRatio: '800/533'}}>
+                {homeImages.hero ? (
+                  <img 
+                    alt="Wellness fitness group exercising together in nature" 
+                    className="absolute inset-0 w-full h-full object-cover" 
+                    src={homeImages.hero + '?width=800'}
+                    width="800"
+                    height="533"
+                    fetchpriority="high"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-muted border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                    <span className="text-muted-foreground text-lg">Hero image placeholder</span>
+                  </div>
+                )}
+              </div>
             </motion.div>
           </div>
         </div>
@@ -227,13 +229,15 @@ const HomePage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              {homeImages.community ? (
-                <img alt="Community members sharing healthy recipes" className="rounded-2xl shadow-xl w-full" src={homeImages.community} loading="lazy" width="800" height="533" />
-              ) : (
-                <div className="rounded-2xl shadow-xl w-full h-64 sm:h-80 bg-muted border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
-                  <span className="text-muted-foreground text-lg">Community image placeholder</span>
-                </div>
-              )}
+              <div className="relative w-full rounded-2xl shadow-xl overflow-hidden" style={{aspectRatio: '800/533'}}>
+                {homeImages.community ? (
+                  <img alt="Community members sharing healthy recipes" className="absolute inset-0 w-full h-full object-cover" src={homeImages.community + '?width=700'} loading="lazy" width="800" height="533" />
+                ) : (
+                  <div className="absolute inset-0 bg-muted border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                    <span className="text-muted-foreground text-lg">Community image placeholder</span>
+                  </div>
+                )}
+              </div>
             </motion.div>
 
             <motion.div
