@@ -128,9 +128,14 @@ const HomePage = () => {
                     Join the Nation <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-                <p className="text-sm text-muted-foreground">
-                  No account needed — start reading free articles today.
-                </p>
+                <div className="border-l-4 border-primary pl-4 py-1 space-y-1">
+                  <p className="text-sm font-semibold text-foreground">
+                    Közben az idő telik — minden nap számít.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Olvasd el ingyen, fiók nélkül: mit egyél, hogyan mozogj, hogyan aludj, hogyan kezeld a stresszt — és miért nem a te hibád, hogy eddig nem ment. Étkezés, mozgás, meditáció, hormonegyensúly, fogyás 40 felett — mind ott van. Egy cikk elég lehet ahhoz, hogy minden megváltozzon.
+                  </p>
+                </div>
                 <Button size="lg" asChild>
                   <Link to="/blog">
                     Explore Blog <ArrowRight className="ml-2 h-5 w-5" />
