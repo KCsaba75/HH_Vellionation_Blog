@@ -117,10 +117,10 @@ const HomePage = () => {
               transition={{ duration: 0.6 }}
             >
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Your Best Years?<br /><span className="text-primary">They Haven't Happened Yet.</span>
+                Tired of Feeling Like a Stranger<br className="hidden md:block" /> in Your Own Body?<br /><span className="text-primary">We Know Exactly How to Bring You Back.</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8">
-                Science-backed weight loss and wellness for adults 40+ who refuse to accept slow metabolism, low energy, and "that's just what happens when you age." Your comeback starts here.
+                After 40, your hormones shift, your metabolism slows, and everything that used to work stops working — overnight. You're not imagining it. It's not your fault. At Vellio Nation, we combine functional medicine, real science, and the lived wisdom of a thriving 40+ community to help you shed stubborn weight, restore your energy, and step into the strongest, most confident version of yourself. <strong className="text-foreground">This is your decade. Don't waste another day of it.</strong>
               </p>
               <div className="flex flex-col items-start gap-3">
                 <Button size="lg" asChild>
