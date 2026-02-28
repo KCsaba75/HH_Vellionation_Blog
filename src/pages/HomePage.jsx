@@ -130,10 +130,10 @@ const HomePage = () => {
                 </Button>
                 <div className="border-l-4 border-primary pl-4 py-1 space-y-1">
                   <p className="text-sm font-semibold text-foreground">
-                    Közben az idő telik — minden nap számít.
+                    Time is passing — and every single day matters.
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Olvasd el ingyen, fiók nélkül: mit egyél, hogyan mozogj, hogyan aludj, hogyan kezeld a stresszt — és miért nem a te hibád, hogy eddig nem ment. Étkezés, mozgás, meditáció, hormonegyensúly, fogyás 40 felett — mind ott van. Egy cikk elég lehet ahhoz, hogy minden megváltozzon.
+                    Read it free, no account needed: what to eat, how to move, how to sleep, how to manage stress — and why it's not your fault it hasn't worked until now. Nutrition, exercise, meditation, hormone balance, weight loss after 40 — it's all there. One article could be all it takes to change everything.
                   </p>
                 </div>
                 <Button size="lg" asChild>
