@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Heart, Users, TrendingUp, Award } from 'lucide-react';
+import { ArrowRight, Heart, Users, TrendingUp, Award, PlayCircle, Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/customSupabaseClient';
 
@@ -141,6 +141,23 @@ const HomePage = () => {
                     Explore Blog <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
+                <div className="border-l-4 border-primary pl-4 py-1 space-y-2">
+                  <p className="text-sm font-semibold text-foreground">
+                    Prefer watching or listening? We've got you covered.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Dive into our videos and podcast conversations — real talk on weight loss, nutrition, movement, and mindset for life after 40. No fluff, no gimmicks. Just honest, science-backed insights you can absorb on your commute, at the gym, or on your couch. <span className="text-foreground font-medium">Find them in the menu — anytime, anywhere.</span>
+                  </p>
+                  <div className="flex items-center gap-4 pt-1">
+                    <span className="flex items-center gap-1.5 text-xs text-primary font-medium">
+                      <PlayCircle className="h-4 w-4" /> Videos
+                    </span>
+                    <span className="flex items-center gap-1.5 text-xs text-primary font-medium">
+                      <Headphones className="h-4 w-4" /> Podcasts
+                    </span>
+                    <span className="text-xs text-muted-foreground">— free, always.</span>
+                  </div>
+                </div>
               </div>
             </motion.div>
 
