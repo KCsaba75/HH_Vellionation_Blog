@@ -14,7 +14,13 @@ const staticPages = [
 
 function truncateText(text, maxLength = 150) {
   if (!text) return '';
-  const cleaned = text.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+  const cleaned = text
+    .replace(/<[^>]*>/g, '')
+    .replace(/HERO:\s*/gi, '')
+    .replace(/VALUE:\s*/gi, '')
+    .replace(/[\\u{1F000}-\\u{1FFFF}]|[\\u{2600}-\\u{27BF}]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
   if (cleaned.length <= maxLength) return cleaned;
   return cleaned.substring(0, maxLength).trim() + '...';
 }
@@ -39,7 +45,7 @@ export async function generateLlmsTxt() {
 
   entries.push('# Vellio Nation');
   entries.push('');
-  entries.push('> A wellness community helping men and women over 40 achieve sustainable weight loss through healthy eating, fitness guidance, and lifestyle transformation.');
+  entries.push('> Vellio Nation is a weight loss and wellness community for men and women over 40. We provide evidence-based strategies for losing weight after 40, boosting metabolism, hormone-friendly nutrition, strength training, and sustainable lifestyle transformation. Our platform includes expert blog articles, an active community forum, and curated wellness solutions.');
   entries.push('');
   entries.push('## Static Pages');
 
@@ -59,7 +65,8 @@ export async function generateLlmsTxt() {
     
     for (const post of posts) {
       const description = truncateText(post.excerpt) || 'Read this wellness article on Vellio Nation.';
-      entries.push(`- [${post.title}](${SITE_URL}/blog/${post.slug}): ${description}`);
+      const date = formatDate(post.created_at);
+      entries.push(`- [${post.title}](${SITE_URL}/blog/${post.slug}) (Published: ${date}): ${description}`);
     }
   }
 
