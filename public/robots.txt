@@ -8,7 +8,9 @@ Sitemap: https://www.vellionation.com/sitemap.xml
 # Disallow admin and private areas
 Disallow: /admin
 Disallow: /profile
-Disallow: /blog-dashboard
+Disallow: /dashboard/write
+Disallow: /forgot-password
+Disallow: /reset-password
 
 # Crawl-delay for polite crawling
 Crawl-delay: 1
