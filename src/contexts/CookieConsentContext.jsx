@@ -17,14 +17,17 @@ const getCookie = (name) => {
   return null;
 };
 
+const isSecure = window.location.protocol === 'https:';
+const secureFlag = isSecure ? ';Secure' : '';
+
 const setCookie = (name, value, days) => {
   const expires = new Date();
   expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax${secureFlag}`;
 };
 
 const deleteCookie = (name) => {
-  document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+  document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;SameSite=Lax${secureFlag}`;
 };
 
 const getMidnightExpiry = () => {
@@ -36,7 +39,7 @@ const getMidnightExpiry = () => {
 
 const setMidnightCookie = (name, value) => {
   const midnight = getMidnightExpiry();
-  document.cookie = `${name}=${value};expires=${midnight.toUTCString()};path=/;SameSite=Lax`;
+  document.cookie = `${name}=${value};expires=${midnight.toUTCString()};path=/;SameSite=Lax${secureFlag}`;
 };
 
 const getTimeUntilMidnight = () => {

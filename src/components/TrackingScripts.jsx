@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/customSupabaseClient';
+import { useCookieConsent } from '@/contexts/CookieConsentContext';
 
 const TrackingScripts = () => {
   const [trackingCodes, setTrackingCodes] = useState({ google_analytics_id: '', facebook_pixel_id: '' });
   const [scriptsLoaded, setScriptsLoaded] = useState({ ga: false, fb: false });
+  const { hasConsent } = useCookieConsent();
 
   useEffect(() => {
     const fetchTrackingCodes = async () => {
@@ -22,6 +24,7 @@ const TrackingScripts = () => {
   }, []);
 
   useEffect(() => {
+    if (hasConsent !== true) return;
     if (trackingCodes.google_analytics_id && !scriptsLoaded.ga) {
       const gaId = trackingCodes.google_analytics_id.trim();
       if (gaId && /^G-[A-Z0-9]+$/i.test(gaId)) {
@@ -44,9 +47,10 @@ const TrackingScripts = () => {
         }
       }
     }
-  }, [trackingCodes.google_analytics_id, scriptsLoaded.ga]);
+  }, [hasConsent, trackingCodes.google_analytics_id, scriptsLoaded.ga]);
 
   useEffect(() => {
+    if (hasConsent !== true) return;
     if (trackingCodes.facebook_pixel_id && !scriptsLoaded.fb) {
       const pixelId = trackingCodes.facebook_pixel_id.trim();
       if (pixelId && /^\d{15,16}$/.test(pixelId)) {
@@ -81,7 +85,7 @@ const TrackingScripts = () => {
         }
       }
     }
-  }, [trackingCodes.facebook_pixel_id, scriptsLoaded.fb]);
+  }, [hasConsent, trackingCodes.facebook_pixel_id, scriptsLoaded.fb]);
 
   return null;
 };
