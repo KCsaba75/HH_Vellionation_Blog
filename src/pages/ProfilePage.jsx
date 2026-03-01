@@ -168,7 +168,7 @@ const ProfilePage = () => {
             <div className="bg-card rounded-xl shadow-lg p-8 mb-8">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center gap-4">
-                  <div className="relative group">
+                  <div className="relative group flex-shrink-0">
                     {formData.avatar_url ? (
                       <img 
                         src={formData.avatar_url} 
