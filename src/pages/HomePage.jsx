@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Heart, Users, TrendingUp, Award, PlayCircle, Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/customSupabaseClient';
+import DailyTipBanner from '@/components/DailyTipBanner';
 
 const HomePage = () => {
   const [homeImages, setHomeImages] = useState({
@@ -107,6 +108,10 @@ const HomePage = () => {
           })}
         </script>
       </Helmet>
+
+      <div className="container mx-auto px-4 pt-8">
+        <DailyTipBanner />
+      </div>
 
       <section className="relative overflow-hidden py-20 md:py-32">
         <div className="container mx-auto px-4">

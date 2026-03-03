@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Clock, User, Search, ChevronDown, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/customSupabaseClient';
+import DailyTipBanner from '@/components/DailyTipBanner';
 
 const BlogPage = () => {
   const [posts, setPosts] = useState([]);
@@ -247,6 +248,7 @@ const BlogPage = () => {
             </aside>
 
             <div className="flex-1">
+              <DailyTipBanner />
               <div className="max-w-md mb-8">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />

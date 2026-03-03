@@ -245,7 +245,11 @@ const ProfilePage = () => {
 
             <div className="mb-8">
               <div className="flex justify-end mb-4">
-                <DailyLoginButton userId={user.id} onClaimed={handleDailyLoginClaimed} />
+                <DailyLoginButton
+                  userId={user.id}
+                  onClaimed={handleDailyLoginClaimed}
+                  currentStreak={userStats?.currentStreak || profile.current_streak || 0}
+                />
               </div>
               <RankProgressCard 
                 points={profile.points || 0}
