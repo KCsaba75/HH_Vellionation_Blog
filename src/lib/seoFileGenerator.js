@@ -18,7 +18,6 @@ function truncateText(text, maxLength = 150) {
     .replace(/<[^>]*>/g, '')
     .replace(/HERO:\s*/gi, '')
     .replace(/VALUE:\s*/gi, '')
-    .replace(/[\\u{1F000}-\\u{1FFFF}]|[\\u{2600}-\\u{27BF}]/gu, '')
     .replace(/\s+/g, ' ')
     .trim();
   if (cleaned.length <= maxLength) return cleaned;
