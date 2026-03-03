@@ -127,6 +127,66 @@ export const checkAndAwardBadges = async (userId) => {
   }
 };
 
+export const markArticleRead = async (userId, postId) => {
+  try {
+    const { count, error: checkError } = await supabase
+      .from('user_read_articles')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('post_id', postId);
+
+    if (checkError) throw checkError;
+
+    if (count > 0) {
+      return { alreadyRead: true };
+    }
+
+    const { error: insertError } = await supabase
+      .from('user_read_articles')
+      .insert({ user_id: userId, post_id: postId });
+
+    if (insertError) throw insertError;
+
+    await awardPoints(userId, 'ARTICLE_READ');
+
+    return { success: true, pointsAwarded: POINT_VALUES.ARTICLE_READ };
+  } catch (error) {
+    console.error('Error marking article as read:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+export const getReadArticleIds = async (userId) => {
+  try {
+    const { data, error } = await supabase
+      .from('user_read_articles')
+      .select('post_id')
+      .eq('user_id', userId);
+
+    if (error) throw error;
+
+    return (data || []).map(row => row.post_id);
+  } catch (error) {
+    console.error('Error fetching read article IDs:', error);
+    return [];
+  }
+};
+
+export const getReadArticleCount = async (userId) => {
+  try {
+    const { count, error } = await supabase
+      .from('user_read_articles')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId);
+
+    if (error) throw error;
+    return count || 0;
+  } catch (error) {
+    console.error('Error fetching read article count:', error);
+    return 0;
+  }
+};
+
 export const claimDailyLogin = async (userId) => {
   try {
     const { data: profile, error: fetchError } = await supabase

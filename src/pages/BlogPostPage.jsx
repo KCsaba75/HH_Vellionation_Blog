@@ -11,6 +11,7 @@ import { useAuth } from '@/contexts/SupabaseAuthContext';
 import { useCookieConsent } from '@/contexts/CookieConsentContext';
 import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/lib/customSupabaseClient';
+import { markArticleRead as trackArticleRead } from '@/lib/gamificationService';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -147,6 +148,18 @@ const BlogPostPage = () => {
       setCanView(true);
     }
   }, [loading, post, user, slug, canReadArticle, markArticleRead]);
+
+  useEffect(() => {
+    if (!user || !post) return;
+    trackArticleRead(user.id, post.id).then((res) => {
+      if (res?.pointsAwarded > 0) {
+        toast({
+          title: '📖 +5 points for reading!',
+          description: 'Keep exploring — every article counts towards your rank.',
+        });
+      }
+    });
+  }, [user, post]);
 
   const handleShare = (platform) => {
     let url = '';

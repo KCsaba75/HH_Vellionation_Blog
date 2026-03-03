@@ -49,6 +49,19 @@ The application uses React 18.2 with Vite 4.5 for the frontend, and React Router
 - **Blog Post Features**: Includes "Latest Articles" recommendations, PDF export for logged-in users, and restricted share button visibility.
 - **Rich Text Editor**: Utilizes Tiptap for robust content creation, offering image drag-handle resizing, drag & drop, and comprehensive formatting.
 - **Blog Author Section**: Displays author profile pictures, names, and bios below blog posts.
+- **Article Read Tracking**: Logged-in users' article reads are recorded in `user_read_articles` table (user_id, post_id, read_at). First read awards +5 points via gamification. Blog list shows "✓ Read" badge on read cards. Profile page shows reading stats. Used for marketing segmentation. Requires Supabase SQL:
+  ```sql
+  CREATE TABLE IF NOT EXISTS public.user_read_articles (
+    id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id uuid NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+    post_id uuid NOT NULL REFERENCES public.posts(id) ON DELETE CASCADE,
+    read_at timestamptz NOT NULL DEFAULT now(),
+    CONSTRAINT user_read_articles_unique UNIQUE (user_id, post_id)
+  );
+  ALTER TABLE public.user_read_articles ENABLE ROW LEVEL SECURITY;
+  CREATE POLICY "Users can insert own read records" ON public.user_read_articles FOR INSERT WITH CHECK (auth.uid() = user_id);
+  CREATE POLICY "Users can view own read records" ON public.user_read_articles FOR SELECT USING (auth.uid() = user_id);
+  ```
 
 ## External Dependencies
 - **Supabase**: Backend for authentication, database, and storage (avatars, post images, solution images, community images, site images). Requires specific public storage buckets.

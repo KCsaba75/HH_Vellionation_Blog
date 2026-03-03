@@ -7,8 +7,11 @@ import { Clock, User, Search, ChevronDown, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/lib/customSupabaseClient';
 import DailyTipBanner from '@/components/DailyTipBanner';
+import { useAuth } from '@/contexts/SupabaseAuthContext';
+import { getReadArticleIds } from '@/lib/gamificationService';
 
 const BlogPage = () => {
+  const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
@@ -20,6 +23,14 @@ const BlogPage = () => {
   const [categoryCounts, setCategoryCounts] = useState({});
   const [subcategoryCounts, setSubcategoryCounts] = useState({});
   const [totalCount, setTotalCount] = useState(0);
+  const [readIds, setReadIds] = useState(new Set());
+
+  useEffect(() => {
+    if (!user) return;
+    getReadArticleIds(user.id).then((ids) => {
+      setReadIds(new Set(ids));
+    });
+  }, [user]);
 
   useEffect(() => {
     const fetchCategoriesAndSubcategories = async () => {
@@ -296,13 +307,18 @@ const BlogPage = () => {
                       transition={{ delay: index * 0.1 }}
                       className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-black dark:border-white"
                     >
-                      <div className="aspect-video bg-secondary/50 flex items-center justify-center">
+                      <div className="relative aspect-video bg-secondary/50 flex items-center justify-center">
                         {post.image_url ? (
                           <img alt={post.title} className="w-full h-full object-cover" src={post.image_url} loading="lazy" width="400" height="225" />
                         ) : (
                           <div className="w-full h-full bg-muted flex items-center justify-center">
                             <span className="text-muted-foreground text-sm">No image</span>
                           </div>
+                        )}
+                        {readIds.has(post.id) && (
+                          <span className="absolute top-2 right-2 bg-green-100 text-green-700 dark:bg-green-900/80 dark:text-green-300 text-xs px-2 py-0.5 rounded-full font-medium shadow-sm">
+                            ✓ Read
+                          </span>
                         )}
                       </div>
                       <div className="p-6">

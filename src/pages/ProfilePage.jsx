@@ -22,7 +22,7 @@ import {
 import RankProgressCard from '@/components/gamification/RankProgressCard';
 import BadgeGrid from '@/components/gamification/BadgeGrid';
 import DailyLoginButton from '@/components/gamification/DailyLoginButton';
-import { getUserStats, getUserBadges, checkAndAwardBadges } from '@/lib/gamificationService';
+import { getUserStats, getUserBadges, checkAndAwardBadges, getReadArticleCount } from '@/lib/gamificationService';
 import { FOUNDING_MEMBER } from '@/lib/gamificationConfig';
 
 const ProfilePage = () => {
@@ -36,6 +36,7 @@ const ProfilePage = () => {
   const [userStats, setUserStats] = useState(null);
   const [badges, setBadges] = useState([]);
   const [loadingGamification, setLoadingGamification] = useState(true);
+  const [readCount, setReadCount] = useState(0);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -55,12 +56,14 @@ const ProfilePage = () => {
       if (!user) return;
       setLoadingGamification(true);
       try {
-        const [stats, userBadges] = await Promise.all([
+        const [stats, userBadges, articleCount] = await Promise.all([
           getUserStats(user.id),
-          getUserBadges(user.id)
+          getUserBadges(user.id),
+          getReadArticleCount(user.id)
         ]);
         setUserStats(stats);
         setBadges(userBadges);
+        setReadCount(articleCount);
         await checkAndAwardBadges(user.id);
         const updatedBadges = await getUserBadges(user.id);
         setBadges(updatedBadges);
@@ -260,6 +263,26 @@ const ProfilePage = () => {
 
             <div className="mb-8">
               <BadgeGrid badges={badges} loading={loadingGamification} />
+            </div>
+
+            <div className="mb-8">
+              <div className="bg-card rounded-xl shadow-lg p-6 border">
+                <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <span>📖</span> Reading Stats
+                </h2>
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 bg-primary/5 rounded-lg p-4 text-center">
+                    <div className="text-3xl font-bold text-primary">{readCount}</div>
+                    <div className="text-sm text-muted-foreground mt-1">
+                      {readCount === 1 ? 'article read' : 'articles read'}
+                    </div>
+                  </div>
+                  <div className="flex-1 bg-primary/5 rounded-lg p-4 text-center">
+                    <div className="text-3xl font-bold text-primary">{readCount * 5}</div>
+                    <div className="text-sm text-muted-foreground mt-1">pts earned from reading</div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="bg-card rounded-xl shadow-lg p-8 mt-8">
