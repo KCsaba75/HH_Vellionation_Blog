@@ -149,7 +149,7 @@ const Header = () => {
                   Sign In
                 </Button>
                 <Button onClick={() => navigate('/register')} className="text-lg"> {/* Increased text size */}
-                  Get Started
+                  Join Free
                 </Button>
               </div>
             )}
@@ -247,7 +247,7 @@ const Header = () => {
                   className="block text-foreground/80 hover:text-primary transition-colors font-medium text-lg py-2"
                   onClick={() => setIsOpen(false)}
                 >
-                  Get Started
+                  Join Free
                 </Link>
               </>
             )}

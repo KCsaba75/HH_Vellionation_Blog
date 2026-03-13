@@ -182,7 +182,7 @@ const BlogPage = () => {
         </div>
       </section>
 
-      <section className="py-12">
+      <section className="py-12 overflow-x-hidden">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-8">
             <aside className="lg:w-52 flex-shrink-0">

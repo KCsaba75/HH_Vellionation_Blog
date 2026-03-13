@@ -6,6 +6,7 @@ import { ArrowRight, Heart, Users, TrendingUp, Award, PlayCircle, Headphones } f
 import { Button } from '@/components/ui/button';
 import { getSettings } from '@/lib/settingsCache';
 import DailyTipBanner from '@/components/DailyTipBanner';
+import NewsletterSection from '@/components/NewsletterSection';
 
 const HomePage = () => {
   const [homeImages, setHomeImages] = useState({
@@ -265,6 +266,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
+      <NewsletterSection />
 
       <section className="py-20 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
