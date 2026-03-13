@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Heart, Users, TrendingUp, Award, PlayCircle, Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/lib/customSupabaseClient';
+import { getSettings } from '@/lib/settingsCache';
 import DailyTipBanner from '@/components/DailyTipBanner';
 
 const HomePage = () => {
@@ -14,30 +14,14 @@ const HomePage = () => {
   });
 
   useEffect(() => {
-    const fetchHomeImages = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('settings')
-          .select('value')
-          .eq('key', 'home_images')
-          .maybeSingle();
-        
-        if (error) {
-          console.warn('Failed to fetch home images:', error.message);
-          return;
-        }
-        
-        if (data?.value) {
-          setHomeImages({
-            hero: data.value.hero || '',
-            community: data.value.community || ''
-          });
-        }
-      } catch (err) {
-        console.warn('Error fetching home images:', err);
+    getSettings().then(s => {
+      if (s.home_images) {
+        setHomeImages({
+          hero: s.home_images.hero || '',
+          community: s.home_images.community || ''
+        });
       }
-    };
-    fetchHomeImages();
+    }).catch(err => console.warn('Error fetching home images:', err));
   }, []);
   const features = [
     {

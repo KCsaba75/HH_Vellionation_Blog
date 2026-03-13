@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { supabase } from '@/lib/customSupabaseClient';
+import { getSettings } from '@/lib/settingsCache';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,34 +24,10 @@ const Header = () => {
   const [logoUrl, setLogoUrl] = useState('');
 
   useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('settings')
-          .select('key, value')
-          .in('key', ['social_links', 'home_images']);
-        
-        if (error) {
-          console.warn('Failed to fetch header settings:', error.message);
-          return;
-        }
-        
-        if (data && data.length > 0) {
-          const socialData = data.find(s => s.key === 'social_links');
-          const homeImagesData = data.find(s => s.key === 'home_images');
-          
-          if (socialData?.value) {
-            setSocialLinks(socialData.value);
-          }
-          if (homeImagesData?.value?.logo) {
-            setLogoUrl(homeImagesData.value.logo);
-          }
-        }
-      } catch (err) {
-        console.warn('Failed to fetch header settings:', err);
-      }
-    };
-    fetchSettings();
+    getSettings().then(s => {
+      if (s.social_links) setSocialLinks(s.social_links);
+      if (s.home_images?.logo) setLogoUrl(s.home_images.logo);
+    }).catch(err => console.warn('Failed to fetch header settings:', err));
   }, []);
 
   const handleSignOut = async () => {

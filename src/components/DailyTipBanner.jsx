@@ -6,7 +6,7 @@ const DailyTipBanner = () => {
   const { tip, dayIndex } = getDailyTip();
 
   return (
-    <div className="border-l-4 border-primary bg-primary/5 px-4 py-3 rounded-r-lg mb-6">
+    <div className="border-l-4 border-primary bg-primary/5 px-4 py-3 rounded-r-lg mb-6 min-h-[88px]">
       <div className="flex items-start gap-3">
         <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
         <div>

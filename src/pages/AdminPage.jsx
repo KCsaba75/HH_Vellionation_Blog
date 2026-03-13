@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from '@/lib/customSupabaseClient';
 import { regenerateSeoFiles } from '@/lib/seoFileGenerator';
+import { invalidateSettingsCache } from '@/lib/settingsCache';
 import { convertToWebPWithResize } from '@/lib/imageUtils';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -266,6 +267,7 @@ const AdminPage = () => {
     if (error) {
       toast({ title: `Error saving ${key}`, description: error.message, variant: 'destructive' });
     } else {
+      invalidateSettingsCache();
       toast({ title: "Settings updated!" });
     }
   };
@@ -305,6 +307,7 @@ const AdminPage = () => {
       
       setHomeImages(newHomeImages);
       setUploadingHomeImage(null);
+      invalidateSettingsCache();
       toast({ title: `${imageType === 'hero' ? 'Hero' : 'Community'} image updated!` });
     } catch (err) {
       toast({ title: "Image conversion failed", description: err.message, variant: "destructive" });
@@ -323,6 +326,7 @@ const AdminPage = () => {
     }
     
     setHomeImages(newHomeImages);
+    invalidateSettingsCache();
     toast({ title: `${imageType === 'hero' ? 'Hero' : 'Community'} image removed` });
   };
 

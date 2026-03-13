@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/customSupabaseClient';
+import { getSettings } from '@/lib/settingsCache';
 import { useCookieConsent } from '@/contexts/CookieConsentContext';
 
 const TrackingScripts = () => {
@@ -8,19 +8,9 @@ const TrackingScripts = () => {
   const { hasConsent } = useCookieConsent();
 
   useEffect(() => {
-    const fetchTrackingCodes = async () => {
-      const { data } = await supabase
-        .from('settings')
-        .select('value')
-        .eq('key', 'tracking_codes')
-        .single();
-      
-      if (data?.value) {
-        setTrackingCodes(data.value);
-      }
-    };
-
-    fetchTrackingCodes();
+    getSettings().then(s => {
+      if (s.tracking_codes) setTrackingCodes(s.tracking_codes);
+    }).catch(err => console.warn('Failed to fetch tracking codes:', err));
   }, []);
 
   useEffect(() => {

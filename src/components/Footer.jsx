@@ -2,28 +2,15 @@
 import React, { memo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart } from 'lucide-react';
-import { supabase } from '@/lib/customSupabaseClient';
+import { getSettings } from '@/lib/settingsCache';
 
 const Footer = memo(() => {
   const [logoUrl, setLogoUrl] = useState('');
 
   useEffect(() => {
-    const fetchLogo = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('settings')
-          .select('value')
-          .eq('key', 'home_images')
-          .single();
-        
-        if (!error && data?.value?.logo) {
-          setLogoUrl(data.value.logo);
-        }
-      } catch (err) {
-        console.warn('Failed to fetch footer logo:', err);
-      }
-    };
-    fetchLogo();
+    getSettings().then(s => {
+      if (s.home_images?.logo) setLogoUrl(s.home_images.logo);
+    }).catch(err => console.warn('Failed to fetch footer logo:', err));
   }, []);
 
   return (
