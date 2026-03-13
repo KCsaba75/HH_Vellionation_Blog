@@ -50,17 +50,17 @@ const HomePage = () => {
     <>
       <Helmet>
         <title>Weight Loss After 40 | Vellio Nation - Healthy Living for Men & Women</title>
-        <meta name="description" content="Discover proven weight loss strategies for men and women over 40. Join Vellio Nation for expert tips on losing weight after 40, healthy eating, metabolism boosting, and sustainable lifestyle changes." />
+        <meta name="description" content="Proven weight loss strategies for women over 40. Expert tips on losing weight, healthy eating & metabolism boosting. Join Vellio Nation today." />
         <meta name="keywords" content="weight loss, weight loss over 40, metabolism reset, longevity lifestyle, ageless vitality, biohacking, functional medicine, healthy weight loss, sustainable transformation, midlife wellness" />
         <link rel="canonical" href="https://www.vellionation.com/" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.vellionation.com/" />
         <meta property="og:title" content="Weight Loss After 40 | Vellio Nation - Healthy Living for Men & Women" />
-        <meta property="og:description" content="Discover proven weight loss strategies for men and women over 40. Expert tips on losing weight, healthy eating, and sustainable lifestyle changes for the 40+ community." />
+        <meta property="og:description" content="Proven weight loss strategies for women over 40. Expert tips on losing weight, healthy eating & metabolism boosting. Join Vellio Nation today." />
         <meta property="og:image" content="https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Weight Loss After 40 | Vellio Nation - Healthy Living for Men & Women" />
-        <meta name="twitter:description" content="Discover proven weight loss strategies for men and women over 40. Expert tips on losing weight, healthy eating, and sustainable lifestyle changes for the 40+ community." />
+        <meta name="twitter:description" content="Proven weight loss strategies for women over 40. Expert tips on losing weight, healthy eating & metabolism boosting. Join Vellio Nation today." />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
