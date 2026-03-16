@@ -674,6 +674,20 @@ const AdminPage = () => {
               {formType === 'post' && (
                 <>
                   <div><Label htmlFor="post-title" className="text-sm">Title</Label><input id="post-title" value={editingItem.title || ''} onChange={e => setEditingItem({ ...editingItem, title: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" required /></div>
+                  <div>
+                    <Label htmlFor="post-author" className="text-sm">Author</Label>
+                    <select
+                      id="post-author"
+                      value={editingItem.user_id || ''}
+                      onChange={e => setEditingItem({ ...editingItem, user_id: e.target.value })}
+                      className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm"
+                    >
+                      <option value="">— Select author —</option>
+                      {users.filter(u => ['admin', 'blogger'].includes(u.role)).map(u => (
+                        <option key={u.id} value={u.id}>{u.name || u.email} ({u.role})</option>
+                      ))}
+                    </select>
+                  </div>
                   <div><Label htmlFor="post-excerpt" className="text-sm">Excerpt</Label><textarea id="post-excerpt" value={editingItem.excerpt || ''} onChange={e => setEditingItem({ ...editingItem, excerpt: e.target.value })} className="w-full mt-1 p-2.5 rounded-lg border bg-background text-sm" rows={2} /></div>
                   <CategorySelector
                     type="blog"
