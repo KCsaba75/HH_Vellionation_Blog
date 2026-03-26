@@ -148,10 +148,19 @@ export const AuthProvider = ({ children }) => {
 
         if (newsletterSubscribed) {
           try {
+            await supabase
+              .from('newsletter_subscribers')
+              .upsert({ email: data.user.email, name: name || '', source: 'registration' }, { onConflict: 'email' });
+          } catch (e) {
+            console.warn('newsletter_subscribers insert skipped:', e.message);
+          }
+
+          try {
             const { addContactToSystemeio } = await import('@/lib/systemeioClient');
             const contactId = await addContactToSystemeio(data.user.email, name, ['newsletter']);
             if (contactId) {
               await supabase.from('profiles').update({ systemeio_contact_id: String(contactId) }).eq('id', data.user.id);
+              await supabase.from('newsletter_subscribers').update({ systemeio_contact_id: String(contactId) }).eq('email', data.user.email);
             }
           } catch (e) {
             console.warn('systeme.io sync skipped:', e.message);

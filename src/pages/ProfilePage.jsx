@@ -321,6 +321,12 @@ const ProfilePage = () => {
                       } else {
                         await updateProfile({ newsletter_subscribed: true });
                         try {
+                          const { supabase } = await import('@/lib/customSupabaseClient');
+                          await supabase.from('newsletter_subscribers').upsert({ email: profile.email, name: profile.name || '', source: 'profile' }, { onConflict: 'email' });
+                        } catch (e) {
+                          console.warn('newsletter_subscribers upsert skipped:', e.message);
+                        }
+                        try {
                           const { addContactToSystemeio, addTagToContact } = await import('@/lib/systemeioClient');
                           if (profile.systemeio_contact_id) {
                             await addTagToContact(profile.systemeio_contact_id, 'newsletter');
@@ -329,6 +335,7 @@ const ProfilePage = () => {
                             if (contactId) {
                               const { supabase } = await import('@/lib/customSupabaseClient');
                               await supabase.from('profiles').update({ systemeio_contact_id: String(contactId) }).eq('id', user.id);
+                              await supabase.from('newsletter_subscribers').update({ systemeio_contact_id: String(contactId) }).eq('email', profile.email);
                             }
                           }
                         } catch (e) {
@@ -383,6 +390,12 @@ const ProfilePage = () => {
                   <AlertDialogAction
                     onClick={async () => {
                       await updateProfile({ newsletter_subscribed: false });
+                      try {
+                        const { supabase } = await import('@/lib/customSupabaseClient');
+                        await supabase.from('newsletter_subscribers').delete().eq('email', profile.email);
+                      } catch (e) {
+                        console.warn('newsletter_subscribers delete skipped:', e.message);
+                      }
                       if (profile.systemeio_contact_id) {
                         try {
                           const { removeTagFromContact } = await import('@/lib/systemeioClient');
