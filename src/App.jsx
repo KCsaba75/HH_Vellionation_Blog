@@ -23,6 +23,7 @@ const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('@/pages/ResetPasswordPage'));
 const BlogDashboardPage = lazy(() => import('@/pages/BlogDashboardPage'));
 const StaticPage = lazy(() => import('@/pages/StaticPage'));
+const UnsubscribePage = lazy(() => import('@/pages/UnsubscribePage'));
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
               <Route path="help-center" element={<StaticPage pageKey="page_content_help" />} />
               <Route path="privacy-policy" element={<StaticPage pageKey="page_content_privacy" />} />
               <Route path="terms-of-service" element={<StaticPage pageKey="page_content_terms" />} />
+              <Route path="unsubscribe" element={<UnsubscribePage />} />
             </Route>
           </Routes>
           <CookieConsentPopup />
