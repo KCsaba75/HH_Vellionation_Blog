@@ -55,8 +55,9 @@ serve(async (req) => {
     }
 
     const SITE_URL = 'https://www.vellionation.com';
+    const LOGO_URL = 'https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/logo.png';
     const postUrl = `${SITE_URL}/blog/${postSlug}`;
-    const heroImage = postImageUrl || 'https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg';
+    const heroImage = postImageUrl || null;
 
     // Blog notification unsubscribe always points to /profile where the user
     // can toggle email_notifications off. This is intentionally separate from
@@ -78,11 +79,12 @@ serve(async (req) => {
           <!-- Header -->
           <tr>
             <td style="background:#16a34a;padding:30px 40px;text-align:center;">
+              <img src="${LOGO_URL}" alt="Vellio Nation" width="60" height="60" style="display:block;margin:0 auto 12px auto;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.3);" />
               <h1 style="color:#ffffff;margin:0;font-size:24px;font-weight:bold;">Vellio Nation</h1>
               <p style="color:#bbf7d0;margin:6px 0 0 0;font-size:14px;">Longevity Lifestyle Community</p>
             </td>
           </tr>
-          <!-- Hero Image -->
+          <!-- Hero Image (only shown when the post has a featured image) -->
           ${heroImage ? `<tr><td><img src="${heroImage}" alt="${postTitle}" width="600" style="display:block;width:100%;max-height:280px;object-fit:cover;" /></td></tr>` : ''}
           <!-- Body -->
           <tr>
