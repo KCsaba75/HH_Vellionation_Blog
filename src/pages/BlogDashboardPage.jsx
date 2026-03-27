@@ -158,7 +158,7 @@ const BlogDashboardPage = () => {
                 postTitle: finalPostData.title,
                 postExcerpt: finalPostData.excerpt || '',
                 postSlug: finalPostData.slug,
-                postImageUrl: finalPostData.featured_image_url || null,
+                postImageUrl: finalPostData.image_url || null,
               },
             });
           } catch (e) {

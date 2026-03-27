@@ -218,7 +218,7 @@ const AdminPage = () => {
               postTitle: postData.title,
               postExcerpt: postData.excerpt || '',
               postSlug: postData.slug,
-              postImageUrl: postData.featured_image_url || null,
+              postImageUrl: postData.image_url || null,
             },
           });
         } catch (e) {
