@@ -34,11 +34,21 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { data: subscribers, error: dbError } = await supabase
-      .from('profiles')
-      .select('email, name')
-      .eq('email_notifications', true)
-      .not('email', 'is', null);
+    const [
+      { data: subscribers, error: dbError },
+      { data: logoSetting },
+    ] = await Promise.all([
+      supabase
+        .from('profiles')
+        .select('email, name')
+        .eq('email_notifications', true)
+        .not('email', 'is', null),
+      supabase
+        .from('settings')
+        .select('value')
+        .eq('key', 'home_images')
+        .single(),
+    ]);
 
     if (dbError) {
       console.error('DB error:', dbError);
@@ -55,7 +65,7 @@ serve(async (req) => {
     }
 
     const SITE_URL = 'https://www.vellionation.com';
-    const LOGO_URL = 'https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/logo.png';
+    const logoUrl: string | null = logoSetting?.value?.logo || null;
     const postUrl = `${SITE_URL}/blog/${postSlug}`;
     const heroImage = postImageUrl || null;
 
@@ -79,7 +89,7 @@ serve(async (req) => {
           <!-- Header -->
           <tr>
             <td style="background:#16a34a;padding:30px 40px;text-align:center;">
-              <img src="${LOGO_URL}" alt="Vellio Nation" width="60" height="60" style="display:block;margin:0 auto 12px auto;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.3);" />
+              ${logoUrl ? `<img src="${logoUrl}" alt="Vellio Nation" width="60" height="60" style="display:block;margin:0 auto 12px auto;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.3);" />` : ''}
               <h1 style="color:#ffffff;margin:0;font-size:24px;font-weight:bold;">Vellio Nation</h1>
               <p style="color:#bbf7d0;margin:6px 0 0 0;font-size:14px;">Longevity Lifestyle Community</p>
             </td>
