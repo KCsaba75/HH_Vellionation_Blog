@@ -40,15 +40,6 @@ serve(async (req) => {
       .eq('email_notifications', true)
       .not('email', 'is', null);
 
-    const subscriberEmails = (subscribers || []).map(s => s.email).filter(Boolean);
-    const { data: tokenRows } = await supabase
-      .from('newsletter_subscribers')
-      .select('email, unsubscribe_token')
-      .in('email', subscriberEmails);
-
-    const tokenMap: Record<string, string> = {};
-    (tokenRows || []).forEach(r => { if (r.unsubscribe_token) tokenMap[r.email] = r.unsubscribe_token; });
-
     if (dbError) {
       console.error('DB error:', dbError);
       return new Response(JSON.stringify({ error: 'Failed to fetch subscribers' }), {
@@ -67,7 +58,12 @@ serve(async (req) => {
     const postUrl = `${SITE_URL}/blog/${postSlug}`;
     const heroImage = postImageUrl || 'https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/site_images/og-image.jpg';
 
-    const buildEmailHtml = (unsubscribeUrl: string) => `<!DOCTYPE html>
+    // Blog notification unsubscribe always points to /profile where the user
+    // can toggle email_notifications off. This is intentionally separate from
+    // the newsletter unsubscribe token (which controls newsletter_subscribed).
+    const unsubscribeUrl = `${SITE_URL}/profile`;
+
+    const emailHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -102,7 +98,7 @@ serve(async (req) => {
             <td style="background:#f9fafb;padding:24px 40px;border-top:1px solid #e5e7eb;">
               <p style="color:#9ca3af;font-size:12px;margin:0;line-height:1.6;">
                 You're receiving this because you subscribed to blog notifications on Vellio Nation.<br>
-                <a href="${SITE_URL}/profile" style="color:#16a34a;">Manage your preferences</a> · 
+                <a href="${unsubscribeUrl}" style="color:#16a34a;">Manage your preferences</a> ·
                 <a href="${unsubscribeUrl}" style="color:#9ca3af;">Unsubscribe</a> ·
                 <a href="${SITE_URL}" style="color:#6b7280;">Visit Vellio Nation</a>
               </p>
@@ -121,11 +117,6 @@ serve(async (req) => {
     for (const subscriber of subscribers) {
       if (!subscriber.email) continue;
 
-      const token = tokenMap[subscriber.email];
-      const unsubscribeUrl = token
-        ? `${SITE_URL}/unsubscribe?token=${token}`
-        : `${SITE_URL}/profile`;
-
       const emailResponse = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -136,7 +127,7 @@ serve(async (req) => {
           from: 'Vellio Nation <hello@vellionation.com>',
           to: [subscriber.email],
           subject: `New Article: ${postTitle}`,
-          html: buildEmailHtml(unsubscribeUrl),
+          html: emailHtml,
         }),
       });
 
