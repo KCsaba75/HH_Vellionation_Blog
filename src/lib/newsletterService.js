@@ -1,5 +1,4 @@
 import { supabase } from '@/lib/customSupabaseClient';
-import { addContactToSystemeio } from '@/lib/systemeioClient';
 
 export async function subscribeToNewsletter(email, name = '') {
   if (!email || !email.includes('@')) {
@@ -16,15 +15,6 @@ export async function subscribeToNewsletter(email, name = '') {
         return { success: false, alreadySubscribed: true };
       }
       console.error('Supabase newsletter insert error:', insertError);
-    }
-
-    const systemeioId = await addContactToSystemeio(email.trim().toLowerCase(), name.trim(), ['newsletter', 'homepage-optin']);
-
-    if (systemeioId) {
-      await supabase
-        .from('newsletter_subscribers')
-        .update({ systemeio_contact_id: String(systemeioId) })
-        .eq('email', email.trim().toLowerCase());
     }
 
     return { success: true };

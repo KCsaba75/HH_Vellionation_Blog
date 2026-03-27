@@ -320,20 +320,6 @@ const ProfilePage = () => {
                         setPendingToggle('newsletter');
                       } else {
                         await updateProfile({ newsletter_subscribed: true });
-                        try {
-                          const { addContactToSystemeio, addTagToContact } = await import('@/lib/systemeioClient');
-                          if (profile.systemeio_contact_id) {
-                            await addTagToContact(profile.systemeio_contact_id, 'newsletter');
-                          } else {
-                            const contactId = await addContactToSystemeio(profile.email, profile.name, ['newsletter']);
-                            if (contactId) {
-                              const { supabase } = await import('@/lib/customSupabaseClient');
-                              await supabase.from('profiles').update({ systemeio_contact_id: String(contactId) }).eq('id', user.id);
-                            }
-                          }
-                        } catch (e) {
-                          console.warn('systeme.io subscribe skipped:', e.message);
-                        }
                       }
                     }}
                     className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${profile.newsletter_subscribed ? 'bg-primary' : 'bg-muted'}`}
@@ -383,14 +369,6 @@ const ProfilePage = () => {
                   <AlertDialogAction
                     onClick={async () => {
                       await updateProfile({ newsletter_subscribed: false });
-                      if (profile.systemeio_contact_id) {
-                        try {
-                          const { removeTagFromContact } = await import('@/lib/systemeioClient');
-                          await removeTagFromContact(profile.systemeio_contact_id, 'newsletter');
-                        } catch (e) {
-                          console.warn('systeme.io unsubscribe skipped:', e.message);
-                        }
-                      }
                       setPendingToggle(null);
                     }}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

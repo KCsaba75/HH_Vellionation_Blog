@@ -146,17 +146,6 @@ export const AuthProvider = ({ children }) => {
           .update(updates)
           .eq('id', data.user.id);
 
-        if (newsletterSubscribed) {
-          try {
-            const { addContactToSystemeio } = await import('@/lib/systemeioClient');
-            const contactId = await addContactToSystemeio(data.user.email, name, ['newsletter']);
-            if (contactId) {
-              await supabase.from('profiles').update({ systemeio_contact_id: String(contactId) }).eq('id', data.user.id);
-            }
-          } catch (e) {
-            console.warn('systeme.io sync skipped:', e.message);
-          }
-        }
       } catch (e) {
         console.warn('Could not update profile after signup:', e.message);
       }
