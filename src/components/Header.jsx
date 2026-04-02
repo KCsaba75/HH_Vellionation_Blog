@@ -63,9 +63,11 @@ const Header = () => {
                 </div>
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="text-3xl font-bold text-primary hidden sm:block" // Increased font size
+                className="flex flex-col"
               >
-                Vellio Nation
+                <span className="text-3xl font-bold text-primary hidden sm:block">Vellio Nation</span>
+                <span className="text-xs sm:text-sm font-medium text-muted-foreground tracking-widest uppercase">Feel Good Again</span>
+                <span className="hidden sm:block text-xs text-muted-foreground/60 italic tracking-wide">Simple Habits, Lasting Results</span>
               </motion.div>
             </Link>
             <div className="hidden md:flex items-center gap-2">
