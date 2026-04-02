@@ -66,7 +66,7 @@ const Header = () => {
                 className="flex flex-col"
               >
                 <span className="text-3xl font-bold text-primary hidden sm:block">Vellio Nation</span>
-                <span className="text-xs sm:text-sm font-medium text-muted-foreground tracking-widest uppercase">Feel Good Again</span>
+                <span className="text-xs sm:text-sm font-medium text-muted-foreground tracking-widest">Feel Good Again</span>
                 <span className="hidden sm:block text-xs text-muted-foreground/60 italic tracking-wide">Simple Habits, Lasting Results</span>
               </motion.div>
             </Link>
