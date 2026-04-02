@@ -39,6 +39,7 @@ const AdminPage = () => {
   
   const [socialLinks, setSocialLinks] = useState({ facebook: '', instagram: '', youtube: '', spotify: '' });
   const [pageContents, setPageContents] = useState({
+    about: { content: '' },
     help: { content: '' },
     privacy: { content: '' },
     terms: { content: '' },
@@ -79,6 +80,7 @@ const AdminPage = () => {
     if (settingsData) {
       setSocialLinks(settingsData.find(s => s.key === 'social_links')?.value || { facebook: '', instagram: '', youtube: '', spotify: '' });
       setPageContents({
+        about: settingsData.find(s => s.key === 'page_content_about')?.value || { content: '' },
         help: settingsData.find(s => s.key === 'page_content_help')?.value || { content: '' },
         privacy: settingsData.find(s => s.key === 'page_content_privacy')?.value || { content: '' },
         terms: settingsData.find(s => s.key === 'page_content_terms')?.value || { content: '' },
@@ -642,6 +644,11 @@ const AdminPage = () => {
                   {/* Page Content */}
                   <div className="lg:col-span-2 bg-card p-4 sm:p-6 rounded-xl shadow-lg space-y-6 sm:space-y-8">
                     <div className="flex items-center gap-2"><FileText className="h-5 w-5 text-primary" /><h2 className="text-lg sm:text-xl font-semibold">Page Content</h2></div>
+                    <div className="prose dark:prose-invert max-w-none">
+                      <Label className="text-sm sm:text-lg font-medium">About Us</Label>
+                      <RichTextEditor value={pageContents.about.content} onChange={(c) => handlePageContentChange('about', c)} className="mt-2"/>
+                      <Button className="mt-2" size="sm" onClick={() => handleSaveSettings('page_content_about', pageContents.about)}><Save className="mr-2 h-4 w-4"/>Save About Page</Button>
+                    </div>
                     <div className="prose dark:prose-invert max-w-none">
                       <Label className="text-sm sm:text-lg font-medium">Help Center</Label>
                       <RichTextEditor value={pageContents.help.content} onChange={(c) => handlePageContentChange('help', c)} className="mt-2"/>

@@ -49,6 +49,7 @@ function App() {
               <Route path="forgot-password" element={<ForgotPasswordPage />} />
               <Route path="reset-password" element={<ResetPasswordPage />} />
               <Route path="dashboard/write" element={<BlogDashboardPage />} />
+              <Route path="about" element={<StaticPage pageKey="page_content_about" />} />
               <Route path="help-center" element={<StaticPage pageKey="page_content_help" />} />
               <Route path="privacy-policy" element={<StaticPage pageKey="page_content_privacy" />} />
               <Route path="terms-of-service" element={<StaticPage pageKey="page_content_terms" />} />
