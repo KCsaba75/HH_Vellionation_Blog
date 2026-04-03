@@ -23,6 +23,7 @@ const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('@/pages/ResetPasswordPage'));
 const BlogDashboardPage = lazy(() => import('@/pages/BlogDashboardPage'));
 const StaticPage = lazy(() => import('@/pages/StaticPage'));
+const AboutPage = lazy(() => import('@/pages/AboutPage'));
 const UnsubscribePage = lazy(() => import('@/pages/UnsubscribePage'));
 
 function App() {
@@ -49,7 +50,7 @@ function App() {
               <Route path="forgot-password" element={<ForgotPasswordPage />} />
               <Route path="reset-password" element={<ResetPasswordPage />} />
               <Route path="dashboard/write" element={<BlogDashboardPage />} />
-              <Route path="about" element={<StaticPage pageKey="page_content_about" />} />
+              <Route path="about" element={<AboutPage />} />
               <Route path="help-center" element={<StaticPage pageKey="page_content_help" />} />
               <Route path="privacy-policy" element={<StaticPage pageKey="page_content_privacy" />} />
               <Route path="terms-of-service" element={<StaticPage pageKey="page_content_terms" />} />
