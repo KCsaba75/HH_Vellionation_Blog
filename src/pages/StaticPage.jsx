@@ -45,7 +45,7 @@ const StaticPage = ({ pageKey }) => {
           {loading ? (
             <div className="text-center">Loading...</div>
           ) : (
-             <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(pageData.content) }} />
+             <div className="prose prose-lg dark:prose-invert !max-w-none w-full rich-content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(pageData.content) }} />
           )}
         </motion.div>
       </div>
