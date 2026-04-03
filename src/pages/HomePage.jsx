@@ -98,7 +98,7 @@ const HomePage = () => {
         <DailyTipBanner />
       </div>
 
-      <section className="relative overflow-hidden py-20 md:py-32">
+      <section className="relative overflow-hidden py-10 md:py-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div
