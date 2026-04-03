@@ -127,7 +127,7 @@ const ArticleAudioPlayer = ({ content, title }) => {
       chunkIndexRef.current = index + 1;
       const pct = Math.round(((index + 1) / chunks.length) * 100);
       setProgress(pct);
-      speakChunk(chunks, index + 1, voiceList);
+      setTimeout(() => speakChunk(chunks, index + 1, voiceList), 60);
     };
 
     utterance.onerror = (e) => {
@@ -164,12 +164,11 @@ const ArticleAudioPlayer = ({ content, title }) => {
         window.speechSynthesis.speaking &&
         !window.speechSynthesis.paused
       ) {
-        window.speechSynthesis.pause();
         window.speechSynthesis.resume();
       }
     }, 14000);
 
-    speakChunk(chunks, 0, currentVoices);
+    setTimeout(() => speakChunk(chunks, 0, currentVoices), 80);
   }, [content, title, voices, speakChunk]);
 
   const handlePlay = () => {
