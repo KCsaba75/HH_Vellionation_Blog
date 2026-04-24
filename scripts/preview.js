@@ -7,7 +7,9 @@ const PORT = parseInt(process.env.PORT || '5000', 10);
 const HOST = process.env.HOST || '0.0.0.0';
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 
-// External URLs that override local files (kept in sync with public/serve.json).
+// External URLs that override local files. SEO files (sitemap.xml, llms.txt)
+// are uploaded to Supabase Storage by the build scripts and served from there
+// so that the deployed app can be updated without a full redeploy.
 const REDIRECTS = {
   '/sitemap.xml':
     'https://rtklsdtadtqpgoibulux.supabase.co/storage/v1/object/public/seo-files/sitemap.xml',
@@ -129,7 +131,7 @@ const server = http.createServer((req, res) => {
     const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const pathname = url.pathname;
 
-    // 301 redirects (kept in sync with serve.json — externalised SEO files)
+    // 301 redirects for externalised SEO files (see REDIRECTS above)
     if (REDIRECTS[pathname]) {
       res.writeHead(301, { Location: REDIRECTS[pathname] });
       res.end();

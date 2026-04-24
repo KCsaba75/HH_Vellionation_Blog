@@ -157,8 +157,8 @@ function injectSeo(template, seoBlock) {
 }
 
 function writeHtml(routePath, html) {
-  // With `cleanUrls: true` in serve.json, serve resolves `/foo` -> `dist/foo.html`.
-  // We write a flat `<path>.html` per route so the rewrite rule never swallows them.
+  // We write a flat `<path>.html` per route. The runtime server
+  // (`scripts/preview.js`) resolves `/foo` -> `dist/foo.html` via try-files.
   let outPath;
   if (routePath === '/') {
     outPath = path.join(DIST_DIR, 'index.html');
@@ -450,40 +450,35 @@ async function main() {
   }
 
   const allRoutes = [...staticRoutes()];
+  const staticPaths = allRoutes.map((r) => r.path);
   let dynamicCount = 0;
 
-  try {
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: { persistSession: false },
-    });
+  // Dynamic SEO data is critical for search rankings, so we let any Supabase
+  // failure (network, auth, RLS, schema drift) propagate and abort the build
+  // instead of silently shipping a deploy with no per-post / per-solution
+  // prerendered HTML. Set PRERENDER_ALLOW_EMPTY=1 to bypass in emergencies.
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: false },
+  });
 
-    const [posts, solutions] = await Promise.all([
-      fetchBlogPosts(supabase).catch((e) => {
-        console.warn(`Warning: ${e.message}`);
-        return [];
-      }),
-      fetchSolutions(supabase).catch((e) => {
-        console.warn(`Warning: ${e.message}`);
-        return [];
-      }),
-    ]);
+  const [posts, solutions] = await Promise.all([
+    fetchBlogPosts(supabase),
+    fetchSolutions(supabase),
+  ]);
 
-    for (const post of posts) {
-      const route = blogPostSeo(post);
-      if (route) {
-        allRoutes.push(route);
-        dynamicCount++;
-      }
+  for (const post of posts) {
+    const route = blogPostSeo(post);
+    if (route) {
+      allRoutes.push(route);
+      dynamicCount++;
     }
-    for (const solution of solutions) {
-      const route = solutionSeo(solution);
-      if (route) {
-        allRoutes.push(route);
-        dynamicCount++;
-      }
+  }
+  for (const solution of solutions) {
+    const route = solutionSeo(solution);
+    if (route) {
+      allRoutes.push(route);
+      dynamicCount++;
     }
-  } catch (err) {
-    console.warn(`Warning: dynamic route fetch failed: ${err.message}`);
   }
 
   let written = 0;
@@ -504,7 +499,34 @@ async function main() {
   console.log(
     `Prerender complete: ${written} routes written (${dynamicCount} dynamic), ${failed} failed.`,
   );
-  if (failed > 0 && written === 0) process.exit(1);
+
+  // Post-build verification: critical static routes MUST exist on disk.
+  const requiredStatic = ['/', '/blog', '/solutions', '/community', '/about'];
+  const missing = [];
+  for (const p of requiredStatic) {
+    if (!staticPaths.includes(p)) continue;
+    const expected =
+      p === '/'
+        ? path.join(DIST_DIR, 'index.html')
+        : path.join(DIST_DIR, `${p.replace(/^\//, '')}.html`);
+    if (!fs.existsSync(expected)) missing.push(`${p} → ${expected}`);
+  }
+  if (missing.length > 0) {
+    console.error('Prerender verification FAILED — missing critical files:');
+    for (const m of missing) console.error(`  - ${m}`);
+    process.exit(1);
+  }
+
+  if (failed > 0) process.exit(1);
+
+  if (dynamicCount === 0 && process.env.PRERENDER_ALLOW_EMPTY !== '1') {
+    console.error(
+      'Prerender verification FAILED — zero dynamic routes generated. ' +
+        'Supabase returned no posts and no solutions, which almost certainly ' +
+        'indicates a data or query problem. Set PRERENDER_ALLOW_EMPTY=1 to bypass.',
+    );
+    process.exit(1);
+  }
 }
 
 main().catch((err) => {
