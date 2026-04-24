@@ -208,12 +208,20 @@ const ProfilePage = () => {
                   </div>
                   <div>
                     {editing ? (
-                      <input
-                        type="text"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="text-2xl font-bold bg-background border rounded px-2 py-1"
-                      />
+                      <>
+                        <input
+                          type="text"
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className="text-2xl font-bold bg-background border rounded px-2 py-1"
+                          aria-describedby="name-language-hint"
+                        />
+                        {/[^\x00-\x7F]/.test(formData.name) && (
+                          <p id="name-language-hint" className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                            Heads up: this site's UI is English-only. Names with non-Latin characters appear in the header dropdown and as your byline on posts/comments.
+                          </p>
+                        )}
+                      </>
                     ) : (
                       <h1 className="text-2xl font-bold">{profile.name}</h1>
                     )}
