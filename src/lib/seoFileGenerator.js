@@ -135,7 +135,7 @@ export async function generateSitemapXml() {
     for (const solution of solutions) {
       if (!solution.slug) continue;
       urls.push({
-        loc: `${SITE_URL}/solutions/${solution.slug}`,
+        loc: `${SITE_URL}/solutions/${escapeXml(solution.slug)}`,
         lastmod: formatDate(solution.created_at),
         changefreq: 'weekly',
         priority: '0.6'
