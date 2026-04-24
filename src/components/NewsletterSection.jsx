@@ -69,19 +69,25 @@ const NewsletterSection = () => {
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+              <label htmlFor="newsletter-name" className="sr-only">First name (optional)</label>
               <input
+                id="newsletter-name"
                 type="text"
                 placeholder="First name (optional)"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                autoComplete="given-name"
                 className="flex-shrink-0 sm:w-36 px-4 py-3 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary text-sm"
               />
+              <label htmlFor="newsletter-email" className="sr-only">Your email address</label>
               <input
+                id="newsletter-email"
                 type="email"
                 placeholder="Your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                autoComplete="email"
                 className="flex-1 px-4 py-3 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary text-sm"
               />
               <Button

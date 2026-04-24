@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCookieConsent } from '@/contexts/CookieConsentContext';
 import { Button } from '@/components/ui/button';
@@ -6,11 +6,78 @@ import { Cookie, Shield, FileText, User } from 'lucide-react';
 
 const CookieConsentPopup = () => {
   const { showConsentPopup, acceptConsent, declineConsent } = useCookieConsent();
+  const popupRef = useRef(null);
+  const acceptBtnRef = useRef(null);
+  const previouslyFocusedRef = useRef(null);
+
+  useEffect(() => {
+    if (!showConsentPopup) return;
+
+    previouslyFocusedRef.current = document.activeElement;
+
+    const focusTimer = setTimeout(() => {
+      acceptBtnRef.current?.focus();
+    }, 50);
+
+    const getFocusables = () => {
+      if (!popupRef.current) return [];
+      return Array.from(
+        popupRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((el) => !el.hasAttribute('disabled'));
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        declineConsent();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+
+      const focusables = getFocusables();
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement;
+
+      if (e.shiftKey) {
+        if (active === first || !popupRef.current?.contains(active)) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (active === last || !popupRef.current?.contains(active)) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      clearTimeout(focusTimer);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showConsentPopup, declineConsent]);
+
+  const restorePreviousFocus = () => {
+    if (previouslyFocusedRef.current && typeof previouslyFocusedRef.current.focus === 'function') {
+      previouslyFocusedRef.current.focus();
+      previouslyFocusedRef.current = null;
+    }
+  };
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={restorePreviousFocus}>
       {showConsentPopup && (
         <motion.div
+          ref={popupRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cookie-consent-title"
+          aria-describedby="cookie-consent-desc"
           initial={{ opacity: 0, x: 80, y: 20 }}
           animate={{ opacity: 1, x: 0, y: 0 }}
           exit={{ opacity: 0, x: 80, y: 20 }}
@@ -24,12 +91,12 @@ const CookieConsentPopup = () => {
                   <Cookie className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-base font-bold leading-tight">Welcome to Vellio Nation</h2>
+                  <h2 id="cookie-consent-title" className="text-base font-bold leading-tight">Welcome to Vellio Nation</h2>
                   <p className="text-xs text-muted-foreground">Your wellness journey starts here</p>
                 </div>
               </div>
 
-              <div className="space-y-2 mb-4">
+              <div id="cookie-consent-desc" className="space-y-2 mb-4">
                 <div className="flex items-start gap-2 p-2.5 bg-muted/50 rounded-lg">
                   <Shield className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                   <div>
@@ -62,7 +129,7 @@ const CookieConsentPopup = () => {
               </div>
 
               <div className="flex gap-2">
-                <Button onClick={acceptConsent} size="sm" className="flex-1 gap-1.5 text-xs h-8">
+                <Button ref={acceptBtnRef} onClick={acceptConsent} size="sm" className="flex-1 gap-1.5 text-xs h-8">
                   <Cookie className="w-3.5 h-3.5" />
                   Accept All
                 </Button>

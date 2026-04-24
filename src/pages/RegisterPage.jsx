@@ -139,19 +139,22 @@ const RegisterPage = () => {
                   <div className="pt-4 border-t border-border mt-2">
                     <form onSubmit={handleSubmit} className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium mb-2">Name</label>
+                        <label htmlFor="register-name" className="block text-sm font-medium mb-2">Name</label>
                         <input
+                          id="register-name"
                           type="text"
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                           className="w-full p-3 rounded-lg border bg-background"
+                          autoComplete="name"
                           required
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium mb-2">Email</label>
+                        <label htmlFor="register-email" className="block text-sm font-medium mb-2">Email</label>
                         <input
+                          id="register-email"
                           type="email"
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -162,8 +165,9 @@ const RegisterPage = () => {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium mb-2">Password</label>
+                        <label htmlFor="register-password" className="block text-sm font-medium mb-2">Password</label>
                         <input
+                          id="register-password"
                           type="password"
                           value={formData.password}
                           onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -175,8 +179,9 @@ const RegisterPage = () => {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium mb-2">Confirm Password</label>
+                        <label htmlFor="register-confirm-password" className="block text-sm font-medium mb-2">Confirm Password</label>
                         <input
+                          id="register-confirm-password"
                           type="password"
                           value={formData.confirmPassword}
                           onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}

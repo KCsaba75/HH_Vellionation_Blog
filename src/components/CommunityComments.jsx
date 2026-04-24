@@ -101,18 +101,25 @@ const CommunityComments = ({ postId }) => {
         ))}
       </div>
       {user && (
-        <div className="relative">
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Add a comment..."
-            className="w-full p-2 pr-12 rounded-lg border bg-background resize-none text-sm"
-            rows="2"
-            aria-label="Write a comment"
-          />
-          <Button onClick={handlePostComment} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8" aria-label="Post comment">
-            <Send className="h-4 w-4" />
-          </Button>
+        <div>
+          <div className="relative">
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Add a comment..."
+              className="w-full p-2 pr-12 rounded-lg border bg-background resize-none text-sm"
+              rows="2"
+              maxLength={2000}
+              aria-label="Write a comment"
+              aria-describedby={`community-comment-counter-${postId}`}
+            />
+            <Button onClick={handlePostComment} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8" disabled={!newComment.trim() || newComment.length > 2000} aria-label="Post comment">
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="text-right mt-1">
+            <span id={`community-comment-counter-${postId}`} className={`text-xs ${newComment.length > 1900 ? 'text-amber-600 dark:text-amber-400' : 'text-muted-foreground'}`} aria-live="polite">{newComment.length} / 2000</span>
+          </div>
         </div>
       )}
     </div>

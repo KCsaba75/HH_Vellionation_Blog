@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import DOMPurify from 'dompurify';
+import { sanitizeArticleHtml } from '@/lib/contentSanitizer';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
@@ -185,13 +186,23 @@ const BlogPostPage = () => {
   };
 
   const handlePrintPdf = () => {
+    const escapeHtml = (str) => String(str ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
+    const safeContent = sanitizeArticleHtml(post.content);
+    const safeExcerpt = DOMPurify.sanitize(post.excerpt || '');
+
     const printWindow = window.open('', '_blank');
     if (printWindow) {
       printWindow.document.write(`
         <!DOCTYPE html>
         <html>
         <head>
-          <title>${post.title} - Vellio Nation</title>
+          <title>${escapeHtml(post.title)} - Vellio Nation</title>
           <style>
             body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; }
             h1 { font-size: 2em; margin-bottom: 0.5em; }
@@ -203,12 +214,12 @@ const BlogPostPage = () => {
           </style>
         </head>
         <body>
-          <h1>${post.title}</h1>
+          <h1>${escapeHtml(post.title)}</h1>
           <div class="meta">
-            By ${post.profiles?.name || 'Vellio Team'} | ${post.read_time || '5 min read'} | ${post.categories?.name || 'Uncategorized'}
+            By ${escapeHtml(post.profiles?.name || 'Vellio Team')} | ${escapeHtml(post.read_time || '5 min read')} | ${escapeHtml(post.categories?.name || 'Uncategorized')}
           </div>
-          <div class="excerpt">${post.excerpt || ''}</div>
-          <div class="content">${post.content}</div>
+          <div class="excerpt">${safeExcerpt}</div>
+          <div class="content">${safeContent}</div>
         </body>
         </html>
       `);
@@ -389,19 +400,7 @@ const BlogPostPage = () => {
               
               {canView ? (
                 <>
-                  <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content, {
-                    ADD_TAGS: ['iframe'],
-                    ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling', 'src', 'width', 'height'],
-                    FORBID_ATTR: [],
-                    afterSanitizeAttributes: (node) => {
-                      if (node.tagName === 'IFRAME') {
-                        const src = node.getAttribute('src') || '';
-                        if (!src.includes('youtube.com') && !src.includes('youtube-nocookie.com')) {
-                          node.remove();
-                        }
-                      }
-                    },
-                  }) }} />
+                  <div className="prose prose-lg dark:prose-invert max-w-none rich-content" dangerouslySetInnerHTML={{ __html: sanitizeArticleHtml(post.content) }} />
                   
                   {disclaimer && (
                     <div className="mt-8 p-4 bg-muted/50 border border-muted-foreground/20 rounded-lg">
@@ -483,7 +482,22 @@ const BlogPostPage = () => {
 
             <section className="mt-12">
               <h2 className="text-2xl font-bold mb-6">Comments</h2>
-              {user && (<div className="mb-8"><textarea value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Share your thoughts..." className="w-full p-4 rounded-lg border bg-background resize-none" rows="4" aria-label="Write a comment" /><Button onClick={handleComment} className="mt-2" aria-label="Post comment"><MessageCircle className="mr-2 h-4 w-4" />Post Comment</Button></div>)}
+              {user && (<div className="mb-8">
+                <textarea
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Share your thoughts..."
+                  className="w-full p-4 rounded-lg border bg-background resize-none"
+                  rows="4"
+                  maxLength={2000}
+                  aria-label="Write a comment"
+                  aria-describedby="blog-comment-counter"
+                />
+                <div className="flex items-center justify-between mt-2">
+                  <Button onClick={handleComment} disabled={!newComment.trim() || newComment.length > 2000} aria-label="Post comment"><MessageCircle className="mr-2 h-4 w-4" />Post Comment</Button>
+                  <span id="blog-comment-counter" className={`text-xs ${newComment.length > 1900 ? 'text-amber-600 dark:text-amber-400' : 'text-muted-foreground'}`} aria-live="polite">{newComment.length} / 2000</span>
+                </div>
+              </div>)}
               <div className="space-y-6">
                 {comments.map(comment => (<div key={comment.id} className="bg-card p-6 rounded-lg"><div className="flex items-center gap-2 mb-2"><User className="h-5 w-5 text-muted-foreground" /><span className="font-semibold">{comment.profiles?.name || 'Anonymous'}</span><span className="text-sm text-muted-foreground">{new Date(comment.created_at).toLocaleDateString()}</span></div><p className="text-muted-foreground">{comment.content}</p></div>))}
                 {comments.length === 0 && (<p className="text-center text-muted-foreground py-8">No comments yet. Be the first to share your thoughts!</p>)}

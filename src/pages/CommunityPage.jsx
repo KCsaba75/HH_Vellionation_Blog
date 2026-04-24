@@ -245,8 +245,11 @@ const CommunityPage = () => {
                   </div>
                 )}
                 <div className="relative">
-                  <textarea ref={newPostTextAreaRef} value={newPostContent} onChange={(e) => setNewPostContent(e.target.value)} onPaste={handlePaste} placeholder={selectedCategoryId === null ? "Select a category to post..." : "Share with the community... (drag-and-drop or paste an image)"} className="w-full p-3 pr-12 rounded-lg border bg-background resize-none" rows="3" disabled={selectedCategoryId === null} aria-label="Write a new post" />
-                  <Button onClick={handleCreatePost} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9" disabled={(!newPostContent.trim() && uploadedImages.length === 0) || selectedCategoryId === null} aria-label="Submit post"><Send className="h-4 w-4" /></Button>
+                  <textarea ref={newPostTextAreaRef} value={newPostContent} onChange={(e) => setNewPostContent(e.target.value)} onPaste={handlePaste} placeholder={selectedCategoryId === null ? "Select a category to post..." : "Share with the community... (drag-and-drop or paste an image)"} className="w-full p-3 pr-12 rounded-lg border bg-background resize-none" rows="3" maxLength={5000} disabled={selectedCategoryId === null} aria-label="Write a new post" aria-describedby="community-post-counter" />
+                  <Button onClick={handleCreatePost} size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9" disabled={(!newPostContent.trim() && uploadedImages.length === 0) || selectedCategoryId === null || newPostContent.length > 5000} aria-label="Submit post"><Send className="h-4 w-4" /></Button>
+                </div>
+                <div className="text-right mt-1">
+                  <span id="community-post-counter" className={`text-xs ${newPostContent.length > 4750 ? 'text-amber-600 dark:text-amber-400' : 'text-muted-foreground'}`} aria-live="polite">{newPostContent.length} / 5000</span>
                 </div>
               </motion.div>
             )}
