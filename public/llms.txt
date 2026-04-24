@@ -7,6 +7,7 @@
 - [Blog - Vellio Nation](https://www.vellionation.com/blog): Explore wellness articles, health tips, and lifestyle advice from our community of experts.
 - [Community - Vellio Nation](https://www.vellionation.com/community): Connect with like-minded individuals on their wellness journey. Share experiences and support each other.
 - [Solutions - Vellio Nation](https://www.vellionation.com/solutions): Discover wellness products, apps, and educational resources to support your healthy lifestyle.
+- [About Vellio Nation](https://www.vellionation.com/about): Learn about Vellio Nation, our mission to support men and women over 40 with evidence-based weight loss strategies, hormone-friendly nutrition, and a welcoming community.
 - [Login - Vellio Nation](https://www.vellionation.com/login): Login to your Vellio Nation account.
 - [Join Vellio Nation](https://www.vellionation.com/register): Create your Vellio Nation account and start your wellness journey today.
 - [Forgot Password - Vellio Nation](https://www.vellionation.com/forgot-password): Reset your Vellio Nation password.

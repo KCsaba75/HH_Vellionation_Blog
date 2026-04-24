@@ -3,13 +3,16 @@ import { supabase } from './customSupabaseClient';
 const SITE_URL = 'https://www.vellionation.com';
 
 const staticPages = [
-  { url: '/', title: 'Weight Loss After 40 | Vellio Nation - Healthy Living for Men & Women', description: 'Discover proven weight loss strategies for men and women over 40. Expert tips on losing weight, healthy eating, metabolism boosting, and sustainable lifestyle changes.' },
-  { url: '/blog', title: 'Weight Loss Blog for 40+ | Diet, Fitness & Healthy Living Tips', description: 'Expert weight loss tips for men and women over 40. Articles on metabolism boosting, healthy eating habits, exercise routines, and lifestyle changes for sustainable results.' },
-  { url: '/community', title: 'Weight Loss Community for 40+ | Support & Motivation', description: 'Join our supportive community of men and women over 40 on their weight loss journey. Share experiences, get motivated, and find accountability partners.' },
-  { url: '/solutions', title: 'Weight Loss Products & Apps for 40+ | Recommended Solutions', description: 'Discover the best weight loss products, fitness apps, and health tools for men and women over 40. Expert-recommended solutions for metabolism support and healthy living.' },
-  { url: '/help-center', title: 'Help Center - Vellio Nation', description: 'Find answers to common questions about weight loss after 40 and get support.' },
-  { url: '/privacy-policy', title: 'Privacy Policy - Vellio Nation', description: 'Learn how we protect your data and privacy.' },
-  { url: '/terms-of-service', title: 'Terms of Service - Vellio Nation', description: 'Read our terms and conditions for using Vellio Nation.' },
+  { url: '/', changefreq: 'weekly', priority: '1.0', title: 'Weight Loss After 40 | Vellio Nation - Healthy Living for Men & Women', description: 'Discover proven weight loss strategies for men and women over 40. Expert tips on losing weight, healthy eating, metabolism boosting, and sustainable lifestyle changes.' },
+  { url: '/blog', changefreq: 'daily', priority: '0.9', title: 'Weight Loss Blog for 40+ | Diet, Fitness & Healthy Living Tips', description: 'Expert weight loss tips for men and women over 40. Articles on metabolism boosting, healthy eating habits, exercise routines, and lifestyle changes for sustainable results.' },
+  { url: '/community', changefreq: 'daily', priority: '0.8', title: 'Weight Loss Community for 40+ | Support & Motivation', description: 'Join our supportive community of men and women over 40 on their weight loss journey. Share experiences, get motivated, and find accountability partners.' },
+  { url: '/solutions', changefreq: 'weekly', priority: '0.8', title: 'Weight Loss Products & Apps for 40+ | Recommended Solutions', description: 'Discover the best weight loss products, fitness apps, and health tools for men and women over 40. Expert-recommended solutions for metabolism support and healthy living.' },
+  { url: '/about', changefreq: 'monthly', priority: '0.5', title: 'About Vellio Nation | Wellness Community for 40+', description: 'Learn about Vellio Nation, our mission to support men and women over 40 with evidence-based weight loss strategies, hormone-friendly nutrition, and a welcoming community.' },
+  { url: '/login', changefreq: 'monthly', priority: '0.3', title: 'Login - Vellio Nation', description: 'Login to your Vellio Nation account.' },
+  { url: '/register', changefreq: 'monthly', priority: '0.3', title: 'Join Vellio Nation', description: 'Create your Vellio Nation account and start your wellness journey today.' },
+  { url: '/help-center', changefreq: 'monthly', priority: '0.4', title: 'Help Center - Vellio Nation', description: 'Find answers to common questions about weight loss after 40 and get support.' },
+  { url: '/privacy-policy', changefreq: 'monthly', priority: '0.3', title: 'Privacy Policy - Vellio Nation', description: 'Learn how we protect your data and privacy.' },
+  { url: '/terms-of-service', changefreq: 'monthly', priority: '0.3', title: 'Terms of Service - Vellio Nation', description: 'Read our terms and conditions for using Vellio Nation.' },
 ];
 
 function truncateText(text, maxLength = 150) {
@@ -100,8 +103,8 @@ export async function generateSitemapXml() {
     urls.push({
       loc: `${SITE_URL}${page.url}`,
       lastmod: formatDate(new Date()),
-      changefreq: page.url === '/' ? 'weekly' : 'monthly',
-      priority: page.url === '/' ? '1.0' : '0.5'
+      changefreq: page.changefreq,
+      priority: page.priority
     });
   }
 

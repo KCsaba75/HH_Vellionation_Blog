@@ -16,6 +16,7 @@ const staticPages = [
   { url: '/blog', changefreq: 'daily', priority: '0.9' },
   { url: '/community', changefreq: 'daily', priority: '0.8' },
   { url: '/solutions', changefreq: 'weekly', priority: '0.8' },
+  { url: '/about', changefreq: 'monthly', priority: '0.5' },
   { url: '/login', changefreq: 'monthly', priority: '0.3' },
   { url: '/register', changefreq: 'monthly', priority: '0.3' },
   { url: '/help-center', changefreq: 'monthly', priority: '0.4' },
