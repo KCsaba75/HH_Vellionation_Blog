@@ -34,6 +34,7 @@ The application uses React 18.2 with Vite 4.5 for the frontend, and React Router
 - **Site Image Management**: Admin dashboard allows uploading and managing site-wide images.
 - **Dynamic Content Generation**: `sitemap.xml` and `llms.txt` are dynamically generated at build-time and can be regenerated at runtime via admin actions, with redirects to Supabase Storage copies.
 - **Founding Member Feature**: The first 200 registered users automatically receive "Founding Member" status.
+- **English-Only UI Policy**: The site targets a US, English-speaking audience and the codebase has NO i18n framework — every visible UI string must be in English. No `t()` / `i18next` setup exists. If an admin user's profile name (stored in `profiles.name`) contains non-English text, it will surface anywhere their name is rendered (Header user dropdown when they are logged in, post author byline if they author posts, comment author when they comment, Admin Users tab listing). Profile names are user-editable on the `/profile` page; the codebase does not auto-correct or translate them.
 - **Email Notifications System**: Supports opt-in email notifications for new blog posts (via Supabase Edge Function and Resend API) and a newsletter (via Supabase table).
 
 ### Feature Specifications

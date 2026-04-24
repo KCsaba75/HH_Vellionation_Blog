@@ -45,7 +45,7 @@ const MenuBar = ({ editor }) => {
           const url = await uploadImageToSupabase(file);
           editor.chain().focus().setImage({ src: url }).run();
         } catch (err) {
-          alert('Képfeltöltés sikertelen: ' + err.message);
+          alert('Image upload failed: ' + err.message);
         }
       }
     };
@@ -196,7 +196,7 @@ const RichTextEditor = ({ value, onChange, placeholder, className, fullWidth = f
             uploadImageToSupabase(file).then((url) => {
               editor.chain().focus().setImage({ src: url }).run();
             }).catch((err) => {
-              alert('Képfeltöltés sikertelen: ' + err.message);
+              alert('Image upload failed: ' + err.message);
             });
             return true;
           }
@@ -214,7 +214,7 @@ const RichTextEditor = ({ value, onChange, placeholder, className, fullWidth = f
                 uploadImageToSupabase(file).then((url) => {
                   editor.chain().focus().setImage({ src: url }).run();
                 }).catch((err) => {
-                  alert('Képfeltöltés sikertelen: ' + err.message);
+                  alert('Image upload failed: ' + err.message);
                 });
               }
               return true;
@@ -240,7 +240,7 @@ const RichTextEditor = ({ value, onChange, placeholder, className, fullWidth = f
       <MenuBar editor={editor} />
       <EditorContent editor={editor} />
       <div className="px-4 py-2 text-xs text-muted-foreground border-t bg-muted/30">
-        Húzd a kép sarkait a méretezéshez | Drag & drop vagy Ctrl+V képek beillesztéséhez | YouTube gomb: videó beágyazáshoz
+        Drag image corners to resize | Drag & drop or Ctrl+V to paste images | YouTube button to embed videos
       </div>
     </div>
   );
