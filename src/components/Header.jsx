@@ -71,7 +71,7 @@ const Header = () => {
                 <span className="hidden sm:block text-xs text-muted-foreground/60 italic tracking-wide">Simple Habits, Lasting Results</span>
               </motion.div>
             </Link>
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2 min-w-[120px] min-h-[24px]">
               {socialLinks.facebook && <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Open Facebook page" className="text-muted-foreground hover:text-secondary transition-colors"><Facebook className="h-6 w-6" /></a>}
               {socialLinks.instagram && <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Open Instagram page" className="text-muted-foreground hover:text-secondary transition-colors"><Instagram className="h-6 w-6" /></a>}
               {socialLinks.youtube && <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" aria-label="Open YouTube channel" className="text-muted-foreground hover:text-secondary transition-colors"><Youtube className="h-6 w-6" /></a>}
