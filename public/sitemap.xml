@@ -2,57 +2,81 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.vellionation.com/</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-04-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/blog</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-04-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/community</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-04-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/solutions</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-04-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/login</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-04-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/register</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-04-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/help-center</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-04-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/privacy-policy</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-04-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/terms-of-service</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-04-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/blog/the-20-minute-walking-workout-that-transforms-your-body-after-40</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/blog/7-popular-diets-compared-which-one-actually-works-for-women-over-40</loc>
+    <lastmod>2026-04-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/blog/my-story-how-i-lost-25-lbs-at-50-and-finally-got-my-energy-back</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/blog/the-5-best-vitamins-for-weight-loss-after-40-complete-guide</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/blog/meditation-over-40-mental-training-for-a-fitter-lifestyle</loc>
@@ -101,6 +125,18 @@
     <lastmod>2025-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/solutions/bellyflush-natural-digestive-support-for-women-40</loc>
+    <lastmod>2026-03-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.vellionation.com/solutions/the-smoothie-diet-21-day-weight-loss-program-for-women-40</loc>
+    <lastmod>2026-03-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.vellionation.com/solutions/java-burn-the-10second-morning-coffee-ritual-for-40</loc>
