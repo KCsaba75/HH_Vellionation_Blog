@@ -31,10 +31,13 @@
                 <link rel="preconnect" href="https://rtklsdtadtqpgoibulux.supabase.co" crossorigin />
                 <link rel="dns-prefetch" href="https://rtklsdtadtqpgoibulux.supabase.co" />
 
-                <!-- Google Fonts: preconnect + preload + non-blocking stylesheet, font-display=swap to prevent FOIT and reduce CLS from late font swap -->
+                <!-- Google Fonts: preconnect + woff2 file preloads + non-blocking stylesheet, font-display=swap to prevent FOIT and reduce CLS from late font swap.
+                     The preload URLs target the latin-subset woff2 files used above-the-fold (Inter variable font covers 400-700; Poppins 600 for H1).
+                     If Google rotates the font version hashes (v20/v24 → newer), the preload hints become stale and the browser silently ignores them — the regular stylesheet link still loads the current files. -->
                 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-                <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" />
+                <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" />
+                <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLEj6Z1xlFQ.woff2" />
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" media="print" onload="this.media='all'" />
                 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" /></noscript>
         </head>
