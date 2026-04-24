@@ -52,6 +52,12 @@ const Footer = memo(() => {
 
           <div>
             <span className="font-semibold mb-4 block">Connect</span>
+            <p className="text-sm text-muted-foreground mb-2">
+              Email:{' '}
+              <a href="mailto:info@vellionation.com" className="hover:text-primary transition-colors">
+                info@vellionation.com
+              </a>
+            </p>
             <p className="text-sm text-muted-foreground mb-3">
               Join our community and start your transformation today.
             </p>
